@@ -1,0 +1,31 @@
+{
+	"name": "bindbc-imgui",
+	"description": "Static bindings to Dear ImGui, compatible with BetterC, @nogc and nothrow.",
+	"homepage": "",
+	"authors": ["Aya Partridge"],
+	"license": "Boost",
+	
+	"dependencies": {"bindbc-common": "~>0.0.3"},
+	"targetType": "staticLibrary",
+	"targetPath": "lib",
+	"targetName": "BindBC_ImGui",
+	
+	"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_demo.o"],
+	"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/*.obj"],
+	"libs": ["stdc++"],
+	
+	"configurations": [
+		{
+			"name": "static",
+			"versions": ["BindImGui_Static"],
+		},
+		{
+			"name": "staticBC",
+			"subConfigurations": {
+				"bindbc-common": "yesBC",
+			},
+			"dflags": ["-betterC"],
+			"versions": ["BindImGui_Static"],
+		}
+	],
+}
