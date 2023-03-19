@@ -9,12 +9,17 @@ module imgui;
 import bindbc.imgui.config;
 
 import core.vararg: va_list;
+import core.stdc.string: memcpy, memset, memmove, memcmp, strcmp;
 
 public import
 	imgui.demo;
 
 enum IMGUI_VERSION        = "1.89.4";
 enum IMGUI_VERSION_NUM    = 18940;
+
+struct ImFontBuilderIO;
+
+alias ImGuiKeyChord = int;
 
 alias ImTextureID = void*;
 
@@ -42,26 +47,27 @@ extern(C++) struct ImVec2{
 	
 	float opIndex(size_t idx) const;
 	ref float opIndex(size_t idx);
+//#ifdef IMGUI_DEFINE_MATH_OPERATORS
+	pragma(inline,true){
+		ImVec2 opBinary(string op)(const float rhs) const if(op == "*" || op == "/"){ mixin("return ImVec2(x "~op~" rhs, y "~op~" rhs);"); }
+		ImVec2 opBinary(string op)(ref const ImVec2 rhs) const if(op == "+" || op == "-" || op == "*" || op == "/"){ mixin("return ImVec2(x "~op~" rhs.x, y "~op~" rhs.y);"); }
+		ref ImVec2 opOpAssign(string op)(const float rhs) if(op == "*" || op == "/"){ mixin("x "~op~"= rhs; y "~op~"= rhs;"); return this; }
+		ref ImVec2 opOpAssign(string op)(ref const ImVec2 rhs) if(op == "+" || op == "-" || op == "*" || op == "/"){ mixin("x "~op~"= rhs.x; y "~op~"= rhs.y);"); return this; }
+	}
+//#endif
 }
 
 extern(C++) struct ImVec4{
 	float x=0f, y=0f, z=0f, w=0f;
+//#ifdef IMGUI_DEFINE_MATH_OPERATORS
+	pragma(inline,true){
+		ImVec4 opBinary(string op)(ref const ImVec4 rhs) const if(op == "+" || op == "-" || op == "*"){ mixin("return ImVec4(x "~op~" rhs.x, y "~op~" rhs.y, z "~op~" rhs.z, w "~op~" rhs.w);"); }
+	}
+//#endif
 }
 
-struct ImGuiSizeCallbackData;
-struct ImGuiInputTextCallbackData;
-struct ImFont;
-struct ImFontAtlas;
 struct ImGuiContext;
-struct ImGuiPayload;
-struct ImGuiTableSortSpecs;
-struct ImGuiViewport;
-struct ImGuiStorage;
-struct ImGuiStyle;
-struct ImDrawData;
-struct ImDrawList;
-struct ImDrawListSharedData;
-struct ImGuiIO{}//TODO:remove THISSS
+struct ImDrawListSharedData;//TODO: REMOVE THIS!!!
 
 extern(C++, "ImGui"){
 	private alias ItemsGetterFn = extern(C++) bool function(void* data, int idx, const(char)** out_text);
@@ -96,39 +102,39 @@ extern(C++, "ImGui"){
 	void StyleColorsClassic(ImGuiStyle* dst=null);
 	alias StyleColoursClassic = StyleColorsClassic;
 	
-	bool Begin(const(char)* name, bool* p_open=null, ImGuiWindowFlags flags=ImGuiWindowFlags.None);
+	bool Begin(const(char)* name, bool* p_open=null, ImGuiWindowFlags_ flags=0);
 	void End();
 	
-	bool BeginChild(const(char)* str_id, const auto ref ImVec2 size=ImVec2(0, 0), bool border=false, ImGuiWindowFlags flags=ImGuiWindowFlags.None);
-	bool BeginChild(ImGuiID id, const auto ref ImVec2 size=ImVec2(0, 0), bool border=false, ImGuiWindowFlags flags=ImGuiWindowFlags.None);
+	bool BeginChild(const(char)* str_id, const auto ref ImVec2 size=ImVec2(0, 0), bool border=false, ImGuiWindowFlags_ flags=0);
+	bool BeginChild(ImGuiID id, const auto ref ImVec2 size=ImVec2(0, 0), bool border=false, ImGuiWindowFlags_ flags=0);
 	void EndChild();
 	
 	bool IsWindowAppearing();
 	bool IsWindowCollapsed();
-	bool IsWindowFocused(ImGuiFocusedFlags flags=ImGuiFocusedFlags.None);
-	bool IsWindowHovered(ImGuiHoveredFlags flags=ImGuiHoveredFlags.None);
+	bool IsWindowFocused(ImGuiFocusedFlags_ flags=0);
+	bool IsWindowHovered(ImGuiHoveredFlags_ flags=0);
 	ImDrawList* GetWindowDrawList();
 	ImVec2 GetWindowPos();
 	ImVec2 GetWindowSize();
 	float GetWindowWidth();
 	float GetWindowHeight();
 	
-	void SetNextWindowPos(ref const(ImVec2) pos, ImGuiCond cond=ImGuiCond.None, const auto ref ImVec2 pivot=ImVec2(0, 0));
-	void SetNextWindowSize(ref const(ImVec2) size, ImGuiCond cond=ImGuiCond.None);
+	void SetNextWindowPos(ref const(ImVec2) pos, ImGuiCond_ cond=0, const auto ref ImVec2 pivot=ImVec2(0, 0));
+	void SetNextWindowSize(ref const(ImVec2) size, ImGuiCond_ cond=0);
 	void SetNextWindowSizeConstraints(ref const(ImVec2) size_min, ref const(ImVec2) size_max, ImGuiSizeCallback custom_callback=null, void* custom_callback_data=null);
 	void SetNextWindowContentSize(ref const(ImVec2) size);
-	void SetNextWindowCollapsed(bool collapsed, ImGuiCond cond=ImGuiCond.None);
+	void SetNextWindowCollapsed(bool collapsed, ImGuiCond_ cond=0);
 	void SetNextWindowFocus();
 	void SetNextWindowScroll(ref const(ImVec2) scroll);
 	void SetNextWindowBgAlpha(float alpha);
-	void SetWindowPos(ref const(ImVec2) pos, ImGuiCond cond=ImGuiCond.None);
-	void SetWindowSize(ref const(ImVec2) size, ImGuiCond cond=ImGuiCond.None);
-	void SetWindowCollapsed(bool collapsed, ImGuiCond cond=ImGuiCond.None);
+	void SetWindowPos(ref const(ImVec2) pos, ImGuiCond_ cond=0);
+	void SetWindowSize(ref const(ImVec2) size, ImGuiCond_ cond=0);
+	void SetWindowCollapsed(bool collapsed, ImGuiCond_ cond=0);
 	void SetWindowFocus();
 	void SetWindowFontScale(float scale);
-	void SetWindowPos(const(char)* name, ref const(ImVec2) pos, ImGuiCond cond=ImGuiCond.None);
-	void SetWindowSize(const(char)* name, ref const(ImVec2) size, ImGuiCond cond=ImGuiCond.None);
-	void SetWindowCollapsed(const(char)* name, bool collapsed, ImGuiCond cond=ImGuiCond.None);
+	void SetWindowPos(const(char)* name, ref const(ImVec2) pos, ImGuiCond_ cond=0);
+	void SetWindowSize(const(char)* name, ref const(ImVec2) size, ImGuiCond_ cond=0);
+	void SetWindowCollapsed(const(char)* name, bool collapsed, ImGuiCond_ cond=0);
 	void SetWindowFocus(const(char)* name);
 	
 	ImVec2 GetContentRegionAvail();
@@ -214,9 +220,9 @@ extern(C++, "ImGui"){
 	void TextUnformatted(const(char)* text, const(char)* text_end=null);
 	void Text(const(char)* fmt, ...);
 	void TextV(const(char)* fmt, va_list args);
-	void TextColored(ref const(ImVec4) col, const(char)* fmt, ...);
+	void TextColored(ref const ImVec4 col, const(char)* fmt, ...);
 	alias TextColoured = TextColored;
-	void TextColoredV(ref const(ImVec4) col, const(char)* fmt, va_list args);
+	void TextColoredV(ref const ImVec4 col, const(char)* fmt, va_list args);
 	alias TextColouredV = TextColoredV;
 	void TextDisabled(const(char)* fmt, ...);
 	void TextDisabledV(const(char)* fmt, va_list args);
@@ -230,7 +236,7 @@ extern(C++, "ImGui"){
 	
 	bool Button(const(char)* label, const auto ref ImVec2 size=ImVec2(0, 0));
 	bool SmallButton(const(char)* label);
-	bool InvisibleButton(const(char)* str_id, ref const(ImVec2) size, ImGuiButtonFlags flags=ImGuiButtonFlags.None);
+	bool InvisibleButton(const(char)* str_id, ref const ImVec2 size, ImGuiButtonFlags_ flags=0);
 	bool ArrowButton(const(char)* str_id, ImGuiDir dir);
 	bool Checkbox(const(char)* label, bool* v);
 	bool CheckboxFlags(const(char)* label, int* flags, int flags_value);
@@ -243,64 +249,64 @@ extern(C++, "ImGui"){
 	void Image(ImTextureID user_texture_id, ref const(ImVec2) size, const auto ref ImVec2 uv0=ImVec2(0, 0), const auto ref ImVec2 uv1=ImVec2(1, 1), const auto ref ImVec4 tint_col=ImVec4(1, 1, 1, 1), const auto ref ImVec4 border_col=ImVec4(0, 0, 0, 0));
 	bool ImageButton(const(char)* str_id, ImTextureID user_texture_id, ref const(ImVec2) size, const auto ref ImVec2 uv0=ImVec2(0, 0), const auto ref ImVec2 uv1=ImVec2(1, 1), const auto ref ImVec4 bg_col=ImVec4(0, 0, 0, 0), const auto ref ImVec4 tint_col=ImVec4(1, 1, 1, 1));
 	
-	bool BeginCombo(const(char)* label, const(char)* preview_value, ImGuiComboFlags flags=ImGuiComboFlags.None);
+	bool BeginCombo(const(char)* label, const(char)* preview_value, ImGuiComboFlags_ flags=0);
 	void EndCombo();
 	bool Combo(const(char)* label, int* current_item, const(char*)* items, int items_count, int popup_max_height_in_items=-1);
 	bool Combo(const(char)* label, int* current_item, const(char)* items_separated_by_zeros, int popup_max_height_in_items=-1);
 	bool Combo(const(char)* label, int* current_item, ItemsGetterFn items_getter, void* data, int items_count, int popup_max_height_in_items=-1);
 	
-	bool DragFloat(const(char)* label, float* v, float v_speed=1f, float v_min=0f, float v_max=0f, const(char)* format="%.3f", ImGuiSliderFlags flags=ImGuiSliderFlags.None);
-	bool DragFloat2(const(char)* label, float* v, float v_speed=1f, float v_min=0f, float v_max=0f, const(char)* format="%.3f", ImGuiSliderFlags flags=ImGuiSliderFlags.None);
-	bool DragFloat3(const(char)* label, float* v, float v_speed=1f, float v_min=0f, float v_max=0f, const(char)* format="%.3f", ImGuiSliderFlags flags=ImGuiSliderFlags.None);
-	bool DragFloat4(const(char)* label, float* v, float v_speed=1f, float v_min=0f, float v_max=0f, const(char)* format="%.3f", ImGuiSliderFlags flags=ImGuiSliderFlags.None);
-	bool DragFloatRange2(const(char)* label, float* v_current_min, float* v_current_max, float v_speed=1f, float v_min=0f, float v_max=0f, const(char)* format="%.3f", const(char)* format_max=null, ImGuiSliderFlags flags=ImGuiSliderFlags.None);
-	bool DragInt(const(char)* label, int* v, float v_speed=1f, int v_min=0, int v_max=0, const(char)* format="%d", ImGuiSliderFlags flags=ImGuiSliderFlags.None);
-	bool DragInt2(const(char)* label, int* v, float v_speed=1f, int v_min=0, int v_max=0, const(char)* format="%d", ImGuiSliderFlags flags=ImGuiSliderFlags.None);
-	bool DragInt3(const(char)* label, int* v, float v_speed=1f, int v_min=0, int v_max=0, const(char)* format="%d", ImGuiSliderFlags flags=ImGuiSliderFlags.None);
-	bool DragInt4(const(char)* label, int* v, float v_speed=1f, int v_min=0, int v_max=0, const(char)* format="%d", ImGuiSliderFlags flags=ImGuiSliderFlags.None);
-	bool DragIntRange2(const(char)* label, int* v_current_min, int* v_current_max, float v_speed=1f, int v_min=0, int v_max=0, const(char)* format="%d", const(char)* format_max=null, ImGuiSliderFlags flags=ImGuiSliderFlags.None);
-	bool DragScalar(const(char)* label, ImGuiDataType data_type, void* p_data, float v_speed=1f, const(void)* p_min=null, const(void)* p_max=null, const(char)* format=null, ImGuiSliderFlags flags=ImGuiSliderFlags.None);
-	bool DragScalarN(const(char)* label, ImGuiDataType data_type, void* p_data, int components, float v_speed=1f, const(void)* p_min=null, const(void)* p_max=null, const(char)* format=null, ImGuiSliderFlags flags=ImGuiSliderFlags.None);
+	bool DragFloat(const(char)* label, float* v, float v_speed=1f, float v_min=0f, float v_max=0f, const(char)* format="%.3f", ImGuiSliderFlags_ flags=0);
+	bool DragFloat2(const(char)* label, float* v, float v_speed=1f, float v_min=0f, float v_max=0f, const(char)* format="%.3f", ImGuiSliderFlags_ flags=0);
+	bool DragFloat3(const(char)* label, float* v, float v_speed=1f, float v_min=0f, float v_max=0f, const(char)* format="%.3f", ImGuiSliderFlags_ flags=0);
+	bool DragFloat4(const(char)* label, float* v, float v_speed=1f, float v_min=0f, float v_max=0f, const(char)* format="%.3f", ImGuiSliderFlags_ flags=0);
+	bool DragFloatRange2(const(char)* label, float* v_current_min, float* v_current_max, float v_speed=1f, float v_min=0f, float v_max=0f, const(char)* format="%.3f", const(char)* format_max=null, ImGuiSliderFlags_ flags=0);
+	bool DragInt(const(char)* label, int* v, float v_speed=1f, int v_min=0, int v_max=0, const(char)* format="%d", ImGuiSliderFlags_ flags=0);
+	bool DragInt2(const(char)* label, int* v, float v_speed=1f, int v_min=0, int v_max=0, const(char)* format="%d", ImGuiSliderFlags_ flags=0);
+	bool DragInt3(const(char)* label, int* v, float v_speed=1f, int v_min=0, int v_max=0, const(char)* format="%d", ImGuiSliderFlags_ flags=0);
+	bool DragInt4(const(char)* label, int* v, float v_speed=1f, int v_min=0, int v_max=0, const(char)* format="%d", ImGuiSliderFlags_ flags=0);
+	bool DragIntRange2(const(char)* label, int* v_current_min, int* v_current_max, float v_speed=1f, int v_min=0, int v_max=0, const(char)* format="%d", const(char)* format_max=null, ImGuiSliderFlags_ flags=0);
+	bool DragScalar(const(char)* label, ImGuiDataType data_type, void* p_data, float v_speed=1f, const(void)* p_min=null, const(void)* p_max=null, const(char)* format=null, ImGuiSliderFlags_ flags=0);
+	bool DragScalarN(const(char)* label, ImGuiDataType data_type, void* p_data, int components, float v_speed=1f, const(void)* p_min=null, const(void)* p_max=null, const(char)* format=null, ImGuiSliderFlags_ flags=0);
 	
-	bool SliderFloat(const(char)* label, float* v, float v_min, float v_max, const(char)* format="%.3f", ImGuiSliderFlags flags=ImGuiSliderFlags.None);
-	bool SliderFloat2(const(char)** label, float v, float v_min, float v_max, const(char)* format="%.3f", ImGuiSliderFlags flags=ImGuiSliderFlags.None);
-	bool SliderFloat3(const(char)** label, float v, float v_min, float v_max, const(char)* format="%.3f", ImGuiSliderFlags flags=ImGuiSliderFlags.None);
-	bool SliderFloat4(const(char)** label, float v, float v_min, float v_max, const(char)* format="%.3f", ImGuiSliderFlags flags=ImGuiSliderFlags.None);
-	bool SliderAngle(const(char)* label, float* v_rad, float v_degrees_min=-360f, float v_degrees_max=+360f, const(char)* format="%.0f deg", ImGuiSliderFlags flags=ImGuiSliderFlags.None);
-	bool SliderInt(const(char)* label, int* v, int v_min, int v_max, const(char)* format="%d", ImGuiSliderFlags flags=ImGuiSliderFlags.None);
-	bool SliderInt2(const(char)* label, int* v, int v_min, int v_max, const(char)* format="%d", ImGuiSliderFlags flags=ImGuiSliderFlags.None);
-	bool SliderInt3(const(char)* label, int* v, int v_min, int v_max, const(char)* format="%d", ImGuiSliderFlags flags=ImGuiSliderFlags.None);
-	bool SliderInt4(const(char)* label, int* v, int v_min, int v_max, const(char)* format="%d", ImGuiSliderFlags flags=ImGuiSliderFlags.None);
-	bool SliderScalar(const(char)* label, ImGuiDataType data_type, void* p_data, const(void)* p_min, const(void)* p_max, const(char)* format=null, ImGuiSliderFlags flags=ImGuiSliderFlags.None);
-	bool SliderScalarN(const(char)* label, ImGuiDataType data_type, void* p_data, int components, const(void)* p_min, const(void)* p_max, const(char)* format=null, ImGuiSliderFlags flags=ImGuiSliderFlags.None);
-	bool VSliderFloat(const(char)* label, ref const(ImVec2) size, float* v, float v_min, float v_max, const(char)* format="%.3f", ImGuiSliderFlags flags=ImGuiSliderFlags.None);
-	bool VSliderInt(const(char)* label, ref const(ImVec2) size, int* v, int v_min, int v_max, const(char)* format="%d", ImGuiSliderFlags flags=ImGuiSliderFlags.None);
-	bool VSliderScalar(const(char)* label, ref const(ImVec2) size, ImGuiDataType data_type, void* p_data, const(void)* p_min, const(void)* p_max, const(char)* format=null, ImGuiSliderFlags flags=ImGuiSliderFlags.None);
+	bool SliderFloat(const(char)* label, float* v, float v_min, float v_max, const(char)* format="%.3f", ImGuiSliderFlags_ flags=0);
+	bool SliderFloat2(const(char)** label, float v, float v_min, float v_max, const(char)* format="%.3f", ImGuiSliderFlags_ flags=0);
+	bool SliderFloat3(const(char)** label, float v, float v_min, float v_max, const(char)* format="%.3f", ImGuiSliderFlags_ flags=0);
+	bool SliderFloat4(const(char)** label, float v, float v_min, float v_max, const(char)* format="%.3f", ImGuiSliderFlags_ flags=0);
+	bool SliderAngle(const(char)* label, float* v_rad, float v_degrees_min=-360f, float v_degrees_max=+360f, const(char)* format="%.0f deg", ImGuiSliderFlags_ flags=0);
+	bool SliderInt(const(char)* label, int* v, int v_min, int v_max, const(char)* format="%d", ImGuiSliderFlags_ flags=0);
+	bool SliderInt2(const(char)* label, int* v, int v_min, int v_max, const(char)* format="%d", ImGuiSliderFlags_ flags=0);
+	bool SliderInt3(const(char)* label, int* v, int v_min, int v_max, const(char)* format="%d", ImGuiSliderFlags_ flags=0);
+	bool SliderInt4(const(char)* label, int* v, int v_min, int v_max, const(char)* format="%d", ImGuiSliderFlags_ flags=0);
+	bool SliderScalar(const(char)* label, ImGuiDataType data_type, void* p_data, const(void)* p_min, const(void)* p_max, const(char)* format=null, ImGuiSliderFlags_ flags=0);
+	bool SliderScalarN(const(char)* label, ImGuiDataType data_type, void* p_data, int components, const(void)* p_min, const(void)* p_max, const(char)* format=null, ImGuiSliderFlags_ flags=0);
+	bool VSliderFloat(const(char)* label, ref const(ImVec2) size, float* v, float v_min, float v_max, const(char)* format="%.3f", ImGuiSliderFlags_ flags=0);
+	bool VSliderInt(const(char)* label, ref const(ImVec2) size, int* v, int v_min, int v_max, const(char)* format="%d", ImGuiSliderFlags_ flags=0);
+	bool VSliderScalar(const(char)* label, ref const(ImVec2) size, ImGuiDataType data_type, void* p_data, const(void)* p_min, const(void)* p_max, const(char)* format=null, ImGuiSliderFlags_ flags=0);
 	
-	bool InputText(const(char)* label, char* buf, size_t buf_size, ImGuiInputTextFlags flags=ImGuiInputTextFlags.None, ImGuiInputTextCallback callback=null, void* user_data=null);
-	bool InputTextMultiline(const(char)* label, char* buf, size_t buf_size, auto ref const(ImVec2) size=ImVec2(0, 0), ImGuiInputTextFlags flags=ImGuiInputTextFlags.None, ImGuiInputTextCallback callback=null, void* user_data=null);
-	bool InputTextWithHint(const(char)* label, const(char)* hint, char* buf, size_t buf_size, ImGuiInputTextFlags flags=ImGuiInputTextFlags.None, ImGuiInputTextCallback callback=null, void* user_data=null);
-	bool InputFloat(const(char)* label, float* v, float step=0f, float step_fast=0f, const(char)* format="%.3f", ImGuiInputTextFlags flags=ImGuiInputTextFlags.None);
-	bool InputFloat2(const(char)* label, float* v, const(char)* format="%.3f", ImGuiInputTextFlags flags=ImGuiInputTextFlags.None);
-	bool InputFloat3(const(char)* label, float* v, const(char)* format="%.3f", ImGuiInputTextFlags flags=ImGuiInputTextFlags.None);
-	bool InputFloat4(const(char)* label, float* v, const(char)* format="%.3f", ImGuiInputTextFlags flags=ImGuiInputTextFlags.None);
-	bool InputInt(const(char)* label, int* v, int step=1, int step_fast=100, ImGuiInputTextFlags flags=ImGuiInputTextFlags.None);
-	bool InputInt2(const(char)* label, int* v, ImGuiInputTextFlags flags=ImGuiInputTextFlags.None);
-	bool InputInt3(const(char)* label, int* v, ImGuiInputTextFlags flags=ImGuiInputTextFlags.None);
-	bool InputInt4(const(char)* label, int* v, ImGuiInputTextFlags flags=ImGuiInputTextFlags.None);
-	bool InputDouble(const(char)* label, double* v, double step=0.0, double step_fast=0.0, const(char)* format="%.6f", ImGuiInputTextFlags flags=ImGuiInputTextFlags.None);
-	bool InputScalar(const(char)* label, ImGuiDataType data_type, void* p_data, const(void)* p_step=null, const(void)* p_step_fast=null, const(char)* format=null, ImGuiInputTextFlags flags=ImGuiInputTextFlags.None);
-	bool InputScalarN(const(char)* label, ImGuiDataType data_type, void* p_data, int components, const(void)* p_step=null, const(void)* p_step_fast=null, const(char)* format=null, ImGuiInputTextFlags flags=ImGuiInputTextFlags.None);
+	bool InputText(const(char)* label, char* buf, size_t buf_size, ImGuiInputTextFlags_ flags=0, ImGuiInputTextCallback callback=null, void* user_data=null);
+	bool InputTextMultiline(const(char)* label, char* buf, size_t buf_size, auto ref const(ImVec2) size=ImVec2(0, 0), ImGuiInputTextFlags_ flags=0, ImGuiInputTextCallback callback=null, void* user_data=null);
+	bool InputTextWithHint(const(char)* label, const(char)* hint, char* buf, size_t buf_size, ImGuiInputTextFlags_ flags=0, ImGuiInputTextCallback callback=null, void* user_data=null);
+	bool InputFloat(const(char)* label, float* v, float step=0f, float step_fast=0f, const(char)* format="%.3f", ImGuiInputTextFlags_ flags=0);
+	bool InputFloat2(const(char)* label, float* v, const(char)* format="%.3f", ImGuiInputTextFlags_ flags=0);
+	bool InputFloat3(const(char)* label, float* v, const(char)* format="%.3f", ImGuiInputTextFlags_ flags=0);
+	bool InputFloat4(const(char)* label, float* v, const(char)* format="%.3f", ImGuiInputTextFlags_ flags=0);
+	bool InputInt(const(char)* label, int* v, int step=1, int step_fast=100, ImGuiInputTextFlags_ flags=0);
+	bool InputInt2(const(char)* label, int* v, ImGuiInputTextFlags_ flags=0);
+	bool InputInt3(const(char)* label, int* v, ImGuiInputTextFlags_ flags=0);
+	bool InputInt4(const(char)* label, int* v, ImGuiInputTextFlags_ flags=0);
+	bool InputDouble(const(char)* label, double* v, double step=0.0, double step_fast=0.0, const(char)* format="%.6f", ImGuiInputTextFlags_ flags=0);
+	bool InputScalar(const(char)* label, ImGuiDataType data_type, void* p_data, const(void)* p_step=null, const(void)* p_step_fast=null, const(char)* format=null, ImGuiInputTextFlags_ flags=0);
+	bool InputScalarN(const(char)* label, ImGuiDataType data_type, void* p_data, int components, const(void)* p_step=null, const(void)* p_step_fast=null, const(char)* format=null, ImGuiInputTextFlags_ flags=0);
 	
-	bool ColorEdit3(const(char)* label, float* col, ImGuiColorEditFlags flags=ImGuiColorEditFlags.None);
+	bool ColorEdit3(const(char)* label, float* col, ImGuiColorEditFlags_ flags=0);
 	alias ColourEdit3 = ColorEdit3;
-	bool ColorEdit4(const(char)* label, float* col, ImGuiInputTextFlags flags=ImGuiInputTextFlags.None);
+	bool ColorEdit4(const(char)* label, float* col, ImGuiInputTextFlags_ flags=0);
 	alias ColourEdit4 = ColorEdit4;
-	bool ColorPicker3(const(char)* label, float* col, ImGuiInputTextFlags flags=ImGuiInputTextFlags.None);
+	bool ColorPicker3(const(char)* label, float* col, ImGuiInputTextFlags_ flags=0);
 	alias ColourPicker3 = ColorPicker3;
-	bool ColorPicker4(const(char)* label, float* col, ImGuiInputTextFlags flags=ImGuiInputTextFlags.None, const(float)* ref_col=null);
+	bool ColorPicker4(const(char)* label, float* col, ImGuiInputTextFlags_ flags=0, const(float)* ref_col=null);
 	alias ColourPicker4 = ColorPicker4;
-	bool ColorButton(const(char)* desc_id, ref const(ImVec4) col, ImGuiInputTextFlags flags=ImGuiInputTextFlags.None, auto ref const(ImVec2) size=ImVec2(0, 0));
+	bool ColorButton(const(char)* desc_id, ref const(ImVec4) col, ImGuiInputTextFlags_ flags=0, auto ref const(ImVec2) size=ImVec2(0, 0));
 	alias ColourButton = ColorButton;
 	void SetColorEditOptions(ImGuiColorEditFlags flags);
 	alias SetColourEditOptions = SetColorEditOptions;
@@ -310,7 +316,7 @@ extern(C++, "ImGui"){
 	bool TreeNode(const(void)* ptr_id, const(char)* fmt, ...);
 	bool TreeNodeV(const(char)* str_id, const(char)* fmt, va_list args);
 	bool TreeNodeV(const(void)* ptr_id, const(char)* fmt, va_list args);
-	bool TreeNodeEx(const(char)* label, ImGuiTreeNodeFlags flags=ImGuiTreeNodeFlags.None);
+	bool TreeNodeEx(const(char)* label, ImGuiTreeNodeFlags_ flags=0);
 	bool TreeNodeEx(const(char)* str_id, ImGuiTreeNodeFlags flags, const(char)* fmt, ...);
 	bool TreeNodeEx(const(void)* ptr_id, ImGuiTreeNodeFlags flags, const(char)* fmt, ...);
 	bool TreeNodeExV(const(char)* str_id, ImGuiTreeNodeFlags flags, const(char)* fmt, va_list args);
@@ -319,11 +325,11 @@ extern(C++, "ImGui"){
 	void TreePush(const(void)* ptr_id);
 	void TreePop();
 	float GetTreeNodeToLabelSpacing();
-	bool CollapsingHeader(const(char)* label, ImGuiTreeNodeFlags flags=ImGuiTreeNodeFlags.None);
-	bool CollapsingHeader(const(char)* label, bool* p_visible, ImGuiTreeNodeFlags flags=ImGuiTreeNodeFlags.None);
-	void SetNextItemOpen(bool is_open, ImGuiCond cond=ImGuiCond.None);
-	bool Selectable(const(char)* label, bool selected=false, ImGuiSelectableFlags flags=ImGuiSelectableFlags.None, auto ref const(ImVec2) size=ImVec2(0, 0));
-	bool Selectable(const(char)* label, bool* p_selected, ImGuiSelectableFlags flags=ImGuiSelectableFlags.None, auto ref const(ImVec2) size=ImVec2(0, 0));
+	bool CollapsingHeader(const(char)* label, ImGuiTreeNodeFlags_ flags=0);
+	bool CollapsingHeader(const(char)* label, bool* p_visible, ImGuiTreeNodeFlags_ flags=0);
+	void SetNextItemOpen(bool is_open, ImGuiCond_ cond=0);
+	bool Selectable(const(char)* label, bool selected=false, ImGuiSelectableFlags_ flags=0, auto ref const(ImVec2) size=ImVec2(0, 0));
+	bool Selectable(const(char)* label, bool* p_selected, ImGuiSelectableFlags_ flags=0, auto ref const(ImVec2) size=ImVec2(0, 0));
 	bool BeginListBox(const(char)* label, auto ref const(ImVec2) size=ImVec2(0, 0));
 	void EndListBox();
 	bool ListBox(const(char)* label, int* current_item, const(char*)* items, int items_count, int height_in_items=-1);
@@ -353,26 +359,26 @@ extern(C++, "ImGui"){
 	void SetTooltip(const(char)* fmt, ...);
 	void SetTooltipV(const(char)* fmt, va_list args);
 	
-	bool BeginPopup(const(char)* str_id, ImGuiWindowFlags flags=ImGuiWindowFlags.None);
-	bool BeginPopupModal(const(char)* name, bool* p_open=null, ImGuiWindowFlags flags=ImGuiWindowFlags.None);
+	bool BeginPopup(const(char)* str_id, ImGuiWindowFlags_ flags=0);
+	bool BeginPopupModal(const(char)* name, bool* p_open=null, ImGuiWindowFlags_ flags=0);
 	void EndPopup();
 	
-	void OpenPopup(const(char)* str_id, ImGuiPopupFlags popup_flags=ImGuiPopupFlags.None);
-	void OpenPopup(ImGuiID id, ImGuiPopupFlags popup_flags=ImGuiPopupFlags.None);
+	void OpenPopup(const(char)* str_id, ImGuiPopupFlags_ popup_flags=0);
+	void OpenPopup(ImGuiID id, ImGuiPopupFlags_ popup_flags=0);
 	void OpenPopupOnItemClick(const(char)* str_id=null, ImGuiPopupFlags popup_flags=ImGuiPopupFlags.MouseButtonRight);
 	void CloseCurrentPopup();
 	
-	bool BeginPopupContextItem(const(char)* str_id=null, ImGuiPopupFlags popup_flags=ImGuiPopupFlags.MouseButtonRight);
-	bool BeginPopupContextWindow(const(char)* str_id=null, ImGuiPopupFlags popup_flags=ImGuiPopupFlags.MouseButtonRight);
-	bool BeginPopupContextVoid(const(char)* str_id=null, ImGuiPopupFlags popup_flags=ImGuiPopupFlags.MouseButtonRight);
-	bool IsPopupOpen(const(char)* str_id, ImGuiPopupFlags flags=ImGuiPopupFlags.None);
-	bool BeginTable(const(char)* str_id, int column, ImGuiTableFlags flags= ImGuiTableFlags.None, auto ref const(ImVec2) outer_size=ImVec2(0f, 0f), float inner_width=0f);
+	bool BeginPopupContextItem(const(char)* str_id=null, ImGuiPopupFlags_ popup_flags=1);
+	bool BeginPopupContextWindow(const(char)* str_id=null, ImGuiPopupFlags_ popup_flags=1);
+	bool BeginPopupContextVoid(const(char)* str_id=null, ImGuiPopupFlags_ popup_flags=1);
+	bool IsPopupOpen(const(char)* str_id, ImGuiPopupFlags_ flags=0);
+	bool BeginTable(const(char)* str_id, int column, ImGuiTableFlags_ flags=0, auto ref const(ImVec2) outer_size=ImVec2(0f, 0f), float inner_width=0f);
 	void EndTable();
-	void TableNextRow(ImGuiTableRowFlags row_flags=ImGuiTableRowFlags.None, float min_row_height=0f);
+	void TableNextRow(ImGuiTableRowFlags_ row_flags=0, float min_row_height=0f);
 	bool TableNextColumn();
 	bool TableSetColumnIndex(int column_n);
 	
-	void TableSetupColumn(const(char)* label, ImGuiTableColumnFlags flags=ImGuiTableColumnFlags.None, float init_width_or_weight=0f, ImGuiID user_id=0);
+	void TableSetupColumn(const(char)* label, ImGuiTableColumnFlags_ flags=0, float init_width_or_weight=0f, ImGuiID user_id=0);
 	void TableSetupScrollFreeze(int cols, int rows);
 	void TableHeadersRow();
 	void TableHeader(const(char)* label);
@@ -395,11 +401,11 @@ extern(C++, "ImGui"){
 	void SetColumnOffset(int column_index, float offset_x);
 	int GetColumnsCount();
 	
-	bool BeginTabBar(const(char)* str_id, ImGuiTabBarFlags flags=ImGuiTabBarFlags.None);
+	bool BeginTabBar(const(char)* str_id, ImGuiTabBarFlags_ flags=0);
 	void EndTabBar();
-	bool BeginTabItem(const(char)* label, bool* p_open=null, ImGuiTabItemFlags flags=ImGuiTabItemFlags.None);
+	bool BeginTabItem(const(char)* label, bool* p_open=null, ImGuiTabItemFlags_ flags=0);
 	void EndTabItem();
-	bool TabItemButton(const(char)* label, ImGuiTabItemFlags flags=ImGuiTabItemFlags.None);
+	bool TabItemButton(const(char)* label, ImGuiTabItemFlags_ flags=0);
 	void SetTabItemClosed(const(char)* tab_or_docked_window_label);
 	
 	void LogToTTY(int auto_open_depth=-1);
@@ -410,11 +416,11 @@ extern(C++, "ImGui"){
 	void LogText(const(char)* fmt, ...);
 	void LogTextV(const(char)* fmt, va_list args);
 	
-	bool BeginDragDropSource(ImGuiDragDropFlags flags=ImGuiDragDropFlags.None);
-	bool SetDragDropPayload(const(char)* type, const(void)* data, size_t sz, ImGuiCond cond=ImGuiCond.None);
+	bool BeginDragDropSource(ImGuiDragDropFlags_ flags=0);
+	bool SetDragDropPayload(const(char)* type, const(void)* data, size_t sz, ImGuiCond_ cond=0);
 	void EndDragDropSource();
 	bool BeginDragDropTarget();
-	const(ImGuiPayload)* AcceptDragDropPayload(const(char)* type, ImGuiDragDropFlags flags=ImGuiDragDropFlags.None);
+	const(ImGuiPayload)* AcceptDragDropPayload(const(char)* type, ImGuiDragDropFlags_ flags=0);
 	void EndDragDropTarget();
 	const(ImGuiPayload)* GetDragDropPayload();
 	
@@ -427,7 +433,7 @@ extern(C++, "ImGui"){
 	void SetItemDefaultFocus();
 	void SetKeyboardFocusHere(int offset=0);
 	
-	bool IsItemHovered(ImGuiHoveredFlags flags=ImGuiHoveredFlags.None);
+	bool IsItemHovered(ImGuiHoveredFlags_ flags=0);
 	bool IsItemActive();
 	bool IsItemFocused();
 	bool IsItemClicked(ImGuiMouseButton mouse_button=ImGuiMouseButton.Left);
@@ -460,7 +466,7 @@ extern(C++, "ImGui"){
 	alias GetStyleColourName = GetStyleColorName;
 	void SetStateStorage(ImGuiStorage* storage);
 	ImGuiStorage* GetStateStorage();
-	bool BeginChildFrame(ImGuiID id, ref const(ImVec2) size, ImGuiWindowFlags flags=ImGuiWindowFlags.None);
+	bool BeginChildFrame(ImGuiID id, ref const(ImVec2) size, ImGuiWindowFlags_ flags=0);
 	void EndChildFrame();
 	
 	ImVec2 CalcTextSize(const(char)* text, const(char)* text_end=null, bool hide_text_after_double_hash=false, float wrap_width=-1f);
@@ -514,7 +520,8 @@ extern(C++, "ImGui"){
 	void MemFree(void* ptr);
 }
 
-enum ImGuiWindowFlags: int{
+alias ImGuiWindowFlags_ = int;
+enum ImGuiWindowFlags: ImGuiWindowFlags_{
 	None                   = 0,
 	NoTitleBar             = 1 << 0,
 	NoResize               = 1 << 1,
@@ -547,7 +554,8 @@ enum ImGuiWindowFlags: int{
 	ChildMenu              = 1 << 28,
 }
 
-enum ImGuiInputTextFlags: int{
+alias ImGuiInputTextFlags_ = int;
+enum ImGuiInputTextFlags: ImGuiInputTextFlags_{
 	None                = 0,
 	CharsDecimal        = 1 << 0,
 	CharsHexadecimal    = 1 << 1,
@@ -572,7 +580,8 @@ enum ImGuiInputTextFlags: int{
 	EscapeClearsAll     = 1 << 20,
 }
 
-enum ImGuiTreeNodeFlags: int{
+alias ImGuiTreeNodeFlags_ = int;
+enum ImGuiTreeNodeFlags: ImGuiTreeNodeFlags_{
 	None                 = 0,
 	Selected             = 1 << 0,
 	Framed               = 1 << 1,
@@ -591,7 +600,8 @@ enum ImGuiTreeNodeFlags: int{
 	CollapsingHeader     = ImGuiTreeNodeFlags.Framed | ImGuiTreeNodeFlags.NoTreePushOnOpen | ImGuiTreeNodeFlags.NoAutoOpenOnLog,
 }
 
-enum ImGuiPopupFlags: int{
+alias ImGuiPopupFlags_ = int;
+enum ImGuiPopupFlags: ImGuiPopupFlags_{
 	None                    = 0,
 	MouseButtonLeft         = 0,
 	MouseButtonRight        = 1,
@@ -605,7 +615,8 @@ enum ImGuiPopupFlags: int{
 	AnyPopup                = ImGuiPopupFlags.AnyPopupId | ImGuiPopupFlags.AnyPopupLevel,
 }
 
-enum ImGuiSelectableFlags: int{
+alias ImGuiSelectableFlags_ = int;
+enum ImGuiSelectableFlags: ImGuiSelectableFlags_{
 	None               = 0,
 	DontClosePopups    = 1 << 0,
 	SpanAllColumns     = 1 << 1,
@@ -614,7 +625,8 @@ enum ImGuiSelectableFlags: int{
 	AllowItemOverlap   = 1 << 4,
 }
 
-enum ImGuiComboFlags: int{
+alias ImGuiComboFlags_ = int;
+enum ImGuiComboFlags: ImGuiComboFlags_{
 	None                    = 0,
 	PopupAlignLeft          = 1 << 0,
 	HeightSmall             = 1 << 1,
@@ -626,7 +638,8 @@ enum ImGuiComboFlags: int{
 	HeightMask_             = ImGuiComboFlags.HeightSmall | ImGuiComboFlags.HeightRegular | ImGuiComboFlags.HeightLarge | ImGuiComboFlags.HeightLargest,
 }
 
-enum ImGuiTabBarFlags: int{
+alias ImGuiTabBarFlags_ = int;
+enum ImGuiTabBarFlags: ImGuiTabBarFlags_{
 	None                           = 0,
 	Reorderable                    = 1 << 0,
 	AutoSelectNewTabs              = 1 << 1,
@@ -640,7 +653,8 @@ enum ImGuiTabBarFlags: int{
 	FittingPolicyDefault_          = ImGuiTabBarFlags.FittingPolicyResizeDown,
 }
 
-enum ImGuiTabItemFlags: int{
+alias ImGuiTabItemFlags_ = int;
+enum ImGuiTabItemFlags: ImGuiTabItemFlags_{
 	None                          = 0,
 	UnsavedDocument               = 1 << 0,
 	SetSelected                   = 1 << 1,
@@ -652,7 +666,8 @@ enum ImGuiTabItemFlags: int{
 	Trailing                      = 1 << 7,
 }
 
-enum ImGuiTableFlags: int{
+alias ImGuiTableFlags_ = int;
+enum ImGuiTableFlags: ImGuiTableFlags_{
 	None                       = 0,
 	Resizable                  = 1 << 0,
 	Reorderable                = 1 << 1,
@@ -699,7 +714,8 @@ enum ImGuiTableFlags: int{
 	SizingMask_                = ImGuiTableFlags.SizingFixedFit | ImGuiTableFlags.SizingFixedSame | ImGuiTableFlags.SizingStretchProp | ImGuiTableFlags.SizingStretchSame,
 }
 
-enum ImGuiTableColumnFlags: int{
+alias ImGuiTableColumnFlags_ = int;
+enum ImGuiTableColumnFlags: ImGuiTableColumnFlags_{
 	None                  = 0,
 	Disabled              = 1 << 0,
 	DefaultHide           = 1 << 1,
@@ -731,19 +747,22 @@ enum ImGuiTableColumnFlags: int{
 	NoDirectResize_       = 1 << 30,
 }
 
-enum ImGuiTableRowFlags: int{
+alias ImGuiTableRowFlags_ = int;
+enum ImGuiTableRowFlags: ImGuiTableRowFlags_{
 	None                     = 0,
 	Headers                  = 1 << 0,
 }
 
-enum ImGuiTableBgTarget: int{
+alias ImGuiTableBgTarget_ = int;
+enum ImGuiTableBgTarget: ImGuiTableBgTarget_{
 	None                     = 0,
 	RowBg0                   = 1,
 	RowBg1                   = 2,
 	CellBg                   = 3,
 }
 
-enum ImGuiFocusedFlags: int{
+alias ImGuiFocusedFlags_ = int;
+enum ImGuiFocusedFlags: ImGuiFocusedFlags_{
 	None                          = 0,
 	ChildWindows                  = 1 << 0,
 	RootWindow                    = 1 << 1,
@@ -753,7 +772,8 @@ enum ImGuiFocusedFlags: int{
 	RootAndChildWindows           = ImGuiFocusedFlags.RootWindow | ImGuiFocusedFlags.ChildWindows,
 }
 
-enum ImGuiHoveredFlags: int{
+alias ImGuiHoveredFlags_ = int;
+enum ImGuiHoveredFlags: ImGuiHoveredFlags_{
 	None                          = 0,
 	ChildWindows                  = 1 << 0,
 	RootWindow                    = 1 << 1,
@@ -774,7 +794,8 @@ enum ImGuiHoveredFlags: int{
 	NoSharedDelay                 = 1 << 13,
 }
 
-enum ImGuiDragDropFlags: int{
+alias ImGuiDragDropFlags_ = int;
+enum ImGuiDragDropFlags: ImGuiDragDropFlags_{
 	None                         = 0,
 	
 	SourceNoPreviewTooltip       = 1 << 0,
@@ -793,7 +814,8 @@ enum ImGuiDragDropFlags: int{
 enum IMGUI_PAYLOAD_TYPE_COLOR_3F = "_COL3F";
 enum IMGUI_PAYLOAD_TYPE_COLOR_4F = "_COL4F";
 
-enum ImGuiDataType: int{
+alias ImGuiDataType_ = int;
+enum ImGuiDataType: ImGuiDataType_{
 	S8,
 	U8,
 	S16,
@@ -807,7 +829,8 @@ enum ImGuiDataType: int{
 	COUNT
 }
 
-enum ImGuiDir: int{
+alias ImGuiDir_ = int;
+enum ImGuiDir: ImGuiDir_{
 	None    = -1,
 	Left    = 0,
 	Right   = 1,
@@ -816,13 +839,15 @@ enum ImGuiDir: int{
 	COUNT
 }
 
-enum ImGuiSortDirection: int{
+alias ImGuiSortDirection_ = int;
+enum ImGuiSortDirection: ImGuiSortDirection_{
 	None         = 0,
 	Ascending    = 1,
 	Descending   = 2
 }
 
-enum ImGuiKey: int{
+alias ImGuiKey_ = int;
+enum ImGuiKey: ImGuiKey_{
 	None = 0,
 	Tab = 512,
 	LeftArrow,
@@ -917,8 +942,7 @@ enum ImGuiKey: int{
 	ModCtrl = ImGuiMod.Ctrl, ModShift = ImGuiMod.Shift, ModAlt = ImGuiMod.Alt, ModSuper = ImGuiMod.Super,
 	KeyPadEnter = ImGuiKey.KeypadEnter,
 }
-
-enum ImGuiMod: int{
+enum ImGuiMod: ImGuiKey_{
 	None                   = 0,
 	Ctrl                   = 1 << 12,
 	Shift                  = 1 << 13,
@@ -931,13 +955,14 @@ enum ImGuiMod: int{
 version(ImGui_DisableObsoleteKeyIO){
 }else{
 	enum ImGuiNavInput{
-	    Activate, Cancel, Input, Menu, DpadLeft, DpadRight, DpadUp, DpadDown,
-	    LStickLeft, LStickRight, LStickUp, LStickDown, FocusPrev, FocusNext, TweakSlow, TweakFast,
-	    COUNT,
+		Activate, Cancel, Input, Menu, DpadLeft, DpadRight, DpadUp, DpadDown,
+		LStickLeft, LStickRight, LStickUp, LStickDown, FocusPrev, FocusNext, TweakSlow, TweakFast,
+		COUNT,
 	}
 }
 
-enum ImGuiConfigFlags: int{
+alias ImGuiConfigFlags_ = int;
+enum ImGuiConfigFlags: ImGuiConfigFlags_{
 	None                   = 0,
 	NavEnableKeyboard      = 1 << 0,
 	NavEnableGamepad       = 1 << 1,
@@ -950,7 +975,8 @@ enum ImGuiConfigFlags: int{
 	IsTouchScreen          = 1 << 21,
 }
 
-enum ImGuiBackendFlags: int{
+alias ImGuiBackendFlags_ = int;
+enum ImGuiBackendFlags: ImGuiBackendFlags_{
 	None                  = 0,
 	HasGamepad            = 1 << 0,
 	HasMouseCursors       = 1 << 1,
@@ -958,7 +984,8 @@ enum ImGuiBackendFlags: int{
 	RendererHasVtxOffset  = 1 << 3,
 }
 
-enum ImGuiCol: int{
+alias ImGuiCol_ = int;
+enum ImGuiCol: ImGuiCol_{
 	Text,
 	TextDisabled,
 	WindowBg,
@@ -1015,7 +1042,8 @@ enum ImGuiCol: int{
 	COUNT
 }
 
-enum ImGuiStyleVar: int{
+alias ImGuiStyleVar_ = int;
+enum ImGuiStyleVar: ImGuiStyleVar_{
 	Alpha,
 	DisabledAlpha,
 	WindowPadding,
@@ -1047,8 +1075,8 @@ enum ImGuiStyleVar: int{
 	COUNT
 }
 
-
-enum ImGuiButtonFlags: int{
+alias ImGuiButtonFlags_ = int;
+enum ImGuiButtonFlags: ImGuiButtonFlags_{
 	None                   = 0,
 	MouseButtonLeft        = 1 << 0,
 	MouseButtonRight       = 1 << 1,
@@ -1058,7 +1086,9 @@ enum ImGuiButtonFlags: int{
 	MouseButtonDefault_    = ImGuiButtonFlags.MouseButtonLeft,
 }
 
-enum ImGuiColorEditFlags: int{
+alias ImGuiColorEditFlags_ = int;
+alias ImGuiColourEditFlags_ = ImGuiColorEditFlags_;
+enum ImGuiColorEditFlags: ImGuiColorEditFlags_{
 	None            = 0,
 	NoAlpha         = 1 << 1,
 	NoPicker        = 1 << 2,
@@ -1094,7 +1124,8 @@ enum ImGuiColorEditFlags: int{
 }
 alias ImGuiColourEditFlags = ImGuiColorEditFlags;
 
-enum ImGuiSliderFlags: int{
+alias ImGuiSliderFlags_ = int;
+enum ImGuiSliderFlags: ImGuiSliderFlags_{
 	None                   = 0,
 	AlwaysClamp            = 1 << 4,
 	Logarithmic            = 1 << 5,
@@ -1103,14 +1134,16 @@ enum ImGuiSliderFlags: int{
 	InvalidMask_           = 0x7000000F,
 }
 
-enum ImGuiMouseButton: int{
+alias ImGuiMouseButton_ = int;
+enum ImGuiMouseButton: ImGuiMouseButton_{
 	Left = 0,
 	Right = 1,
 	Middle = 2,
 	COUNT = 5
 }
 
-enum ImGuiMouseCursor: int{
+alias ImGuiMouseCursor_ = int;
+enum ImGuiMouseCursor: ImGuiMouseCursor_{
 	None = -1,
 	Arrow = 0,
 	TextInput,
@@ -1124,7 +1157,8 @@ enum ImGuiMouseCursor: int{
 	COUNT
 }
 
-enum ImGuiCond: int{
+alias ImGuiCond_ = int;
+enum ImGuiCond: ImGuiCond_{
 	None          = 0,
 	Always        = 1 << 0,
 	Once          = 1 << 1,
@@ -1132,14 +1166,16 @@ enum ImGuiCond: int{
 	Appearing     = 1 << 3,
 }
 
-//struct ImNewWrapper {};
-//void* operator new(size_t, ImNewWrapper, void* ptr) { return ptr; }
-//void  operator delete(void*, ImNewWrapper, void*)   {}
-pragma(inline,true) auto IM_ALLOC(size_t _SIZE){ return MemAlloc(_SIZE); }
-pragma(inline,true) auto IM_FREE(void* _PTR){ MemFree(_PTR); }
+//struct ImNewWrapper{}
+//void* operator new(size_t _1, ImNewWrapper _2, void* ptr){ return ptr; }
+//void operator delete(void* _1, ImNewWrapper _2, void* _3){}
+pragma(inline,true){
+	auto IM_ALLOC(size_t _SIZE){ return MemAlloc(_SIZE); }
+	auto IM_FREE(void* _PTR){ MemFree(_PTR); }
 //#define IM_PLACEMENT_NEW(_PTR)              new(ImNewWrapper(), _PTR)
 //#define IM_NEW(_TYPE)                       new(ImNewWrapper(), ImGui::MemAlloc(sizeof(_TYPE))) _TYPE
-pragma(inline,true) void IM_DELETE(T)(T* p){ p.__dtor__(); MemFree(p); }
+	void IM_DELETE(T)(T* p){ static if(__traits(hasMember, T, "__dtor__")) p.__dtor__(); MemFree(cast(void*)p); }
+}
 
 extern(C++) struct ImVector(T){
 	int Size = 0;
@@ -1151,79 +1187,898 @@ extern(C++) struct ImVector(T){
 	alias iterator = value_type*;
 	alias const_iterator = const(value_type)*;
 	
-	pragma(inline,true):
-	this(T: ImVector!V, V)(ref const(T) src){ this = src; }
-	void opAssign(T: ImVector!V, V)(ref const(T) src){ clear(); resize(src.Size); if(src.Data) (cast(void*)Data)[0..Size*Data[0].sizeof] = (cast(void*)src.Data)[0..Size*src.Data[0].sizeof]; }
+	pragma(inline,true){
+	this(ref const ImVector!T src){ this = src; }
+	ImVector!T opAssign(ref const ImVector!T src){ clear(); resize(src.Size); if(src.Data) memcpy(Data, src.Data, cast(size_t)Size * T.sizeof); return this; }
 	~this(){ if(Data) IM_FREE(Data); }
 	
-	void clear();
-	void clear_delete();
-	void clear_destruct();
-	
-	bool empty() const;
-	int size() const;
-	int size_in_bytes() const;
-	int max_size() const;
-	int capacity() const;
-	ref T opIndex(int i);
-	ref const(T) opIndex(int i);
-	
-	T* begin();
-	const T* begin();
-	T* end();
-	const T* end();
-	ref T front();
-	ref const(T) front();
-	ref T back();
-	ref const(T) back();
-	void swap(T: ImVector!V, V)(ref T rhs){ int rhs_size = rhs.Size; rhs.Size = Size; Size = rhs_size; int rhs_cap = rhs.Capacity; rhs.Capacity = Capacity; Capacity = rhs_cap; T* rhs_data = rhs.Data; rhs.Data = Data; Data = rhs_data; }
-	
-	int          _grow_capacity(int sz) const;
-	void         resize(int new_size);
-	void         resize(int new_size, ref const(T) v);
-	void         shrink(int new_size);
-	void         reserve(int new_capacity);
-	void         reserve_discard(int new_capacity);
-	
-	// void         push_back(const T& v)               { if (Size == Capacity) reserve(_grow_capacity(Size + 1)); memcpy(&Data[Size], &v, sizeof(v)); Size++; }
-	// void         pop_back()                          { IM_ASSERT(Size > 0); Size--; }
-	// void         push_front(const T& v)              { if (Size == 0) push_back(v); else insert(Data, v); }
-	// T*           erase(const T* it)                  { IM_ASSERT(it >= Data && it < Data + Size); const ptrdiff_t off = it - Data; memmove(Data + off, Data + off + 1, ((size_t)Size - (size_t)off - 1) * sizeof(T)); Size--; return Data + off; }
-	// T*           erase(const T* it, const T* it_last){ IM_ASSERT(it >= Data && it < Data + Size && it_last >= it && it_last <= Data + Size); const ptrdiff_t count = it_last - it; const ptrdiff_t off = it - Data; memmove(Data + off, Data + off + count, ((size_t)Size - (size_t)off - (size_t)count) * sizeof(T)); Size -= (int)count; return Data + off; }
-	// T*           erase_unsorted(const T* it)         { IM_ASSERT(it >= Data && it < Data + Size);  const ptrdiff_t off = it - Data; if (it < Data + Size - 1) memcpy(Data + off, Data + Size - 1, sizeof(T)); Size--; return Data + off; }
-	// T*           insert(const T* it, const T& v)     { IM_ASSERT(it >= Data && it <= Data + Size); const ptrdiff_t off = it - Data; if (Size == Capacity) reserve(_grow_capacity(Size + 1)); if (off < (int)Size) memmove(Data + off + 1, Data + off, ((size_t)Size - (size_t)off) * sizeof(T)); memcpy(&Data[off], &v, sizeof(v)); Size++; return Data + off; }
-	// bool         contains(const T& v) const          { const T* data = Data;  const T* data_end = Data + Size; while (data < data_end) if (*data++ == v) return true; return false; }
-	// T*           find(const T& v)                    { T* data = Data;  const T* data_end = Data + Size; while (data < data_end) if (*data == v) break; else ++data; return data; }
-	// const T*     find(const T& v) const              { const T* data = Data;  const T* data_end = Data + Size; while (data < data_end) if (*data == v) break; else ++data; return data; }
-	// bool         find_erase(const T& v)              { const T* it = find(v); if (it < Data + Size) { erase(it); return true; } return false; }
-	// bool         find_erase_unsorted(const T& v)     { const T* it = find(v); if (it < Data + Size) { erase_unsorted(it); return true; } return false; }
-	// int          index_from_ptr(const T* it) const   { IM_ASSERT(it >= Data && it < Data + Size); const ptrdiff_t off = it - Data; return (int)off; }
+		void clear(){ if (Data){ Size = Capacity = 0; IM_FREE(Data); Data=null; } }
+		static if(__traits(hasMember, T, "__dtor__")){
+			void clear_delete(){ for(int n = 0; n < Size; n++) IM_DELETE(Data[n]); clear(); }
+			void clear_destruct(){ for(int n = 0; n < Size; n++) Data[n].__dtor__(); clear(); }
+		}
+		
+		bool empty() const{ return Size == 0; }
+		int size() const{ return Size; }
+		int size_in_bytes() const{ return Size * cast(int)T.sizeof; }
+		int max_size() const{ return 0x7FFFFFFF / cast(int)T.sizeof; }
+		int capacity() const{ return Capacity; }
+		ref T opIndex(int i) { assert(i >= 0 && i < Size); return Data[i]; }
+		ref const(T) opIndex(int i) const{ assert(i >= 0 && i < Size); return Data[i]; }
+		
+		inout(T)* begin() inout{ return Data; }
+		inout(T)* end() inout{ return Data + Size; }
+		ref inout(T) front() inout{ assert(Size > 0); return Data[0]; }
+		ref inout(T) back() inout{ assert(Size > 0); return Data[Size - 1]; }
+		void swap(ref ImVector!T rhs){ int rhs_size = rhs.Size; rhs.Size = Size; Size = rhs_size; int rhs_cap = rhs.Capacity; rhs.Capacity = Capacity; Capacity = rhs_cap; T* rhs_data = rhs.Data; rhs.Data = Data; Data = rhs_data; }
+		
+		int _grow_capacity(int sz) const{ int new_capacity = Capacity ? (Capacity + Capacity / 2) : 8; return new_capacity > sz ? new_capacity : sz; }
+		void resize(int new_size){ if(new_size > Capacity) reserve(_grow_capacity(new_size)); Size = new_size; }
+		void resize(int new_size, ref const T v){ if(new_size > Capacity) reserve(_grow_capacity(new_size)); if(new_size > Size) for(int n = Size; n < new_size; n++) memcpy(&Data[n], &v, v.sizeof); Size = new_size; }
+		void shrink(int new_size){ assert(new_size <= Size); Size = new_size; }
+		void reserve(int new_capacity){ if(new_capacity <= Capacity) return; T* new_data = cast(T*)IM_ALLOC(cast(size_t)new_capacity * T.sizeof); if(Data){ memcpy(new_data, Data, cast(size_t)Size * T.sizeof); IM_FREE(Data); } Data = new_data; Capacity = new_capacity; }
+		void reserve_discard(int new_capacity){ if(new_capacity <= Capacity) return; if(Data) IM_FREE(Data); Data = cast(T*)IM_ALLOC(cast(size_t)new_capacity * T.sizeof); Capacity = new_capacity; }
+		
+		void push_back(ref const T v){ if(Size == Capacity) reserve(_grow_capacity(Size + 1)); memcpy(&Data[Size], &v, v.sizeof); Size++; }
+		void pop_back(){ assert(Size > 0); Size--; }
+		void push_front(ref const T v){ if(Size == 0) push_back(v); else insert(Data, v); }
+		T* erase(const(T)* it){ assert(it >= Data && it < Data + Size); const ptrdiff_t off = it - Data; memmove(Data + off, Data + off + 1, (cast(size_t)Size - cast(size_t)off - 1) * T.sizeof); Size--; return Data + off; }
+		T* erase(const(T)* it, const(T)* it_last){ assert(it >= Data && it < Data + Size && it_last >= it && it_last <= Data + Size); const ptrdiff_t count = it_last - it; const ptrdiff_t off = it - Data; memmove(Data + off, Data + off + count, (cast(size_t)Size - cast(size_t)off - cast(size_t)count) * T.sizeof); Size -= cast(int)count; return Data + off; }
+		T* erase_unsorted(const(T)* it){ assert(it >= Data && it < Data + Size); const ptrdiff_t off = it - Data; if(it < Data + Size - 1) memcpy(Data + off, Data + Size - 1, T.sizeof); Size--; return Data + off; }
+		T* insert(const(T)* it, ref const T v){ assert(it >= Data && it <= Data + Size); const ptrdiff_t off = it - Data; if(Size == Capacity) reserve(_grow_capacity(Size + 1)); if(off < cast(int)Size) memmove(Data + off + 1, Data + off, (cast(size_t)Size - cast(size_t)off) * T.sizeof); memcpy(&Data[off], &v, v.sizeof); Size++; return Data + off; }
+		bool contains(ref const T v) const{ const(T)* data = Data; const(T)* data_end = Data + Size; while(data < data_end) if(*data++ == v) return true; return false; }
+		inout(T)* find(ref const T v) inout{ inout(T)* data = Data;  const(T)* data_end = Data + Size; while(data < data_end) if(*data == v) break; else ++data; return data; }
+		bool find_erase(ref const T v){ const(T)* it = find(v); if(it < Data + Size){ erase(it); return true; } return false; }
+		bool find_erase_unsorted(ref const T v){ const(T)* it = find(v); if(it < Data + Size){ erase_unsorted(it); return true; } return false; }
+		int index_from_ptr(const(T)* it) const{ assert(it >= Data && it < Data + Size); const ptrdiff_t off = it - Data; return cast(int)off; }
+	}
 }
 
-// static if(!staticBinding):
-// import bindbc.loader;
-//
-// mixin(makeDynloadFns("ImGui",
-// 	(){
-// 		version(Windows){
-// 			return q{[
-// 				`___.dll`,
-// 			]};
-// 		}else version(OSX){
-// 			return q{[
-// 				`lib___.dylib`,
-// 				`___`,
-// 				`/Library/Frameworks/___.framework/___`,
-// 				`/System/Library/Frameworks/___.framework/___`,
-// 			]};
-// 		}else version(Posix){
-// 			return q{[
-// 				`lib___.so`,
-// 				`lib___.so.0`,
-// 				`lib___.so.0.8.0`,
-// 			]};
-// 		}else static assert(0, "BindBC-ImGui does not have library search paths set up for this platform.");
-// 	}(), [
-// 	"imgui.imgui",
-// ]));
+extern(C++) struct ImGuiStyle{
+	float Alpha;
+	float DisabledAlpha;
+	ImVec2 WindowPadding;
+	float WindowRounding;
+	float WindowBorderSize;
+	ImVec2 WindowMinSize;
+	ImVec2 WindowTitleAlign;
+	ImGuiDir_ WindowMenuButtonPosition;
+	float ChildRounding;
+	float ChildBorderSize;
+	float PopupRounding;
+	float PopupBorderSize;
+	ImVec2 FramePadding;
+	float FrameRounding;
+	float FrameBorderSize;
+	ImVec2 ItemSpacing;
+	ImVec2 ItemInnerSpacing;
+	ImVec2 CellPadding;
+	ImVec2 TouchExtraPadding;
+	float IndentSpacing;
+	float ColumnsMinSpacing;
+	float ScrollbarSize;
+	float ScrollbarRounding;
+	float GrabMinSize;
+	float GrabRounding;
+	float LogSliderDeadzone;
+	float TabRounding;
+	float TabBorderSize;
+	float TabMinWidthForCloseButton;
+	ImGuiDir_ ColorButtonPosition;
+	ImVec2 ButtonTextAlign;
+	ImVec2 SelectableTextAlign;
+	float SeparatorTextBorderSize;
+	ImVec2 SeparatorTextAlign;
+	ImVec2 SeparatorTextPadding;
+	ImVec2 DisplayWindowPadding;
+	ImVec2 DisplaySafeAreaPadding;
+	float MouseCursorScale;
+	bool AntiAliasedLines;
+	bool AntiAliasedLinesUseTex;
+	bool AntiAliasedFill;
+	float CurveTessellationTol;
+	float CircleTessellationMaxError;
+	ImVec4[ImGuiCol.COUNT] Colors;
+	
+	//this();
+	void ScaleAllSizes(float scale_factor);
+}
 
+extern(C++) struct ImGuiKeyData{
+	bool Down;
+	float DownDuration;
+	float DownDurationPrev;
+	float AnalogValue;
+}
+
+extern(C++) struct ImGuiIO{
+	ImGuiConfigFlags_ ConfigFlags;
+	ImGuiBackendFlags_ BackendFlags;
+	ImVec2 DisplaySize;
+	float DeltaTime;
+	float IniSavingRate;
+	const(char)* IniFilename;
+	const(char)* LogFilename;
+	float MouseDoubleClickTime;
+	float MouseDoubleClickMaxDist;
+	float MouseDragThreshold;
+	float KeyRepeatDelay;
+	float KeyRepeatRate;
+	float HoverDelayNormal;
+	float HoverDelayShort;
+	void* UserData;
+	
+	ImFontAtlas* Fonts;
+	float FontGlobalScale;
+	bool FontAllowUserScaling;
+	ImFont* FontDefault;
+	ImVec2 DisplayFramebufferScale;
+	
+	bool MouseDrawCursor;
+	bool ConfigMacOSXBehaviors;
+	bool ConfigInputTrickleEventQueue;
+	bool ConfigInputTextCursorBlink;
+	bool ConfigInputTextEnterKeepActive;
+	bool ConfigDragClickToInputText;
+	bool ConfigWindowsResizeFromEdges;
+	bool ConfigWindowsMoveFromTitleBarOnly;
+	float ConfigMemoryCompactTimer;
+	
+	bool ConfigDebugBeginReturnValueOnce;
+	bool ConfigDebugBeginReturnValueLoop;
+	
+	const(char)* BackendPlatformName;
+	const(char)* BackendRendererName;
+	void* BackendPlatformUserData;
+	void* BackendRendererUserData;
+	void* BackendLanguageUserData;
+	
+	extern(C++) const(char)* function(void* user_data) GetClipboardTextFn;
+	extern(C++) void function(void* user_data, const(char)* text) SetClipboardTextFn;
+	void* ClipboardUserData;
+	
+	void function(ImGuiViewport* viewport, ImGuiPlatformImeData* data) SetPlatformImeDataFn;
+version(ImGui_DisableObsoleteFunctions){
+	void* ImeWindowHandle;
+}else{
+	void* _UnusedPadding;
+}
+	
+	void AddKeyEvent(ImGuiKey key, bool down);
+	void AddKeyAnalogEvent(ImGuiKey key, bool down, float v);
+	void AddMousePosEvent(float x, float y);
+	void AddMouseButtonEvent(int button, bool down);
+	void AddMouseWheelEvent(float wheel_x, float wheel_y);
+	void AddFocusEvent(bool focused);
+	void AddInputCharacter(uint c);
+	void AddInputCharacterUTF16(wchar c);
+	void AddInputCharactersUTF8(const(char)* str);
+	
+	void SetKeyEventNativeData(ImGuiKey key, int native_keycode, int native_scancode, int native_legacy_index=-1);
+	void SetAppAcceptingEvents(bool accepting_events);
+	void ClearInputCharacters();
+	void ClearInputKeys();
+	
+	bool WantCaptureMouse;
+	bool WantCaptureKeyboard;
+	bool WantTextInput;
+	bool WantSetMousePos;
+	bool WantSaveIniSettings;
+	bool NavActive;
+	bool NavVisible;
+	float Framerate;
+	int MetricsRenderVertices;
+	int MetricsRenderIndices;
+	int MetricsRenderWindows;
+	int MetricsActiveWindows;
+	int MetricsActiveAllocations;
+	ImVec2 MouseDelta;
+	
+version(ImGui_DisableObsoleteKeyIO){
+}else{
+	int[ImGuiKey.COUNT] KeyMap;
+	bool[ImGuiKey.COUNT] KeysDown;
+	float[ImGuiNavInput.COUNT] NavInputs;
+}
+	
+	ImGuiContext* Ctx;
+	
+	ImVec2 MousePos;
+	bool[5] MouseDown;
+	float MouseWheel;
+	float MouseWheelH;
+	bool KeyCtrl;
+	bool KeyShift;
+	bool KeyAlt;
+	bool KeySuper;
+	
+	ImGuiKeyChord KeyMods;
+	ImGuiKeyData[ImGuiKey.KeysData_SIZE] KeysData;
+	bool WantCaptureMouseUnlessPopupClose;
+	ImVec2 MousePosPrev;
+	ImVec2[5] MouseClickedPos;
+	double[5] MouseClickedTime;
+	bool[5] MouseClicked;
+	bool[5] MouseDoubleClicked;
+	ushort[5] MouseClickedCount;
+	ushort[5] MouseClickedLastCount;
+	bool[5] MouseReleased;
+	bool[5] MouseDownOwned;
+	bool[5] MouseDownOwnedUnlessPopupClose;
+	float[5] MouseDownDuration;
+	float[5] MouseDownDurationPrev;
+	float[5] MouseDragMaxDistanceSqr;
+	float PenPressure;
+	bool AppFocusLost;
+	bool AppAcceptingEvents;
+	byte BackendUsingLegacyKeyArrays;
+	bool BackendUsingLegacyNavInputArray;
+	wchar InputQueueSurrogate;
+	ImVector!ImWchar InputQueueCharacters;
+	
+	//this();
+}
+
+extern(C++) struct ImGuiInputTextCallbackData{
+	ImGuiContext* Ctx;
+	ImGuiInputTextFlags_ EventFlag;
+	ImGuiInputTextFlags_ Flags;
+	void* UserData;
+	
+	ImWchar EventChar;
+	ImGuiKey_ EventKey;
+	char* Buf;
+	int BufTextLen;
+	int BufSize;
+	bool BufDirty;
+	int CursorPos;
+	int SelectionStart;
+	int SelectionEnd;
+	
+	//this();
+	void DeleteChars(int pos, int bytes_count);
+	void InsertChars(int pos, const(char)* text, const(char)* text_end=null);
+	void SelectAll(){ SelectionStart = 0; SelectionEnd = BufTextLen; }
+	void ClearSelection(){ SelectionStart = SelectionEnd = BufTextLen; }
+	bool HasSelection() const{ return SelectionStart != SelectionEnd; }
+}
+
+extern(C++) struct ImGuiSizeCallbackData{
+	void* UserData;
+	ImVec2 Pos;
+	ImVec2 CurrentSize;
+	ImVec2 DesiredSize;
+}
+
+extern(C++) struct ImGuiPayload{
+	void* Data = null;
+	int DataSize = 0;
+	
+	ImGuiID SourceId = 0;
+	ImGuiID SourceParentId = 0;
+	int DataFrameCount = 1;
+	char[32 + 1] DataType;
+	bool Preview = false;
+	bool Delivery = false;
+	
+	void Clear(){ SourceId = SourceParentId = 0; Data = null; DataSize = 0; memset(cast(void*)DataType.ptr, 0, DataType.sizeof); DataFrameCount = -1; Preview = Delivery = false; }
+	bool IsDataType(const(char)* type) const{ return DataFrameCount != -1 && strcmp(type, DataType.ptr) == 0; }
+	bool IsPreview() const{ return Preview; }
+	bool IsDelivery() const{ return Delivery; }
+}
+
+extern(C++) struct ImGuiTableColumnSortSpecs{
+	ImGuiID ColumnUserID = 0;
+	short ColumnIndex = 0;
+	short SortOrder = 0;
+	ImGuiSortDirection_ SortDirection = 0; //NOTE: 8 bit-field
+}
+static assert(ImGuiTableColumnSortSpecs.sizeof == 12);
+
+extern(C++) struct ImGuiTableSortSpecs{
+	const(ImGuiTableColumnSortSpecs)* Specs = null;
+	int SpecsCount = 0;
+	bool SpecsDirty = 0;
+}
+
+enum IM_UNICODE_CODEPOINT_INVALID = 0xFFFD;
+version(ImGui_WChar32){
+	enum IM_UNICODE_CODEPOINT_MAX = 0x10FFFF;
+}else{
+	enum IM_UNICODE_CODEPOINT_MAX = 0xFFFF;
+}
+
+extern(C++) struct ImGuiOnceUponAFrame{
+	int RefFrame = -1; //NOTE: originally delcared as `mutable`
+	T opCast(T: bool)() const{ int current_frame = GetFrameCount(); if(RefFrame == current_frame) return false; RefFrame = current_frame; return true; }
+}
+
+extern(C++) struct ImGuiTextFilter{
+	this(const(char)* default_filter);
+	bool Draw(const(char)* label="Filter (inc,-exc)", float width=0f);
+	bool PassFilter(const(char)* text, const(char)* text_end=null) const;
+	void Build();
+	void Clear(){ InputBuf[0] = 0; Build(); }
+	bool IsActive() const{ return !Filters.empty(); }
+	
+	
+	extern(C++) struct ImGuiTextRange{
+		const(char)* b = null;
+		const(char)* e = null;
+		
+		bool empty() const{ return b == e; }
+		void split(char separator, ImVector!(ImGuiTextRange)* out_) const;
+	}
+	ImGuiTextRange range;
+	char[256] InputBuf;
+	ImVector!ImGuiTextRange Filters;
+	int CountGrep;
+}
+
+extern(C++) struct ImGuiTextBuffer{
+	ImVector!char Buf;
+	__gshared static char[1] EmptyString;
+	
+	pragma(inline,true) char opIndex(int i) const{ assert(Buf.Data != null); return Buf.Data[i]; }
+	const(char)* begin() const{ return Buf.Data ? &Buf.front() : EmptyString.ptr; }
+	const(char)* end() const{ return Buf.Data ? &Buf.back() : EmptyString.ptr; }
+	int size() const{ return Buf.Size ? Buf.Size - 1 : 0; }
+	bool empty() const{ return Buf.Size <= 1; }
+	void clear(){ Buf.clear(); }
+	void reserve(int capacity){ Buf.reserve(capacity); }
+	const(char)* c_str() const{ return Buf.Data ? Buf.Data : EmptyString.ptr; }
+	void append(const(char)* str, const(char)* str_end=null);
+	void appendf(const(char)* fmt, ...);
+	void appendfv(const(char)* fmt, va_list args);
+}
+
+extern(C++) struct ImGuiStorage{
+	extern(C++) struct ImGuiStoragePair{
+		ImGuiID key;
+		private union _Val{ int i; float f; void* p; }
+		_Val val;
+		this(ImGuiID _key, int _val_i){ key = _key; val.i = _val_i; }
+		this(ImGuiID _key, float _val_f){ key = _key; val.f = _val_f; }
+		this(ImGuiID _key, void* _val_p){ key = _key; val.p = _val_p; }
+	}
+	ImVector!ImGuiStoragePair Data;
+	
+	void Clear(){ Data.clear(); }
+	int GetInt(ImGuiID key, int default_val=0) const;
+	void SetInt(ImGuiID key, int val);
+	bool GetBool(ImGuiID key, bool default_val=false) const;
+	void SetBool(ImGuiID key, bool val);
+	float GetFloat(ImGuiID key, float default_val=0f) const;
+	void SetFloat(ImGuiID key, float val);
+	void* GetVoidPtr(ImGuiID key) const;
+	void SetVoidPtr(ImGuiID key, void* val);
+	
+	int* GetIntRef(ImGuiID key, int default_val=0);
+	bool* GetBoolRef(ImGuiID key, bool default_val=false);
+	float* GetFloatRef(ImGuiID key, float default_val=0f);
+	void** GetVoidPtrRef(ImGuiID key, void* default_val=null);
+	
+	void SetAllInt(int val);
+	
+	void BuildSortByKey();
+}
+
+extern(C++) struct ImGuiListClipper{
+	ImGuiContext* Ctx;
+	int DisplayStart;
+	int DisplayEnd;
+	int ItemsCount;
+	float ItemsHeight;
+	float StartPosY;
+	void* TempData;
+	
+	//this();
+	//~this();
+	void Begin(int items_count, float items_height=-1f);
+	void End();
+	bool Step();
+	
+	void ForceDisplayRangeByIndices(int item_min, int item_max);
+	
+version(ImGui_DisableObsoleteFunctions){
+}else{
+	pragma(inline,true) this(int items_count, float items_height=-1f){ memset(cast(void*)&this, 0, typeof(this).sizeof); ItemsCount = -1; Begin(items_count, items_height); }
+}
+}
+
+version(ImGui_BGRAPackedCol){
+	enum IM_COL32_A_SHIFT = 24;
+	enum IM_COL32_G_SHIFT = 8;
+	enum IM_COL32_B_SHIFT = 0;
+}else{
+	enum IM_COL32_R_SHIFT = 0;
+	enum IM_COL32_G_SHIFT = 8;
+	enum IM_COL32_B_SHIFT = 16;
+}
+enum IM_COL32_A_SHIFT = 24;
+enum IM_COL32_A_MASK = 0xFF000000;
+uint IM_COL32(uint R, uint G, uint B, uint A){
+	return (cast(uint)(A)<<IM_COL32_A_SHIFT) | (cast(uint)(B)<<IM_COL32_B_SHIFT) | (cast(uint)(G)<<IM_COL32_G_SHIFT) | (cast(uint)(R)<<IM_COL32_R_SHIFT);
+}
+enum IM_COL32_WHITE = IM_COL32(255,255,255,255);
+enum IM_COL32_BLACK = IM_COL32(0,0,0,255);
+enum IM_COL32_BLACK_TRANS = IM_COL32(0,0,0,0);
+
+extern(C++) struct ImColor{
+	ImVec4 Value;
+	
+	this(float r, float g, float b, float a=1f){ Value = ImVec4(r, g, b, a); }
+	this(ref const ImVec4 col){ Value = col; }
+	this(int r, int g, int b, int a=255){
+		float sc = 1f / 255f;
+		Value.x = cast(float)r * sc;
+		Value.y = cast(float)g * sc;
+		Value.z = cast(float)b * sc;
+		Value.w = cast(float)a * sc;
+	}
+	this(uint rgba){
+		float sc = 1f / 255f;
+		Value.x = cast(float)((rgba >> IM_COL32_R_SHIFT) & 0xFF) * sc;
+		Value.y = cast(float)((rgba >> IM_COL32_G_SHIFT) & 0xFF) * sc;
+		Value.z = cast(float)((rgba >> IM_COL32_B_SHIFT) & 0xFF) * sc;
+		Value.w = cast(float)((rgba >> IM_COL32_A_SHIFT) & 0xFF) * sc;
+	}
+	pragma(inline,true){
+		uint opCast(T: uint)() const{ return ColorConvertFloat4ToU32(Value); }
+		ImVec4 opCast(T: ImVec4)() const{ return Value; }
+		
+		void SetHSV(float h, float s, float v, float a=1f){ ColorConvertHSVtoRGB(h, s, v, Value.x, Value.y, Value.z); Value.w = a; }
+	}
+	static ImColor HSV(float h, float s, float v, float a=1f){ float r, g, b; ColorConvertHSVtoRGB(h, s, v, r, g, b); return ImColor(r, g, b, a); }
+}
+alias ImColour = ImColor;
+
+enum IM_DRAWLIST_TEX_LINES_WIDTH_MAX = 63;
+
+alias ImDrawCallback = extern(C++) void function(const(ImDrawList)* parent_list, const(ImDrawCmd)* cmd);
+
+enum ImDrawCallback ImDrawCallback_ResetRenderState = cast(ImDrawCallback)-1;
+
+extern(C++) struct ImDrawCmd{
+	ImVec4 ClipRect = ImVec4(0, 0, 0, 0);
+	ImTextureID TextureId = null;
+	uint VtxOffset = 0;
+	uint IdxOffset = 0;
+	uint ElemCount = 0;
+	ImDrawCallback UserCallback = null;
+	void* UserCallbackData = null;
+	
+	pragma(inline,true) ImTextureID GetTexID() const{ return cast(ImTextureID)TextureId; }
+}
+
+extern(C++) struct ImDrawVert{
+	ImVec2 pos;
+	ImVec2 uv;
+	uint col;
+}
+
+extern(C++) struct ImDrawCmdHeader{
+	ImVec4 ClipRect;
+	ImTextureID TextureId;
+	uint VtxOffset;
+}
+
+extern(C++) struct ImDrawChannel{
+	ImVector!ImDrawCmd _CmdBuffer;
+	ImVector!ImDrawIdx _IdxBuffer;
+}
+
+extern(C++) struct ImDrawListSplitter{
+	int _Current = 0;
+	int _Count = 0;
+	ImVector!ImDrawChannel _Channels;
+	
+	pragma(inline,true){
+		~this(){ ClearFreeMemory(); }
+		void Clear(){ _Current = 0; _Count = 1; }
+	}
+	void ClearFreeMemory();
+	void Split(ImDrawList* draw_list, int count);
+	void Merge(ImDrawList* draw_list);
+	void SetCurrentChannel(ImDrawList* draw_list, int channel_idx);
+}
+
+alias ImDrawFlags_ = int;
+enum ImDrawFlags: ImDrawFlags_{
+	None                        = 0,
+	Closed                      = 1 << 0,
+	RoundCornersTopLeft         = 1 << 4,
+	RoundCornersTopRight        = 1 << 5,
+	RoundCornersBottomLeft      = 1 << 6,
+	RoundCornersBottomRight     = 1 << 7,
+	RoundCornersNone            = 1 << 8,
+	RoundCornersTop             = ImDrawFlags.RoundCornersTopLeft | ImDrawFlags.RoundCornersTopRight,
+	RoundCornersBottom          = ImDrawFlags.RoundCornersBottomLeft | ImDrawFlags.RoundCornersBottomRight,
+	RoundCornersLeft            = ImDrawFlags.RoundCornersBottomLeft | ImDrawFlags.RoundCornersTopLeft,
+	RoundCornersRight           = ImDrawFlags.RoundCornersBottomRight | ImDrawFlags.RoundCornersTopRight,
+	RoundCornersAll             = ImDrawFlags.RoundCornersTopLeft | ImDrawFlags.RoundCornersTopRight | ImDrawFlags.RoundCornersBottomLeft | ImDrawFlags.RoundCornersBottomRight,
+	RoundCornersDefault_        = ImDrawFlags.RoundCornersAll,
+	RoundCornersMask_           = ImDrawFlags.RoundCornersAll | ImDrawFlags.RoundCornersNone,
+}
+
+alias ImDrawListFlags_ = int;
+enum ImDrawListFlags: ImDrawListFlags_{
+	None                    = 0,
+	AntiAliasedLines        = 1 << 0,
+	AntiAliasedLinesUseTex  = 1 << 1,
+	AntiAliasedFill         = 1 << 2,
+	AllowVtxOffset          = 1 << 3,
+}
+
+extern(C++) struct ImDrawList{
+	ImVector!ImDrawCmd CmdBuffer;
+	ImVector!ImDrawIdx IdxBuffer;
+	ImVector!ImDrawVert VtxBuffer;
+	ImDrawListFlags_ Flags = 0;
+	
+	uint _VtxCurrentIdx = 0;
+	ImDrawListSharedData* _Data;
+	const(char)* _OwnerName = null;
+	ImDrawVert* _VtxWritePtr = null;
+	ImDrawIdx* _IdxWritePtr = null;
+	ImVector!ImVec4 _ClipRectStack;
+	ImVector!ImTextureID _TextureIdStack;
+	ImVector!ImVec2 _Path;
+	ImDrawCmdHeader _CmdHeader = { ClipRect: ImVec4(0,0,0,0), TextureId: null, VtxOffset: 0};
+	ImDrawListSplitter _Splitter;
+	float _FringeScale = 0;
+	
+	this(ImDrawListSharedData* shared_data){ _Data = shared_data; }
+	
+	~this(){ _ClearFreeMemory(); }
+	void PushClipRect(ref const ImVec2 clip_rect_min, ref const ImVec2 clip_rect_max, bool intersect_with_current_clip_rect=false);
+	void PushClipRectFullScreen();
+	void PopClipRect();
+	void PushTextureID(ImTextureID texture_id);
+	void PopTextureID();
+	pragma(inline,true){
+		ImVec2 GetClipRectMin() const{ const(ImVec4)* cr = &_ClipRectStack.back(); return ImVec2(cr.x, cr.y); }
+		ImVec2 GetClipRectMax() const{ const(ImVec4)* cr = &_ClipRectStack.back(); return ImVec2(cr.z, cr.w); }
+	}
+	
+	void AddLine(ref const ImVec2 p1, ref const ImVec2 p2, uint col, float thickness=1f);
+	void AddRect(ref const ImVec2 p_min, ref const ImVec2 p_max, uint col, float rounding=0f, ImDrawFlags_ flags=0, float thickness=1f);
+	void AddRectFilled(ref const ImVec2 p_min, ref const ImVec2 p_max, uint col, float rounding=0f, ImDrawFlags_ flags=0);
+	void AddRectFilledMultiColor(ref const ImVec2 p_min, ref const ImVec2 p_max, uint col_upr_left, uint col_upr_right, uint col_bot_right, uint col_bot_left);
+	void AddQuad(ref const ImVec2 p1, ref const ImVec2 p2, ref const ImVec2 p3, ref const ImVec2 p4, uint col, float thickness=1f);
+	void AddQuadFilled(ref const ImVec2 p1, ref const ImVec2 p2, ref const ImVec2 p3, ref const ImVec2 p4, uint col);
+	void AddTriangle(ref const ImVec2 p1, ref const ImVec2 p2, ref const ImVec2 p3, uint col, float thickness=1f);
+	void AddTriangleFilled(ref const ImVec2 p1, ref const ImVec2 p2, ref const ImVec2 p3, uint col);
+	void AddCircle(ref const ImVec2 center, float radius, uint col, int num_segments=0, float thickness=1f);
+	void AddCircleFilled(ref const ImVec2 center, float radius, uint col, int num_segments=0);
+	void AddNgon(ref const ImVec2 center, float radius, uint col, int num_segments, float thickness=1f);
+	void AddNgonFilled(ref const ImVec2 center, float radius, uint col, int num_segments);
+	void AddText(ref const ImVec2 pos, uint col, const(char)* text_begin, const(char)* text_end=null);
+	void AddText(const(ImFont)* font, float font_size, ref const ImVec2 pos, uint col, const(char)* text_begin, const(char)* text_end=null, float wrap_width=0f, const(ImVec4)* cpu_fine_clip_rect=null);
+	void AddPolyline(const(ImVec2)* points, int num_points, uint col, ImDrawFlags_ flags, float thickness);
+	void AddConvexPolyFilled(const(ImVec2)* points, int num_points, uint col);
+	void AddBezierCubic(ref const ImVec2 p1, ref const ImVec2 p2, ref const ImVec2 p3, ref const ImVec2 p4, uint col, float thickness, int num_segments=0);
+	void AddBezierQuadratic(ref const ImVec2 p1, ref const ImVec2 p2, ref const ImVec2 p3, uint col, float thickness, int num_segments=0);
+	
+	void AddImage(ImTextureID user_texture_id, ref const ImVec2 p_min, ref const ImVec2 p_max, auto ref const ImVec2 uv_min=ImVec2(0,0), auto ref const ImVec2 uv_max=ImVec2(1,1), uint col=IM_COL32_WHITE);
+	void AddImageQuad(ImTextureID user_texture_id, ref const ImVec2 p1, ref const ImVec2 p2, ref const ImVec2 p3, ref const ImVec2 p4, auto ref const ImVec2 uv1=ImVec2(0,0), auto ref const ImVec2 uv2 = ImVec2(1,0), auto ref const ImVec2 uv3=ImVec2(1,1), auto ref const ImVec2 uv4=ImVec2(0,1), uint col = IM_COL32_WHITE);
+	void AddImageRounded(ImTextureID user_texture_id, ref const ImVec2 p_min, ref const ImVec2 p_max, ref const ImVec2 uv_min, ref const ImVec2 uv_max, uint col, float rounding, ImDrawFlags_ flags=0);
+	
+	pragma(inline,true){
+		void PathClear(){ _Path.Size = 0; }
+		void PathLineTo(ref const ImVec2 pos){ _Path.push_back(pos); }
+		void PathLineToMergeDuplicate(ref const ImVec2 pos){ if(_Path.Size == 0 || memcmp(&_Path.Data[_Path.Size - 1], &pos, 8) != 0) _Path.push_back(pos); }
+		void PathFillConvex(uint col){ AddConvexPolyFilled(_Path.Data, _Path.Size, col); _Path.Size = 0; }
+		void PathStroke(uint col, ImDrawFlags_ flags=0, float thickness=1f){ AddPolyline(_Path.Data, _Path.Size, col, flags, thickness); _Path.Size = 0; }
+	}
+	void PathArcTo(ref const ImVec2 center, float radius, float a_min, float a_max, int num_segments=0);
+	void PathArcToFast(ref const ImVec2 center, float radius, int a_min_of_12, int a_max_of_12);
+	void PathBezierCubicCurveTo(ref const ImVec2 p2, ref const ImVec2 p3, ref const ImVec2 p4, int num_segments=0);
+	void PathBezierQuadraticCurveTo(ref const ImVec2 p2, ref const ImVec2 p3, int num_segments=0);
+	void PathRect(ref const ImVec2 rect_min, ref const ImVec2 rect_max, float rounding=0f, ImDrawFlags_ flags=0);
+	
+	void AddCallback(ImDrawCallback callback, void* callback_data);
+	void AddDrawCmd();
+	ImDrawList* CloneOutput() const;
+	
+	pragma(inline,true){
+		void ChannelsSplit(int count){ _Splitter.Split(&this, count); }
+		void ChannelsMerge(){ _Splitter.Merge(&this); }
+		void ChannelsSetCurrent(int n){ _Splitter.SetCurrentChannel(&this, n); }
+	}
+	
+	void PrimReserve(int idx_count, int vtx_count);
+	void PrimUnreserve(int idx_count, int vtx_count);
+	void PrimRect(ref const ImVec2 a, ref const ImVec2 b, uint col);
+	void PrimRectUV(ref const ImVec2 a, ref const ImVec2 b, ref const ImVec2 uv_a, ref const ImVec2 uv_b, uint col);
+	void PrimQuadUV(ref const ImVec2 a, ref const ImVec2 b, ref const ImVec2 c, ref const ImVec2 d, ref const ImVec2 uv_a, ref const ImVec2 uv_b, ref const ImVec2 uv_c, ref const ImVec2 uv_d, uint col);
+	pragma(inline,true){
+		void PrimWriteVtx(ref const ImVec2 pos, ref const ImVec2 uv, uint col){ _VtxWritePtr.pos = pos; _VtxWritePtr.uv = uv; _VtxWritePtr.col = col; _VtxWritePtr++; _VtxCurrentIdx++; }
+		void PrimWriteIdx(ImDrawIdx idx){ *_IdxWritePtr = idx; _IdxWritePtr++; }
+		void PrimVtx(ref const ImVec2 pos, ref const ImVec2 uv, uint col){ PrimWriteIdx(cast(ImDrawIdx)_VtxCurrentIdx); PrimWriteVtx(pos, uv, col); }
+	}
+	
+	void _ResetForNewFrame();
+	void _ClearFreeMemory();
+	void _PopUnusedDrawCmd();
+	void _TryMergeDrawCmds();
+	void _OnChangedClipRect();
+	void _OnChangedTextureID();
+	void _OnChangedVtxOffset();
+	int _CalcCircleAutoSegmentCount(float radius) const;
+	void _PathArcToFastEx(ref const ImVec2 center, float radius, int a_min_sample, int a_max_sample, int a_step);
+	void _PathArcToN(ref const ImVec2 center, float radius, float a_min, float a_max, int num_segments);
+}
+
+extern(C++) struct ImDrawData{
+	bool Valid = false;
+	int CmdListsCount = 0;
+	int TotalIdxCount = 0;
+	int TotalVtxCount = 0;
+	ImDrawList** CmdLists = null;
+	ImVec2 DisplayPos = ImVec2(0,0);
+	ImVec2 DisplaySize = ImVec2(0,0);
+	ImVec2 FramebufferScale = ImVec2(0,0);
+	
+	void Clear(){ memset(cast(void*)&this, 0, this.sizeof); }
+	void DeIndexAllBuffers();
+	void ScaleClipRects(ref const ImVec2 fb_scale);
+}
+
+extern(C++) struct ImFontConfig{
+	void* FontData;
+	int FontDataSize;
+	bool FontDataOwnedByAtlas;
+	int FontNo;
+	float SizePixels;
+	int OversampleH;
+	int OversampleV;
+	bool PixelSnapH;
+	ImVec2 GlyphExtraSpacing;
+	ImVec2 GlyphOffset;
+	const(ImWchar)* GlyphRanges;
+	float GlyphMinAdvanceX;
+	float GlyphMaxAdvanceX;
+	bool MergeMode;
+	uint FontBuilderFlags;
+	float RasterizerMultiply;
+	ImWchar EllipsisChar;
+	
+	char[40] Name;
+	ImFont* DstFont;
+	
+	//this();
+}
+
+extern(C++) struct ImFontGlyph{
+	uint Data; //NOTE: this was originally a bitfield. Bit-ordering in bitfields isn't standard.
+	float AdvanceX;
+	float X0, Y0, X1, Y1;
+	float U0, V0, U1, V1;
+}
+
+extern(C++) struct ImFontGlyphRangesBuilder{
+	ImVector!uint UsedChars;
+	
+	//~this(){ Clear(); }
+	pragma(inline,true){
+		void Clear(){
+			int size_in_bytes = (IM_UNICODE_CODEPOINT_MAX + 1) / 8;
+			UsedChars.resize(size_in_bytes / cast(int)uint.sizeof);
+			memset(UsedChars.Data, 0, cast(size_t)size_in_bytes);
+		}
+		bool GetBit(size_t n) const{ int off = cast(int)(n >> 5); uint mask = 1U << (n & 31); return (UsedChars[off] & mask) != 0; }
+		void SetBit(size_t n){ int off = cast(int)(n >> 5); uint mask = 1U << (n & 31); UsedChars[off] |= mask; }
+		void AddChar(ImWchar c){ SetBit(c); }
+	}
+	void AddText(const(char)* text, const(char)* text_end=null);
+	void AddRanges(const(ImWchar)* ranges);
+	void BuildRanges(ImVector!(ImWchar)* out_ranges);
+}
+
+extern(C++) struct ImFontAtlasCustomRect{
+	ushort Width = 0, Height = 0;
+	ushort X = 0xFFFF, Y = 0xFFFF;
+	uint GlyphID = 0;
+	float GlyphAdvanceX = 0f;
+	ImVec2 GlyphOffset = ImVec2(0, 0);
+	ImFont* Font = null;
+	bool IsPacked() const{ return X != 0xFFFF; }
+}
+
+alias ImFontAtlasFlags_ = int;
+enum ImFontAtlasFlags : ImFontAtlasFlags_{
+	None               = 0,
+	NoPowerOfTwoHeight = 1 << 0,
+	NoMouseCursors     = 1 << 1,
+	NoBakedLines       = 1 << 2,
+}
+
+extern(C++) struct ImFontAtlas{
+	//this();
+	//~this();
+	ImFont* AddFont(const(ImFontConfig)* font_cfg);
+	ImFont* AddFontDefault(const(ImFontConfig)* font_cfg=null);
+	ImFont* AddFontFromFileTTF(const(char)* filename, float size_pixels, const(ImFontConfig)* font_cfg=null, const(ImWchar)* glyph_ranges=null);
+	ImFont* AddFontFromMemoryTTF(void* font_data, int font_size, float size_pixels, const(ImFontConfig)* font_cfg=null, const(ImWchar)* glyph_ranges=null);
+	ImFont* AddFontFromMemoryCompressedTTF(const(void)* compressed_font_data, int compressed_font_size, float size_pixels, const(ImFontConfig)* font_cfg=null, const(ImWchar)* glyph_ranges=null);
+	ImFont* AddFontFromMemoryCompressedBase85TTF(const(char)* compressed_font_data_base85, float size_pixels, const(ImFontConfig)* font_cfg=null, const(ImWchar)* glyph_ranges=null);
+	void ClearInputData();
+	void ClearTexData();
+	void ClearFonts();
+	void Clear();
+	
+	void GetTexDataAsAlpha8(ubyte** out_pixels, int* out_width, int* out_height, int* out_bytes_per_pixel=null);
+	void GetTexDataAsRGBA32(ubyte** out_pixels, int* out_width, int* out_height, int* out_bytes_per_pixel=null);
+	bool IsBuilt() const{ return Fonts.Size > 0 && TexReady; }
+	void SetTexID(ImTextureID id){ TexID = id; }
+	
+	const(ImWchar)* GetGlyphRangesDefault();
+	const(ImWchar)* GetGlyphRangesGreek();
+	const(ImWchar)* GetGlyphRangesKorean();
+	const(ImWchar)* GetGlyphRangesJapanese();
+	const(ImWchar)* GetGlyphRangesChineseFull();
+	const(ImWchar)* GetGlyphRangesChineseSimplifiedCommon();
+	const(ImWchar)* GetGlyphRangesCyrillic();
+	const(ImWchar)* GetGlyphRangesThai();
+	const(ImWchar)* GetGlyphRangesVietnamese();
+	
+	int AddCustomRectRegular(int width, int height);
+	int AddCustomRectFontGlyph(ImFont* font, ImWchar id, int width, int height, float advance_x, auto ref const ImVec2 offset=ImVec2(0,0));
+	ImFontAtlasCustomRect* GetCustomRectByIndex(int index){ assert(index >= 0); return &CustomRects[index]; }
+	
+	void CalcCustomRectUV(const(ImFontAtlasCustomRect)* rect, ImVec2* out_uv_min, ImVec2* out_uv_max) const;
+	bool GetMouseCursorTexData(ImGuiMouseCursor cursor, ImVec2* out_offset, ImVec2* out_size, ImVec2* out_uv_border, ImVec2* out_uv_fill);
+	
+	ImFontAtlasFlags_ Flags;
+	ImTextureID TexID;
+	int TexDesiredWidth;
+	int TexGlyphPadding;
+	bool Locked;
+	void* UserData;
+	
+	bool TexReady;
+	bool TexPixelsUseColors;
+	ubyte* TexPixelsAlpha8;
+	uint* TexPixelsRGBA32;
+	int TexWidth;
+	int TexHeight;
+	ImVec2 TexUvScale;
+	ImVec2 TexUvWhitePixel;
+	ImVector!(ImFont*) Fonts;
+	ImVector!ImFontAtlasCustomRect CustomRects;
+	ImVector!ImFontConfig ConfigData;
+	ImVec4[IM_DRAWLIST_TEX_LINES_WIDTH_MAX + 1] TexUvLines;
+	
+	const(ImFontBuilderIO)* FontBuilderIO;
+	uint FontBuilderFlags;
+	
+	int PackIdMouseCursors;
+	int PackIdLines;
+}
+
+extern(C++) struct ImFont{
+	ImVector!float IndexAdvanceX;
+	float FallbackAdvanceX;
+	float FontSize;
+	
+	ImVector!ImWchar IndexLookup;
+	ImVector!ImFontGlyph Glyphs;
+	const(ImFontGlyph)* FallbackGlyph;
+	
+	ImFontAtlas* ContainerAtlas;
+	const(ImFontConfig)* ConfigData;
+	short ConfigDataCount;
+	ImWchar FallbackChar;
+	ImWchar EllipsisChar;
+	short EllipsisCharCount;
+	float EllipsisWidth;
+	float EllipsisCharStep;
+	bool DirtyLookupTables;
+	float Scale;
+	float Ascent, Descent;
+	int MetricsTotalSurface;// 4
+	ubyte[(IM_UNICODE_CODEPOINT_MAX+1)/4096/8] Used4kPagesMap;
+	
+	//this();
+	//~this();
+	const(ImFontGlyph)* FindGlyph(ImWchar c) const;
+	const(ImFontGlyph)* FindGlyphNoFallback(ImWchar c) const;
+	float GetCharAdvance(ImWchar c) const{ return (cast(int)c < IndexAdvanceX.Size) ? IndexAdvanceX[cast(int)c] : FallbackAdvanceX; }
+	bool IsLoaded() const{ return ContainerAtlas != null; }
+	const(char)* GetDebugName() const{ return ConfigData ? ConfigData.Name.ptr : "<unknown>"; }
+	
+	ImVec2 CalcTextSizeA(float size, float max_width, float wrap_width, const(char)* text_begin, const(char)* text_end=null, const(char)** remaining=null) const;
+	const(char)* CalcWordWrapPositionA(float scale, const(char)* text, const(char)* text_end, float wrap_width) const;
+	void RenderChar(ImDrawList* draw_list, float size, ref const ImVec2 pos, uint col, ImWchar c) const;
+	void RenderText(ImDrawList* draw_list, float size, ref const ImVec2 pos, uint col, ref const ImVec4 clip_rect, const(char)* text_begin, const(char)* text_end, float wrap_width=0f, bool cpu_fine_clip=false) const;
+	
+	void BuildLookupTable();
+	void ClearOutputData();
+	void GrowIndex(int new_size);
+	void AddGlyph(const(ImFontConfig)* src_cfg, ImWchar c, float x0, float y0, float x1, float y1, float u0, float v0, float u1, float v1, float advance_x);
+	void AddRemapChar(ImWchar dst, ImWchar src, bool overwrite_dst=true);
+	void SetGlyphVisible(ImWchar c, bool visible);
+	bool IsGlyphRangeUnused(uint c_begin, uint c_last);
+}
+
+alias ImGuiViewportFlags_ = int;
+enum ImGuiViewportFlags: ImGuiViewportFlags_{
+	None                     = 0,
+	IsPlatformWindow         = 1 << 0,
+	IsPlatformMonitor        = 1 << 1,
+	OwnedByApp               = 1 << 2,
+}
+
+extern(C++) struct ImGuiViewport{
+	ImGuiViewportFlags_  Flags = 0;
+	ImVec2 Pos = ImVec2(0, 0);
+	ImVec2 Size = ImVec2(0, 0);
+	ImVec2 WorkPos = ImVec2(0, 0);
+	ImVec2 WorkSize = ImVec2(0, 0);
+	
+	void* PlatformHandleRaw = null;
+	
+	ImVec2 GetCenter() const{ return ImVec2(Pos.x + Size.x * 0.5f, Pos.y + Size.y * 0.5f); }
+	alias GetCentre = GetCenter;
+	ImVec2 GetWorkCenter() const{ return ImVec2(WorkPos.x + WorkSize.x * 0.5f, WorkPos.y + WorkSize.y * 0.5f); }
+	alias GetWorkCentre = GetWorkCenter;
+}
+
+extern(C++) struct ImGuiPlatformImeData{
+	bool WantVisible = false;
+	ImVec2 InputPos = ImVec2(0, 0);
+	float InputLineHeight = 0;
+}
+
+extern(C++, "ImGui"){
+version(ImGui_DisableObsoleteKeyIO){
+	pragma(inline, true) ImGuiKey GetKeyIndex(ImGuiKey key){ assert(key >= ImGuiKey.NamedKey_BEGIN && key < ImGuiKey.NamedKey_END, "ImGuiKey and native_index was merged together and native_index is disabled by `ImGui_DisableObsoleteKeyIO`. Please switch to ImGuiKey."); return key; }
+}else{
+	ImGuiKey GetKeyIndex(ImGuiKey key);
+}
+}
+
+version(ImGui_DisableObsoleteFunctions){
+}else{
+	extern(C++, "ImGui"){
+		pragma(inline,true) void PushAllowKeyboardFocus(bool tab_stop){ PushTabStop(tab_stop); }
+		pragma(inline,true) void PopAllowKeyboardFocus(){ PopTabStop(); }
+		
+		bool ImageButton(ImTextureID user_texture_id, ref const ImVec2 size, auto ref const ImVec2 uv0=ImVec2(0,0), auto ref const ImVec2 uv1=ImVec2(1,1), int frame_padding=-1, auto ref const ImVec4 bg_col=ImVec4(0,0,0,0), auto ref const ImVec4 tint_col=ImVec4(1,1,1,1));
+		
+		pragma(inline,true) void CaptureKeyboardFromApp(bool want_capture_keyboard=true){ SetNextFrameWantCaptureKeyboard(want_capture_keyboard); }
+		pragma(inline,true) void CaptureMouseFromApp(bool want_capture_mouse=true){ SetNextFrameWantCaptureMouse(want_capture_mouse); }
+		
+		void CalcListClipping(int items_count, float items_height, int* out_items_display_start, int* out_items_display_end);
+		
+		pragma(inline,true) float GetWindowContentRegionWidth(){ return GetWindowContentRegionMax().x - GetWindowContentRegionMin().x; }
+		
+		bool ListBoxHeader(const char* label, int items_count, int height_in_items=-1);
+		pragma(inline,true) bool ListBoxHeader(const(char)* label, auto ref const ImVec2 size=ImVec2(0,0)){ return BeginListBox(label, size); }
+		pragma(inline,true) void ListBoxFooter(){ EndListBox(); }
+	}
+	
+	alias ImDrawCornerFlags_ = ImDrawFlags;
+	enum ImDrawCornerFlags: ImDrawCornerFlags_{
+		None      = ImDrawFlags.RoundCornersNone,
+		TopLeft   = ImDrawFlags.RoundCornersTopLeft,
+		TopRight  = ImDrawFlags.RoundCornersTopRight,
+		BotLeft   = ImDrawFlags.RoundCornersBottomLeft,
+		BotRight  = ImDrawFlags.RoundCornersBottomRight,
+		All       = ImDrawFlags.RoundCornersAll,
+		Top       = ImDrawCornerFlags.TopLeft | ImDrawCornerFlags.TopRight,
+		Bot       = ImDrawCornerFlags.BotLeft | ImDrawCornerFlags.BotRight,
+		Left      = ImDrawCornerFlags.TopLeft | ImDrawCornerFlags.BotLeft,
+		Right     = ImDrawCornerFlags.TopRight | ImDrawCornerFlags.BotRight,
+	}
+	
+	alias ImGuiModFlags_ = ImGuiKeyChord;
+	enum ImGuiModFlags: ImGuiModFlags_{
+		None = 0,
+		Ctrl = ImGuiMod.Ctrl,
+		Shift = ImGuiMod.Shift,
+		Alt = ImGuiMod.Alt,
+		Super = ImGuiMod.Super
+	}
+}

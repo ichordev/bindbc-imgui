@@ -10,8 +10,9 @@
 	"targetPath": "lib",
 	"targetName": "BindBC_ImGui",
 	
-	"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_demo.o"],
+	"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/*.o"],
 	"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/*.obj"],
+	"dflags": ["-extern-std=c++11"],
 	"libs": ["stdc++"],
 	
 	"configurations": [
