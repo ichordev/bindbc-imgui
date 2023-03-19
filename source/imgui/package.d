@@ -70,8 +70,15 @@ extern(C++) struct ImVec4{
 //#endif
 }
 
-private immutable Vec2_0_0 = ImVec2(0,0);
-
+private immutable{
+	auto Vec2_0_0 = ImVec2(0,0);
+	auto Vec2_0_1 = ImVec2(0,1);
+	auto Vec2_1_0 = ImVec2(1,0);
+	auto Vec2_1_1 = ImVec2(1,1);
+	auto Vec2_negfltmin_0 = ImVec2(-float.min_normal, 0)
+	auto Vec4_1_1_1_1 = ImVec4(1,1,1,1);
+	auto Vec4_0_0_0_0 = ImVec4(0,0,0,0);
+}
 
 extern(C++, "ImGui"){
 	private alias ItemsGetterFn = extern(C++) bool function(void* data, int idx, const(char)** out_text);
@@ -109,8 +116,8 @@ extern(C++, "ImGui"){
 	bool Begin(const(char)* name, bool* p_open=null, ImGuiWindowFlags_ flags=0);
 	void End();
 	
-	bool BeginChild(const(char)* str_id, const auto ref ImVec2 size=ImVec2(0, 0), bool border=false, ImGuiWindowFlags_ flags=0);
-	bool BeginChild(ImGuiID id, const auto ref ImVec2 size=ImVec2(0, 0), bool border=false, ImGuiWindowFlags_ flags=0);
+	bool BeginChild(const(char)* str_id, ref const ImVec2 size=Vec2_0_0, bool border=false, ImGuiWindowFlags_ flags=0);
+	bool BeginChild(ImGuiID id, ref const ImVec2 size=Vec2_0_0, bool border=false, ImGuiWindowFlags_ flags=0);
 	void EndChild();
 	
 	bool IsWindowAppearing();
@@ -123,21 +130,21 @@ extern(C++, "ImGui"){
 	float GetWindowWidth();
 	float GetWindowHeight();
 	
-	void SetNextWindowPos(ref const(ImVec2) pos, ImGuiCond_ cond=0, const auto ref ImVec2 pivot=ImVec2(0, 0));
-	void SetNextWindowSize(ref const(ImVec2) size, ImGuiCond_ cond=0);
-	void SetNextWindowSizeConstraints(ref const(ImVec2) size_min, ref const(ImVec2) size_max, ImGuiSizeCallback custom_callback=null, void* custom_callback_data=null);
-	void SetNextWindowContentSize(ref const(ImVec2) size);
+	void SetNextWindowPos(ref const ImVec2 pos, ImGuiCond_ cond=0, ref const ImVec2 pivot=Vec2_0_0);
+	void SetNextWindowSize(ref const ImVec2 size, ImGuiCond_ cond=0);
+	void SetNextWindowSizeConstraints(ref const ImVec2 size_min, ref const ImVec2 size_max, ImGuiSizeCallback custom_callback=null, void* custom_callback_data=null);
+	void SetNextWindowContentSize(ref const ImVec2 size);
 	void SetNextWindowCollapsed(bool collapsed, ImGuiCond_ cond=0);
 	void SetNextWindowFocus();
-	void SetNextWindowScroll(ref const(ImVec2) scroll);
+	void SetNextWindowScroll(ref const ImVec2 scroll);
 	void SetNextWindowBgAlpha(float alpha);
-	void SetWindowPos(ref const(ImVec2) pos, ImGuiCond_ cond=0);
-	void SetWindowSize(ref const(ImVec2) size, ImGuiCond_ cond=0);
+	void SetWindowPos(ref const ImVec2 pos, ImGuiCond_ cond=0);
+	void SetWindowSize(ref const ImVec2 size, ImGuiCond_ cond=0);
 	void SetWindowCollapsed(bool collapsed, ImGuiCond_ cond=0);
 	void SetWindowFocus();
 	void SetWindowFontScale(float scale);
-	void SetWindowPos(const(char)* name, ref const(ImVec2) pos, ImGuiCond_ cond=0);
-	void SetWindowSize(const(char)* name, ref const(ImVec2) size, ImGuiCond_ cond=0);
+	void SetWindowPos(const(char)* name, ref const ImVec2 pos, ImGuiCond_ cond=0);
+	void SetWindowSize(const(char)* name, ref const ImVec2 size, ImGuiCond_ cond=0);
 	void SetWindowCollapsed(const(char)* name, bool collapsed, ImGuiCond_ cond=0);
 	void SetWindowFocus(const(char)* name);
 	
@@ -159,12 +166,12 @@ extern(C++, "ImGui"){
 	void PushFont(ImFont* font);
 	void PopFont();
 	void PushStyleColor(ImGuiCol idx, uint col);
-	void PushStyleColor(ImGuiCol idx, ref const(ImVec4) col);
+	void PushStyleColor(ImGuiCol idx, ref const ImVec4 col);
 	alias PushStyleColour = PushStyleColor;
 	void PopStyleColor(int count=1);
 	alias PopStyleColour = PopStyleColor;
 	void PushStyleVar(ImGuiStyleVar idx, float val);
-	void PushStyleVar(ImGuiStyleVar idx, ref const(ImVec2) val);
+	void PushStyleVar(ImGuiStyleVar idx, ref const ImVec2 val);
 	void PopStyleVar(int count=1);
 	void PushTabStop(bool tab_stop);
 	void PopTabStop();
@@ -182,7 +189,7 @@ extern(C++, "ImGui"){
 	float GetFontSize();
 	ImVec2 GetFontTexUvWhitePixel();
 	uint GetColorU32(ImGuiCol idx, float alpha_mul=1f);
-	uint GetColorU32(ref const(ImVec4) col);
+	uint GetColorU32(ref const ImVec4 col);
 	uint GetColorU32(uint col);
 	alias GetColourU32 = GetColorU32;
 	const(ImVec4)* GetStyleColorVec4(ImGuiCol idx);
@@ -192,7 +199,7 @@ extern(C++, "ImGui"){
 	void SameLine(float offset_from_start_x=0f, float spacing=-1f);
 	void NewLine();
 	void Spacing();
-	void Dummy(ref const(ImVec2) size);
+	void Dummy(ref const ImVec2 size);
 	void Indent(float indent_w=0f);
 	void Unindent(float indent_w=0f);
 	void BeginGroup();
@@ -200,12 +207,12 @@ extern(C++, "ImGui"){
 	ImVec2 GetCursorPos();
 	float GetCursorPosX();
 	float GetCursorPosY();
-	void SetCursorPos(ref const(ImVec2) local_pos);
+	void SetCursorPos(ref const ImVec2 local_pos);
 	void SetCursorPosX(float local_x);
 	void SetCursorPosY(float local_y);
 	ImVec2 GetCursorStartPos();
 	ImVec2 GetCursorScreenPos();
-	void SetCursorScreenPos(ref const(ImVec2) pos);
+	void SetCursorScreenPos(ref const ImVec2 pos);
 	void AlignTextToFramePadding();
 	float GetTextLineHeight();
 	float GetTextLineHeightWithSpacing();
@@ -248,11 +255,11 @@ extern(C++, "ImGui"){
 	bool CheckboxFlags(const(char)* label, uint* flags, uint flags_value);
 	bool RadioButton(const(char)* label, bool active);
 	bool RadioButton(const(char)* label, int* v, int v_button);
-	void ProgressBar(float fraction, const auto ref ImVec2 size_arg=ImVec2(-float.min_normal, 0), const(char)* overlay=null);
+	void ProgressBar(float fraction, ref const ImVec2 size_arg=Vec2_negfltmin_0, const(char)* overlay=null);
 	void Bullet();
 	
-	void Image(ImTextureID user_texture_id, ref const(ImVec2) size, const auto ref ImVec2 uv0=ImVec2(0,0), const auto ref ImVec2 uv1=ImVec2(1,1), const auto ref ImVec4 tint_col=ImVec4(1,1,1,1), const auto ref ImVec4 border_col=ImVec4(0,0,0,0));
-	bool ImageButton(const(char)* str_id, ImTextureID user_texture_id, ref const(ImVec2) size, const auto ref ImVec2 uv0=ImVec2(0,0), const auto ref ImVec2 uv1=ImVec2(1,1), const auto ref ImVec4 bg_col=ImVec4(0,0,0,0), const auto ref ImVec4 tint_col=ImVec4(1,1,1,1));
+	void Image(ImTextureID user_texture_id, ref const ImVec2 size, ref const ImVec2 uv0=Vec2_0_0, ref const ImVec2 uv1=Vec2_1_1, ref const ImVec4 tint_col=Vec4_1_1_1_1, ref const ImVec4 border_col=Vec4_0_0_0_0);
+	bool ImageButton(const(char)* str_id, ImTextureID user_texture_id, ref const ImVec2 size, ref const ImVec2 uv0=Vec2_0_0, ref const ImVec2 uv1=Vec2_1_1, ref const ImVec4 bg_col=Vec4_0_0_0_0, ref const ImVec4 tint_col=Vec4_1_1_1_1);
 	
 	bool BeginCombo(const(char)* label, const(char)* preview_value, ImGuiComboFlags_ flags=0);
 	void EndCombo();
@@ -284,12 +291,12 @@ extern(C++, "ImGui"){
 	bool SliderInt4(const(char)* label, int* v, int v_min, int v_max, const(char)* format="%d", ImGuiSliderFlags_ flags=0);
 	bool SliderScalar(const(char)* label, ImGuiDataType data_type, void* p_data, const(void)* p_min, const(void)* p_max, const(char)* format=null, ImGuiSliderFlags_ flags=0);
 	bool SliderScalarN(const(char)* label, ImGuiDataType data_type, void* p_data, int components, const(void)* p_min, const(void)* p_max, const(char)* format=null, ImGuiSliderFlags_ flags=0);
-	bool VSliderFloat(const(char)* label, ref const(ImVec2) size, float* v, float v_min, float v_max, const(char)* format="%.3f", ImGuiSliderFlags_ flags=0);
-	bool VSliderInt(const(char)* label, ref const(ImVec2) size, int* v, int v_min, int v_max, const(char)* format="%d", ImGuiSliderFlags_ flags=0);
-	bool VSliderScalar(const(char)* label, ref const(ImVec2) size, ImGuiDataType data_type, void* p_data, const(void)* p_min, const(void)* p_max, const(char)* format=null, ImGuiSliderFlags_ flags=0);
+	bool VSliderFloat(const(char)* label, ref const ImVec2 size, float* v, float v_min, float v_max, const(char)* format="%.3f", ImGuiSliderFlags_ flags=0);
+	bool VSliderInt(const(char)* label, ref const ImVec2 size, int* v, int v_min, int v_max, const(char)* format="%d", ImGuiSliderFlags_ flags=0);
+	bool VSliderScalar(const(char)* label, ref const ImVec2 size, ImGuiDataType data_type, void* p_data, const(void)* p_min, const(void)* p_max, const(char)* format=null, ImGuiSliderFlags_ flags=0);
 	
 	bool InputText(const(char)* label, char* buf, size_t buf_size, ImGuiInputTextFlags_ flags=0, ImGuiInputTextCallback callback=null, void* user_data=null);
-	bool InputTextMultiline(const(char)* label, char* buf, size_t buf_size, auto ref const(ImVec2) size=ImVec2(0, 0), ImGuiInputTextFlags_ flags=0, ImGuiInputTextCallback callback=null, void* user_data=null);
+	bool InputTextMultiline(const(char)* label, char* buf, size_t buf_size, ref const ImVec2 size=Vec2_0_0, ImGuiInputTextFlags_ flags=0, ImGuiInputTextCallback callback=null, void* user_data=null);
 	bool InputTextWithHint(const(char)* label, const(char)* hint, char* buf, size_t buf_size, ImGuiInputTextFlags_ flags=0, ImGuiInputTextCallback callback=null, void* user_data=null);
 	bool InputFloat(const(char)* label, float* v, float step=0f, float step_fast=0f, const(char)* format="%.3f", ImGuiInputTextFlags_ flags=0);
 	bool InputFloat2(const(char)* label, float* v, const(char)* format="%.3f", ImGuiInputTextFlags_ flags=0);
@@ -311,7 +318,7 @@ extern(C++, "ImGui"){
 	alias ColourPicker3 = ColorPicker3;
 	bool ColorPicker4(const(char)* label, float* col, ImGuiInputTextFlags_ flags=0, const(float)* ref_col=null);
 	alias ColourPicker4 = ColorPicker4;
-	bool ColorButton(const(char)* desc_id, ref const(ImVec4) col, ImGuiInputTextFlags_ flags=0, auto ref const(ImVec2) size=ImVec2(0, 0));
+	bool ColorButton(const(char)* desc_id, ref const ImVec4 col, ImGuiInputTextFlags_ flags=0, ref const ImVec2 size=Vec2_0_0);
 	alias ColourButton = ColorButton;
 	void SetColorEditOptions(ImGuiColorEditFlags flags);
 	alias SetColourEditOptions = SetColorEditOptions;
@@ -333,18 +340,18 @@ extern(C++, "ImGui"){
 	bool CollapsingHeader(const(char)* label, ImGuiTreeNodeFlags_ flags=0);
 	bool CollapsingHeader(const(char)* label, bool* p_visible, ImGuiTreeNodeFlags_ flags=0);
 	void SetNextItemOpen(bool is_open, ImGuiCond_ cond=0);
-	bool Selectable(const(char)* label, bool selected=false, ImGuiSelectableFlags_ flags=0, auto ref const(ImVec2) size=ImVec2(0, 0));
-	bool Selectable(const(char)* label, bool* p_selected, ImGuiSelectableFlags_ flags=0, auto ref const(ImVec2) size=ImVec2(0, 0));
-	bool BeginListBox(const(char)* label, auto ref const(ImVec2) size=ImVec2(0, 0));
+	bool Selectable(const(char)* label, bool selected=false, ImGuiSelectableFlags_ flags=0, ref const ImVec2 size=Vec2_0_0);
+	bool Selectable(const(char)* label, bool* p_selected, ImGuiSelectableFlags_ flags=0, ref const ImVec2 size=Vec2_0_0);
+	bool BeginListBox(const(char)* label, ref const ImVec2 size=Vec2_0_0);
 	void EndListBox();
 	bool ListBox(const(char)* label, int* current_item, const(char*)* items, int items_count, int height_in_items=-1);
 	bool ListBox(const(char)* label, int* current_item, ItemsGetterFn items_getter, void* data, int items_count, int height_in_items=-1);
 	
 	private alias valuesGetterFn = extern(C++) float function(void* data, int idx);
-	void PlotLines(const(char)* label, const(float)* values, int values_count, int values_offset=0, const(char)* overlay_text=null, float scale_min=float.max, float scale_max=float.max, ImVec2 graph_size=ImVec2(0, 0), int stride=float.sizeof);
-	void PlotLines(const(char)* label, valuesGetterFn values_getter, void* data, int values_count, int values_offset=0, const(char)* overlay_text=null, float scale_min=float.max, float scale_max=float.max, ImVec2 graph_size=ImVec2(0, 0));
-	void PlotHistogram(const(char)* label, const(float)* values, int values_count, int values_offset=0, const(char)* overlay_text=null, float scale_min=float.max, float scale_max=float.max, ImVec2 graph_size=ImVec2(0, 0), int stride=float.sizeof);
-	void PlotHistogram(const(char)* label, valuesGetterFn values_getter, void* data, int values_count, int values_offset=0, const(char)* overlay_text=null, float scale_min=float.max, float scale_max=float.max, ImVec2 graph_size=ImVec2(0, 0));
+	void PlotLines(const(char)* label, const(float)* values, int values_count, int values_offset=0, const(char)* overlay_text=null, float scale_min=float.max, float scale_max=float.max, ImVec2 graph_size=Vec2_0_0, int stride=float.sizeof);
+	void PlotLines(const(char)* label, valuesGetterFn values_getter, void* data, int values_count, int values_offset=0, const(char)* overlay_text=null, float scale_min=float.max, float scale_max=float.max, ImVec2 graph_size=Vec2_0_0);
+	void PlotHistogram(const(char)* label, const(float)* values, int values_count, int values_offset=0, const(char)* overlay_text=null, float scale_min=float.max, float scale_max=float.max, ImVec2 graph_size=Vec2_0_0, int stride=float.sizeof);
+	void PlotHistogram(const(char)* label, valuesGetterFn values_getter, void* data, int values_count, int values_offset=0, const(char)* overlay_text=null, float scale_min=float.max, float scale_max=float.max, ImVec2 graph_size=Vec2_0_0);
 	
 	void Value(const(char)* prefix, bool b);
 	void Value(const(char)* prefix, int v);
@@ -377,7 +384,7 @@ extern(C++, "ImGui"){
 	bool BeginPopupContextWindow(const(char)* str_id=null, ImGuiPopupFlags_ popup_flags=1);
 	bool BeginPopupContextVoid(const(char)* str_id=null, ImGuiPopupFlags_ popup_flags=1);
 	bool IsPopupOpen(const(char)* str_id, ImGuiPopupFlags_ flags=0);
-	bool BeginTable(const(char)* str_id, int column, ImGuiTableFlags_ flags=0, auto ref const(ImVec2) outer_size=ImVec2(0f, 0f), float inner_width=0f);
+	bool BeginTable(const(char)* str_id, int column, ImGuiTableFlags_ flags=0, ref const ImVec2 outer_size=Vec2_0_0, float inner_width=0f);
 	void EndTable();
 	void TableNextRow(ImGuiTableRowFlags_ row_flags=0, float min_row_height=0f);
 	bool TableNextColumn();
@@ -432,7 +439,7 @@ extern(C++, "ImGui"){
 	void BeginDisabled(bool disabled=true);
 	void EndDisabled();
 	
-	void PushClipRect(ref const(ImVec2) clip_rect_min, ref const(ImVec2) clip_rect_max, bool intersect_with_current_clip_rect);
+	void PushClipRect(ref const ImVec2 clip_rect_min, ref const ImVec2 clip_rect_max, bool intersect_with_current_clip_rect);
 	void PopClipRect();
 	
 	void SetItemDefaultFocus();
@@ -462,8 +469,8 @@ extern(C++, "ImGui"){
 	ImDrawList* GetBackgroundDrawList();
 	ImDrawList* GetForegroundDrawList();
 	
-	bool IsRectVisible(ref const(ImVec2) size);
-	bool IsRectVisible(ref const(ImVec2) rect_min, ref const(ImVec2) rect_max);
+	bool IsRectVisible(ref const ImVec2 size);
+	bool IsRectVisible(ref const ImVec2 rect_min, ref const ImVec2 rect_max);
 	double GetTime();
 	int GetFrameCount();
 	ImDrawListSharedData* GetDrawListSharedData();
@@ -471,14 +478,14 @@ extern(C++, "ImGui"){
 	alias GetStyleColourName = GetStyleColorName;
 	void SetStateStorage(ImGuiStorage* storage);
 	ImGuiStorage* GetStateStorage();
-	bool BeginChildFrame(ImGuiID id, ref const(ImVec2) size, ImGuiWindowFlags_ flags=0);
+	bool BeginChildFrame(ImGuiID id, ref const ImVec2 size, ImGuiWindowFlags_ flags=0);
 	void EndChildFrame();
 	
 	ImVec2 CalcTextSize(const(char)* text, const(char)* text_end=null, bool hide_text_after_double_hash=false, float wrap_width=-1f);
 	
 	ImVec4 ColorConvertU32ToFloat4(uint in_);
 	alias ColourConvertU32ToFloat4 = ColorConvertU32ToFloat4;
-	uint ColorConvertFloat4ToU32(ref const(ImVec4) inP);
+	uint ColorConvertFloat4ToU32(ref const ImVec4 inP);
 	alias ColourConvertFloat4ToU32 = ColorConvertFloat4ToU32;
 	void ColorConvertRGBtoHSV(float r, float g, float b, ref float out_h, ref float out_s, ref float out_v);
 	alias ColourConvertRGBtoHSV = ColorConvertRGBtoHSV;
@@ -497,7 +504,7 @@ extern(C++, "ImGui"){
 	bool IsMouseReleased(ImGuiMouseButton button);
 	bool IsMouseDoubleClicked(ImGuiMouseButton button);
 	int GetMouseClickedCount(ImGuiMouseButton button);
-	bool IsMouseHoveringRect(ref const(ImVec2) r_min, ref const(ImVec2) r_max, bool clip=true);
+	bool IsMouseHoveringRect(ref const ImVec2 r_min, ref const ImVec2 r_max, bool clip=true);
 	bool IsMousePosValid(const(ImVec2)* mouse_pos=null);
 	bool IsAnyMouseDown();
 	ImVec2 GetMousePos();
@@ -1765,8 +1772,8 @@ extern(C++) struct ImDrawList{
 	void AddBezierCubic(ref const ImVec2 p1, ref const ImVec2 p2, ref const ImVec2 p3, ref const ImVec2 p4, uint col, float thickness, int num_segments=0);
 	void AddBezierQuadratic(ref const ImVec2 p1, ref const ImVec2 p2, ref const ImVec2 p3, uint col, float thickness, int num_segments=0);
 	
-	void AddImage(ImTextureID user_texture_id, ref const ImVec2 p_min, ref const ImVec2 p_max, auto ref const ImVec2 uv_min=ImVec2(0,0), auto ref const ImVec2 uv_max=ImVec2(1,1), uint col=IM_COL32_WHITE);
-	void AddImageQuad(ImTextureID user_texture_id, ref const ImVec2 p1, ref const ImVec2 p2, ref const ImVec2 p3, ref const ImVec2 p4, auto ref const ImVec2 uv1=ImVec2(0,0), auto ref const ImVec2 uv2 = ImVec2(1,0), auto ref const ImVec2 uv3=ImVec2(1,1), auto ref const ImVec2 uv4=ImVec2(0,1), uint col = IM_COL32_WHITE);
+	void AddImage(ImTextureID user_texture_id, ref const ImVec2 p_min, ref const ImVec2 p_max, ref const ImVec2 uv_min=Vec2_0_0, ref const ImVec2 uv_max=Vec2_1_1, uint col=IM_COL32_WHITE);
+	void AddImageQuad(ImTextureID user_texture_id, ref const ImVec2 p1, ref const ImVec2 p2, ref const ImVec2 p3, ref const ImVec2 p4, ref const ImVec2 uv1=Vec2_0_0, ref const ImVec2 uv2=Vec2_1_0, ref const ImVec2 uv3=Vec2_1_1, ref const ImVec2 uv4=Vec2_0_1, uint col=IM_COL32_WHITE);
 	void AddImageRounded(ImTextureID user_texture_id, ref const ImVec2 p_min, ref const ImVec2 p_max, ref const ImVec2 uv_min, ref const ImVec2 uv_max, uint col, float rounding, ImDrawFlags_ flags=0);
 	
 	pragma(inline,true){
@@ -1929,7 +1936,7 @@ extern(C++) struct ImFontAtlas{
 	const(ImWchar)* GetGlyphRangesVietnamese();
 	
 	int AddCustomRectRegular(int width, int height);
-	int AddCustomRectFontGlyph(ImFont* font, ImWchar id, int width, int height, float advance_x, auto ref const ImVec2 offset=ImVec2(0,0));
+	int AddCustomRectFontGlyph(ImFont* font, ImWchar id, int width, int height, float advance_x, ref const ImVec2 offset=Vec2_0_0);
 	ImFontAtlasCustomRect* GetCustomRectByIndex(int index){ assert(index >= 0); return &CustomRects[index]; }
 	
 	void CalcCustomRectUV(const(ImFontAtlasCustomRect)* rect, ImVec2* out_uv_min, ImVec2* out_uv_max) const;
@@ -2050,7 +2057,7 @@ version(ImGui_DisableObsoleteFunctions){
 		pragma(inline,true) void PushAllowKeyboardFocus(bool tab_stop){ PushTabStop(tab_stop); }
 		pragma(inline,true) void PopAllowKeyboardFocus(){ PopTabStop(); }
 		
-		bool ImageButton(ImTextureID user_texture_id, ref const ImVec2 size, auto ref const ImVec2 uv0=ImVec2(0,0), auto ref const ImVec2 uv1=ImVec2(1,1), int frame_padding=-1, auto ref const ImVec4 bg_col=ImVec4(0,0,0,0), auto ref const ImVec4 tint_col=ImVec4(1,1,1,1));
+		bool ImageButton(ImTextureID user_texture_id, ref const ImVec2 size, ref const ImVec2 uv0=Vec2_0_0, ref const ImVec2 uv1=Vec2_1_1, int frame_padding=-1, ref const ImVec4 bg_col=Vec4_0_0_0_0, ref const ImVec4 tint_col=Vec4_1_1_1_1);
 		
 		pragma(inline,true) void CaptureKeyboardFromApp(bool want_capture_keyboard=true){ SetNextFrameWantCaptureKeyboard(want_capture_keyboard); }
 		pragma(inline,true) void CaptureMouseFromApp(bool want_capture_mouse=true){ SetNextFrameWantCaptureMouse(want_capture_mouse); }
@@ -2060,7 +2067,7 @@ version(ImGui_DisableObsoleteFunctions){
 		pragma(inline,true) float GetWindowContentRegionWidth(){ return GetWindowContentRegionMax().x - GetWindowContentRegionMin().x; }
 		
 		bool ListBoxHeader(const char* label, int items_count, int height_in_items=-1);
-		pragma(inline,true) bool ListBoxHeader(const(char)* label, auto ref const ImVec2 size=ImVec2(0,0)){ return BeginListBox(label, size); }
+		pragma(inline,true) bool ListBoxHeader(const(char)* label, ref const ImVec2 size=Vec2_0_0){ return BeginListBox(label, size); }
 		pragma(inline,true) void ListBoxFooter(){ EndListBox(); }
 	}
 	
