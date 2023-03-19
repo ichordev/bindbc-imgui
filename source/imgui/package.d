@@ -17,7 +17,11 @@ public import
 enum IMGUI_VERSION        = "1.89.4";
 enum IMGUI_VERSION_NUM    = 18940;
 
+pragma(inline,true) bool IMGUI_CHECKVERSION(){ return DebugCheckVersionAndDataLayout(IMGUI_VERSION, ImGuiIO.sizeof, ImGuiStyle.sizeof, ImVec2.sizeof, ImVec4.sizeof, ImDrawVert.sizeof, ImDrawIdx.sizeof); }
+
+struct ImDrawListSharedData;
 struct ImFontBuilderIO;
+struct ImGuiContext;
 
 alias ImGuiKeyChord = int;
 
@@ -66,8 +70,8 @@ extern(C++) struct ImVec4{
 //#endif
 }
 
-struct ImGuiContext;
-struct ImDrawListSharedData;//TODO: REMOVE THIS!!!
+private immutable Vec2_0_0 = ImVec2(0,0);
+
 
 extern(C++, "ImGui"){
 	private alias ItemsGetterFn = extern(C++) bool function(void* data, int idx, const(char)** out_text);
@@ -234,7 +238,8 @@ extern(C++, "ImGui"){
 	void BulletTextV(const(char)* fmt, va_list args);
 	void SeparatorText(const(char)* label);
 	
-	bool Button(const(char)* label, const auto ref ImVec2 size=ImVec2(0, 0));
+	pragma(msg, Button.mangleof);
+	bool Button(const(char)* label, ref const ImVec2 size=Vec2_0_0);
 	bool SmallButton(const(char)* label);
 	bool InvisibleButton(const(char)* str_id, ref const ImVec2 size, ImGuiButtonFlags_ flags=0);
 	bool ArrowButton(const(char)* str_id, ImGuiDir dir);
@@ -246,8 +251,8 @@ extern(C++, "ImGui"){
 	void ProgressBar(float fraction, const auto ref ImVec2 size_arg=ImVec2(-float.min_normal, 0), const(char)* overlay=null);
 	void Bullet();
 	
-	void Image(ImTextureID user_texture_id, ref const(ImVec2) size, const auto ref ImVec2 uv0=ImVec2(0, 0), const auto ref ImVec2 uv1=ImVec2(1, 1), const auto ref ImVec4 tint_col=ImVec4(1, 1, 1, 1), const auto ref ImVec4 border_col=ImVec4(0, 0, 0, 0));
-	bool ImageButton(const(char)* str_id, ImTextureID user_texture_id, ref const(ImVec2) size, const auto ref ImVec2 uv0=ImVec2(0, 0), const auto ref ImVec2 uv1=ImVec2(1, 1), const auto ref ImVec4 bg_col=ImVec4(0, 0, 0, 0), const auto ref ImVec4 tint_col=ImVec4(1, 1, 1, 1));
+	void Image(ImTextureID user_texture_id, ref const(ImVec2) size, const auto ref ImVec2 uv0=ImVec2(0,0), const auto ref ImVec2 uv1=ImVec2(1,1), const auto ref ImVec4 tint_col=ImVec4(1,1,1,1), const auto ref ImVec4 border_col=ImVec4(0,0,0,0));
+	bool ImageButton(const(char)* str_id, ImTextureID user_texture_id, ref const(ImVec2) size, const auto ref ImVec2 uv0=ImVec2(0,0), const auto ref ImVec2 uv1=ImVec2(1,1), const auto ref ImVec4 bg_col=ImVec4(0,0,0,0), const auto ref ImVec4 tint_col=ImVec4(1,1,1,1));
 	
 	bool BeginCombo(const(char)* label, const(char)* preview_value, ImGuiComboFlags_ flags=0);
 	void EndCombo();

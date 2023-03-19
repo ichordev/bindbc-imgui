@@ -7,7 +7,7 @@
 module bindbc.imgui.config;
 
 enum staticBinding = (){
-	version(BindBC_Static)        return true;
+	version(BindBC_Static)         return true;
 	else version(BindImGui_Static) return true;
 	else return false;
 }();

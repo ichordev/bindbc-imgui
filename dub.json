@@ -17,16 +17,26 @@
 	
 	"configurations": [
 		{
-			"name": "static",
+			"name":  "static",
 			"versions": ["BindImGui_Static"],
 		},
 		{
 			"name": "staticBC",
-			"subConfigurations": {
-				"bindbc-common": "yesBC",
-			},
-			"dflags": ["-betterC"],
+			"subConfigurations": {"bindbc-common": "yesBC"},
+			"buildOptions": ["betterC"],
 			"versions": ["BindImGui_Static"],
+		},
+		{
+			"name": "static-SDL2-SDLRenderer",
+			"dependencies": {"bindbc-sdl": ">=1.2.0"},
+			"versions": ["BindImGui_Static", "ImGui_Impl_SDL2", "ImGui_Impl_SDLRenderer"],
+		},
+		{
+			"name": "staticBC-SDL2-SDLRenderer",
+			"dependencies": {"bindbc-sdl": ">=1.2.0"},
+			"subConfigurations": {"bindbc-common": "yesBC"},
+			"buildOptions": ["betterC"],
+			"versions": ["BindImGui_Static", "ImGui_Impl_SDL2", "ImGui_Impl_SDLRenderer"],
 		}
 	],
 }

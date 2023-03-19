@@ -1,23 +1,18 @@
 
 
-| Version identifier    | Description |
-|-----------------------|-------------|
-| `ImGui_Impl_Allegro5` |  |
-| `ImGui_Impl_Android`  |  |
-| `ImGui_Impl_DX9`      |  |
-| `ImGui_Impl_DX10`     |  |
-| `ImGui_Impl_DX11`     |  |
-| `ImGui_Impl_DX12`     |  |
-| `ImGui_Impl_GLFW`     |  |
-| `ImGui_Impl_Metal`    |  |
-| `ImGui_Impl_OpenGL2`  |  |
-| `ImGui_Impl_OpenGL3`  |  |
-| `ImGui_Impl_macOS`    |  |
-| `ImGui_Impl_SDL2`     |  |
-| `ImGui_Impl_SDL3`     |  |
-| `ImGui_Impl_Vulkan`   |  |
-| `ImGui_Impl_WGPU`     |  |
-| `ImGui_Impl_Win32`    |  |
+| Configuration suffix | Description |
+|----------------------|-------------|
+| `Allegro5`           | Not currently supported. |
+| `Android`            | Not currently supported. |
+| `Apple`              | Not currently supported. |
+| `GLFW`               | Not currently supported. |
+| `SDL2`               | Requires bindbc-sdl >=1.2.0. |
+| `SDL3`               | Not currently supported. |
+| `Win32`              | Not currently supported. |
+
+| Version identifier               | Description |
+|----------------------------------|-------------|
+| `ImGui_Impl_SDLRenderer`         | Not recommended for production use. |
 
 | Version identifier               | Description |
 |----------------------------------|-------------|
@@ -26,4 +21,4 @@
 | `ImGui_DisableDemoWindows`       | Disable demo windows: ShowDemoWindow()/ShowStyleEditor() will be empty. |
 | `ImGui_ImDrawIdx32`              | Use 32-bit indices. Default is 16-bit. |
 | `ImGui_WChar32`                  | Use 32-bit "wchar"s. Default is 16-bit. |
-| `ImGui_BGRAPackedCol`            | Pack colors to BGRA8 instead of RGBA8 (to avoid converting from one to another) |
+| `ImGui_BGRAPackedCol`            | Pack colors to BGRA8 instead of RGBA8. (To avoid converting from one to another) |

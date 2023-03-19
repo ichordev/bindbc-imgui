@@ -8,10 +8,9 @@ module imgui.impl;
 
 import bindbc.imgui.config;
 
+extern(C++):
 version(ImGui_Impl_SDL2){
-	struct SDL_Window;
-	struct SDL_Renderer;
-	union SDL_Event;
+	import bindbc.sdl;
 	
 	bool ImGui_ImplSDL2_InitForOpenGL(SDL_Window* window, void* sdl_gl_context);
 	bool ImGui_ImplSDL2_InitForVulkan(SDL_Window* window);
@@ -26,4 +25,19 @@ version(ImGui_Impl_SDL2){
 	}else{
 		pragma(inline,true) void ImGui_ImplSDL2_NewFrame(SDL_Window*){ ImGui_ImplSDL2_NewFrame(); }
 	}
+}
+
+version(ImGui_Impl_SDLRenderer){
+	import imgui: ImDrawData;
+	import bindbc.sdl;
+	
+	bool ImGui_ImplSDLRenderer_Init(SDL_Renderer* renderer);
+	void ImGui_ImplSDLRenderer_Shutdown();
+	void ImGui_ImplSDLRenderer_NewFrame();
+	void ImGui_ImplSDLRenderer_RenderDrawData(ImDrawData* draw_data);
+
+	bool ImGui_ImplSDLRenderer_CreateFontsTexture();
+	void ImGui_ImplSDLRenderer_DestroyFontsTexture();
+	bool ImGui_ImplSDLRenderer_CreateDeviceObjects();
+	void ImGui_ImplSDLRenderer_DestroyDeviceObjects();
 }
