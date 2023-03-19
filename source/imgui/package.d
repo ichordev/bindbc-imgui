@@ -12,7 +12,7 @@ import core.vararg: va_list;
 import core.stdc.string: memcpy, memset, memmove, memcmp, strcmp;
 
 public import
-	imgui.demo;
+	imgui.impl;
 
 enum IMGUI_VERSION        = "1.89.4";
 enum IMGUI_VERSION_NUM    = 18940;
