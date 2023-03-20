@@ -8,7 +8,55 @@ module imgui.impl;
 
 import bindbc.imgui.config;
 
+import imgui: ImDrawData;
+
 extern(C++):
+
+version(ImGui_Impl_Metal){
+	version(D_ObjectiveC){
+		import metal;
+		extern(Objective-C):
+		
+		bool ImGui_ImplMetal_Init(MTLDevice device);
+		void ImGui_ImplMetal_Shutdown();
+		void ImGui_ImplMetal_NewFrame(MTLRenderPassDescriptor renderPassDescriptor);
+		void ImGui_ImplMetal_RenderDrawData(ImDrawData* drawData, MTLCommandBuffer commandBuffer, MTLRenderCommandEncoder commandEncoder);
+		
+		bool ImGui_ImplMetal_CreateFontsTexture(MTLDevice device);
+		void ImGui_ImplMetal_DestroyFontsTexture();
+		bool ImGui_ImplMetal_CreateDeviceObjects(MTLDevice device);
+		void ImGui_ImplMetal_DestroyDeviceObjects();
+	}else static assert(0, "Your compiler doesn't support Objective-C interoperability");
+}
+
+version(ImGui_Impl_OpenGL3){
+	import bindbc.opengl;
+	
+	bool ImGui_ImplOpenGL2_Init();
+	void ImGui_ImplOpenGL2_Shutdown();
+	void ImGui_ImplOpenGL2_NewFrame();
+	void ImGui_ImplOpenGL2_RenderDrawData(ImDrawData* draw_data);
+	
+	bool ImGui_ImplOpenGL2_CreateFontsTexture();
+	void ImGui_ImplOpenGL2_DestroyFontsTexture();
+	bool ImGui_ImplOpenGL2_CreateDeviceObjects();
+	void ImGui_ImplOpenGL2_DestroyDeviceObjects();
+}
+
+version(ImGui_Impl_OpenGL3){
+	import bindbc.opengl;
+	
+	bool ImGui_ImplOpenGL3_Init(const(char)* glsl_version=null);
+	void ImGui_ImplOpenGL3_Shutdown();
+	void ImGui_ImplOpenGL3_NewFrame();
+	void ImGui_ImplOpenGL3_RenderDrawData(ImDrawData* draw_data);
+	
+	bool ImGui_ImplOpenGL3_CreateFontsTexture();
+	void ImGui_ImplOpenGL3_DestroyFontsTexture();
+	bool ImGui_ImplOpenGL3_CreateDeviceObjects();
+	void ImGui_ImplOpenGL3_DestroyDeviceObjects();
+}
+
 version(ImGui_Impl_SDL2){
 	import bindbc.sdl;
 	
@@ -28,7 +76,6 @@ version(ImGui_Impl_SDL2){
 }
 
 version(ImGui_Impl_SDLRenderer){
-	import imgui: ImDrawData;
 	import bindbc.sdl;
 	
 	bool ImGui_ImplSDLRenderer_Init(SDL_Renderer* renderer);

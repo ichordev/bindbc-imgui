@@ -1,0 +1,9 @@
+{
+	"name": "example-null",
+	"dependencies": {
+		"bindbc-imgui": "~>1.0.0",
+	},
+	"subConfigurations": {
+		"bindbc-imgui": "static",
+	},
+}

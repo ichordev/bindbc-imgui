@@ -17,26 +17,162 @@
 	
 	"configurations": [
 		{
-			"name":  "static",
-			"versions": ["BindImGui_Static"],
+			"name": "static",
+			"versions": [
+				"BindImGui_Static"
+			]
 		},
 		{
-			"name": "staticBC",
-			"subConfigurations": {"bindbc-common": "yesBC"},
-			"buildOptions": ["betterC"],
-			"versions": ["BindImGui_Static"],
+			"name": "static-SDL2",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_SDL2"
+			],
+			"dependencies": {
+				"bindbc-sdl": ">=1.2.0"
+			}
+		},
+		{
+			"name": "static-SDL2-Metal",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_SDL2",
+				"ImGui_Impl_Metal"
+			],
+			"dependencies": {
+				"bindbc-sdl": ">=1.2.0",
+				"d-metal-binding": "~>1.0.8"
+			}
+		},
+		{
+			"name": "static-SDL2-OpenGL2",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_SDL2",
+				"ImGui_Impl_OpenGL2"
+			],
+			"dependencies": {
+				"bindbc-sdl": ">=1.2.0"
+			}
+		},
+		{
+			"name": "static-SDL2-OpenGL3",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_SDL2",
+				"ImGui_Impl_OpenGL3"
+			],
+			"dependencies": {
+				"bindbc-sdl": ">=1.2.0"
+			}
 		},
 		{
 			"name": "static-SDL2-SDLRenderer",
-			"dependencies": {"bindbc-sdl": ">=1.2.0"},
-			"versions": ["BindImGui_Static", "ImGui_Impl_SDL2", "ImGui_Impl_SDLRenderer"],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_SDL2",
+				"ImGui_Impl_SDLRenderer"
+			],
+			"dependencies": {
+				"bindbc-sdl": ">=1.2.0"
+			}
+		},
+		{
+			"name": "staticBC",
+			"subConfigurations": {
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": [
+				"betterC"
+			],
+			"versions": [
+				"BindImGui_Static"
+			]
+		},
+		{
+			"name": "staticBC-SDL2",
+			"subConfigurations": {
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": [
+				"betterC"
+			],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_SDL2"
+			],
+			"dependencies": {
+				"bindbc-sdl": ">=1.2.0"
+			}
+		},
+		{
+			"name": "staticBC-SDL2-Metal",
+			"subConfigurations": {
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": [
+				"betterC"
+			],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_SDL2",
+				"ImGui_Impl_Metal"
+			],
+			"dependencies": {
+				"bindbc-sdl": ">=1.2.0",
+				"d-metal-binding": "~>1.0.8"
+			}
+		},
+		{
+			"name": "staticBC-SDL2-OpenGL2",
+			"subConfigurations": {
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": [
+				"betterC"
+			],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_SDL2",
+				"ImGui_Impl_OpenGL2"
+			],
+			"dependencies": {
+				"bindbc-sdl": ">=1.2.0"
+			}
+		},
+		{
+			"name": "staticBC-SDL2-OpenGL3",
+			"subConfigurations": {
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": [
+				"betterC"
+			],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_SDL2",
+				"ImGui_Impl_OpenGL3"
+			],
+			"dependencies": {
+				"bindbc-sdl": ">=1.2.0"
+			}
 		},
 		{
 			"name": "staticBC-SDL2-SDLRenderer",
-			"dependencies": {"bindbc-sdl": ">=1.2.0"},
-			"subConfigurations": {"bindbc-common": "yesBC"},
-			"buildOptions": ["betterC"],
-			"versions": ["BindImGui_Static", "ImGui_Impl_SDL2", "ImGui_Impl_SDLRenderer"],
+			"subConfigurations": {
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": [
+				"betterC"
+			],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_SDL2",
+				"ImGui_Impl_SDLRenderer"
+			],
+			"dependencies": {
+				"bindbc-sdl": ">=1.2.0"
+			}
 		}
-	],
+	]
 }

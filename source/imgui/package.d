@@ -75,7 +75,7 @@ private immutable{
 	auto Vec2_0_1 = ImVec2(0,1);
 	auto Vec2_1_0 = ImVec2(1,0);
 	auto Vec2_1_1 = ImVec2(1,1);
-	auto Vec2_negfltmin_0 = ImVec2(-float.min_normal, 0)
+	auto Vec2_negfltmin_0 = ImVec2(-float.min_normal, 0);
 	auto Vec4_1_1_1_1 = ImVec4(1,1,1,1);
 	auto Vec4_0_0_0_0 = ImVec4(0,0,0,0);
 }
@@ -245,7 +245,6 @@ extern(C++, "ImGui"){
 	void BulletTextV(const(char)* fmt, va_list args);
 	void SeparatorText(const(char)* label);
 	
-	pragma(msg, Button.mangleof);
 	bool Button(const(char)* label, ref const ImVec2 size=Vec2_0_0);
 	bool SmallButton(const(char)* label);
 	bool InvisibleButton(const(char)* str_id, ref const ImVec2 size, ImGuiButtonFlags_ flags=0);

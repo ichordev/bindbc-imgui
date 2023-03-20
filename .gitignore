@@ -5,3 +5,4 @@ dscanner.ini
 *.kate-swp
 .directory
 .DS_Store
+imgui.ini
