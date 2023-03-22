@@ -329,6 +329,9 @@ static void FramePresent(ImGui_ImplVulkanH_Window* wd){
 
 // Main code
 int main(){
+	static if(!bindbc.sdl.config.staticBinding){
+		loadSDL();
+	}
 	if(!loadGlobalLevelFunctions()){
 		/*
 on failure, get a pointer to the vkGetInstanceProcAddr through platform-specific means (e.g. loading the Vulkan shared library manually, or glfwGetInstanceProcAddress if using GLFW3 >= v3.2 with DerelictGLFW3 >= v3.1.0)
