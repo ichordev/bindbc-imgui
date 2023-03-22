@@ -62,9 +62,9 @@ static void SetupVulkan(const char** extensions, uint extensions_count){
 		create_info.flags = VK_INSTANCE_CREATE_ENUMERATE_PORTABILITY_BIT_KHR;
 debug{
 		// Enabling validation layers
-		const(char)** layers = cast(const(char)**)([toStringz("VK_LAYER_KHRONOS_validation")].ptr);
+		const(char)*[] layers = [toStringz("VK_LAYER_KHRONOS_validation")];
 		create_info.enabledLayerCount = 1;
-		create_info.ppEnabledLayerNames = layers;
+		create_info.ppEnabledLayerNames = layers.ptr;
 		
 		// Enable debug report extension (we need additional storage, so we duplicate the user array to add our new extension to it)
 		const(char)** extensions_ext = cast(const(char)**)malloc((const(char)*).sizeof * (extensions_count + 2));
@@ -100,7 +100,7 @@ debug{
 		loadInstanceLevelFunctions(g_Instance);
 }
 	}
-	printf("HI\n");
+	loadDeviceLevelFunctions(g_Instance);
 	
 	// Select GPU
 	{
@@ -129,7 +129,6 @@ debug{
 		g_PhysicalDevice = gpus[use_gpu];
 		free(gpus);
 	}
-	printf("HI\n");
 	
 	// Select graphics queue family
 	{
@@ -145,21 +144,18 @@ debug{
 		free(queues);
 		assert(g_QueueFamily != -1U);
 	}
-	printf("HI\n");
 	
 	// Create Logical Device (with 1 queue)
 	{
 		int device_extension_count = 1;
-		const(char)*[] device_extensions = cast(const(char)*[])[toStringz("VK_KHR_swapchain")];
-	printf("HI1\n");
+		const(char)*[] device_extensions = [toStringz("VK_KHR_swapchain")];
 		const(float)[] queue_priority = [1f];
 		VkDeviceQueueCreateInfo[1] queue_info = [{}];
-	printf("HI1\n");
 		queue_info[0].sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+		queue_info[0].flags = 0;
 		queue_info[0].queueFamilyIndex = g_QueueFamily;
 		queue_info[0].queueCount = 1;
 		queue_info[0].pQueuePriorities = queue_priority.ptr;
-		queue_info[0].flags = 0;
 		VkDeviceCreateInfo create_info;
 		create_info.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
 		create_info.queueCreateInfoCount = queue_info.length;
@@ -167,12 +163,9 @@ debug{
 		create_info.enabledExtensionCount = device_extension_count;
 		create_info.ppEnabledExtensionNames = device_extensions.ptr;
 		err = vkCreateDevice(g_PhysicalDevice, &create_info, g_Allocator, &g_Device);
-	printf("HI13\n");
 		check_vk_result(err);
-	printf("HI12\n");
 		vkGetDeviceQueue(g_Device, g_QueueFamily, 0, &g_Queue);
 	}
-	printf("HI\n");
 	
 	// Create Descriptor Pool
 	{
@@ -198,13 +191,11 @@ debug{
 		err = vkCreateDescriptorPool(g_Device, &pool_info, g_Allocator, &g_DescriptorPool);
 		check_vk_result(err);
 	}
-	printf("HI\n");
 }
 
 // All the ImGui_ImplVulkanH_XXX structures/functions are optional helpers used by the demo.
 // Your real engine/app may not use them.
-static void SetupVulkanWindow(ImGui_ImplVulkanH_Window* wd, VkSurfaceKHR surface, int width, int height)
-{
+static void SetupVulkanWindow(ImGui_ImplVulkanH_Window* wd, VkSurfaceKHR surface, int width, int height){
 	wd.Surface = surface;
 	
 	// Check for WSI support
@@ -364,17 +355,12 @@ call loadGlobalLevelFunctions(getInstanceProcAddr), where getInstanceProcAddr is
 	const(char)** extensions = cast(const(char)**)malloc(extensions_count);
 	SDL_Vulkan_GetInstanceExtensions(window, &extensions_count, extensions);
 	SetupVulkan(extensions, extensions_count);
-printf("HI\n");
 	free(cast(void*)extensions);
-printf("HI\n");
 	
 	// Create Window Surface
 	VkSurfaceKHR surface;
-printf("HI\n");
 	VkResult err;
-printf("HI\n");
 	if(SDL_Vulkan_CreateSurface(window, g_Instance, &surface) == 0){
-printf("HI\n");
 		printf("Failed to create Vulkan surface.\n");
 		return 1;
 	}

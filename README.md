@@ -24,11 +24,11 @@
 | `DX10`        | Not currently supported. |
 | `DX11`        | Not currently supported. |
 | `DX12`        | Not currently supported. |
-| `Metal`       | Untested. Requires `d-metal-binding` ~>1.0.12. |
+| `Metal`       | Untested. Requires `d-metal-binding` ~>1.0.12. x86_64 only due to Objective-C interoperability being DMD-exclusive. |
 | `OpenGL2`     | Untested. Requires `bindbc-opengl` ~>1.0.0. |
 | `OpenGL3`     | Untested. Requires `bindbc-opengl` ~>1.0.0. |
 | `SDLRenderer` | Requires `bindbc-sdl` ~>1.3.0. |
-| `Vulkan`      | Untested. Requires `erupted` ~>2.1.0. |
+| `Vulkan`      | Requires `erupted` ~>2.1.0. |
 
 | Version identifier               | Description |
 |----------------------------------|-------------|
