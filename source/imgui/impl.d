@@ -29,7 +29,7 @@ version(ImGui_Impl_Metal){
 	}else static assert(0, "Your compiler doesn't support Objective-C interoperability");
 }
 
-version(ImGui_Impl_OpenGL3){
+version(ImGui_Impl_OpenGL2){
 	import bindbc.opengl;
 	
 	bool ImGui_ImplOpenGL2_Init();
@@ -87,4 +87,76 @@ version(ImGui_Impl_SDLRenderer){
 	void ImGui_ImplSDLRenderer_DestroyFontsTexture();
 	bool ImGui_ImplSDLRenderer_CreateDeviceObjects();
 	void ImGui_ImplSDLRenderer_DestroyDeviceObjects();
+}
+
+version(ImGui_Impl_Vulkan){
+	import erupted;
+	import core.stdc.string: memset;
+	
+	struct ImGui_ImplVulkan_InitInfo{
+		VkInstance Instance;
+		VkPhysicalDevice PhysicalDevice;
+		VkDevice Device;
+		uint32_t QueueFamily;
+		VkQueue Queue;
+		VkPipelineCache PipelineCache;
+		VkDescriptorPool DescriptorPool;
+		uint32_t Subpass;
+		uint32_t MinImageCount;
+		uint32_t ImageCount;
+		VkSampleCountFlagBits MSAASamples;
+		const(VkAllocationCallbacks)* Allocator;
+		void function(VkResult err) CheckVkResultFn;
+	}
+	
+	bool ImGui_ImplVulkan_Init(ImGui_ImplVulkan_InitInfo* info, VkRenderPass render_pass);
+	void ImGui_ImplVulkan_Shutdown();
+	void ImGui_ImplVulkan_NewFrame();
+	void ImGui_ImplVulkan_RenderDrawData(ImDrawData* draw_data, VkCommandBuffer command_buffer, VkPipeline pipeline=VK_NULL_ND_HANDLE);
+	bool ImGui_ImplVulkan_CreateFontsTexture(VkCommandBuffer command_buffer);
+	void ImGui_ImplVulkan_DestroyFontUploadObjects();
+	void ImGui_ImplVulkan_SetMinImageCount(uint32_t min_image_count);
+	
+	VkDescriptorSet ImGui_ImplVulkan_AddTexture(VkSampler sampler, VkImageView image_view, VkImageLayout image_layout);
+	void ImGui_ImplVulkan_RemoveTexture(VkDescriptorSet descriptor_set);
+	
+	bool ImGui_ImplVulkan_LoadFunctions(PFN_vkVoidFunction function(const(char)* loader_func, void* user_data), void* user_data=null);
+	
+	void ImGui_ImplVulkanH_CreateOrResizeWindow(VkInstance instance, VkPhysicalDevice physical_device, VkDevice device, ImGui_ImplVulkanH_Window* wnd, uint32_t queue_family, const(VkAllocationCallbacks)* allocator, int w, int h, uint32_t min_image_count);
+	void ImGui_ImplVulkanH_DestroyWindow(VkInstance instance, VkDevice device, ImGui_ImplVulkanH_Window* wnd, const(VkAllocationCallbacks)* allocator);
+	VkSurfaceFormatKHR ImGui_ImplVulkanH_SelectSurfaceFormat(VkPhysicalDevice physical_device, VkSurfaceKHR surface, const(VkFormat)* request_formats, int request_formats_count, VkColorSpaceKHR request_color_space);
+	VkPresentModeKHR ImGui_ImplVulkanH_SelectPresentMode(VkPhysicalDevice physical_device, VkSurfaceKHR surface, const(VkPresentModeKHR)* request_modes, int request_modes_count);
+	int ImGui_ImplVulkanH_GetMinImageCountFromPresentMode(VkPresentModeKHR present_mode);
+	
+	struct ImGui_ImplVulkanH_Frame{
+		VkCommandPool CommandPool;
+		VkCommandBuffer CommandBuffer;
+		VkFence Fence;
+		VkImage Backbuffer;
+		VkImageView BackbufferView;
+		VkFramebuffer Framebuffer;
+	}
+	
+	struct ImGui_ImplVulkanH_FrameSemaphores{
+		VkSemaphore ImageAcquiredSemaphore;
+		VkSemaphore RenderCompleteSemaphore;
+	}
+	
+	struct ImGui_ImplVulkanH_Window{
+		int Width = 0;
+		int Height = 0;
+		VkSwapchainKHR Swapchain = VK_NULL_ND_HANDLE;
+		VkSurfaceKHR Surface = VK_NULL_ND_HANDLE;
+		VkSurfaceFormatKHR SurfaceFormat;
+		VkPresentModeKHR PresentMode = VK_PRESENT_MODE_MAX_ENUM_KHR;
+		VkRenderPass RenderPass = VK_NULL_ND_HANDLE;
+		VkPipeline Pipeline = VK_NULL_ND_HANDLE;
+		bool ClearEnable = true;
+		VkClearValue ClearValue;
+		uint32_t FrameIndex = 0;
+		uint32_t ImageCount = 0;
+		uint32_t SemaphoreIndex = 0;
+		ImGui_ImplVulkanH_Frame* Frames = null;
+		ImGui_ImplVulkanH_FrameSemaphores* FrameSemaphores = null;
+	}
 }

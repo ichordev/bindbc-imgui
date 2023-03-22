@@ -25,7 +25,7 @@ implFrontends = {
 	# 	"versions": ["ImGui_Impl_GLFW"],
 	# },
 	"SDL2": {
-		"dependencies": {"bindbc-sdl": ">=1.2.0"},
+		"dependencies": {"bindbc-sdl": "~>1.3.0"},
 		"versions": ["ImGui_Impl_SDL2"],
 	},
 	# "SDL3": {
@@ -49,22 +49,34 @@ implRenderers = {
 	# 	"versions": ["ImGui_Impl_DX12"],
 	# },
 	"Metal": {
-		"dependencies": {"d-metal-binding": "~>1.0.8"},
+		"dependencies": {"d-metal-binding": "~>1.0.12"},
 		"versions": ["ImGui_Impl_Metal"],
+		"lflags": [
+			"-framework CoreFoundation",
+			"-framework QuartzCore",
+			"-framework Metal",
+			"-framework MetalKit",
+			"-framework Cocoa",
+			"-framework IOKit",
+			"-framework CoreVideo",
+		],
 	},
 	"OpenGL2": {
+		"dependencies": {"bindbc-opengl": "~>1.0.0"},
 		"versions": ["ImGui_Impl_OpenGL2"],
 	},
 	"OpenGL3": {
-		"versions": ["ImGui_Impl_OpenGL3"],
+		"dependencies": {"bindbc-opengl": "~>1.0.0"},
+		"versions": ["ImGui_Impl_OpenGL3", "GL_30"],
 	},
 	"SDLRenderer": {
-		"dependencies": {"bindbc-sdl": ">=1.2.0"},
+		"dependencies": {"bindbc-sdl": "~>1.3.0"},
 		"versions": ["ImGui_Impl_SDLRenderer"],
 	},
-	# "Vulkan": {
-	# 	"versions": ["ImGui_Impl_Vulkan"],
-	# },
+	"Vulkan": {
+		"dependencies": {"erupted": "~>2.1.0"},
+		"versions": ["ImGui_Impl_Vulkan"],
+	},
 }
 
 configs = []

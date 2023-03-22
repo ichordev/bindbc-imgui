@@ -1,0 +1,14 @@
+{
+	"name": "example-sdl2-vulkan",
+	"dependencies": {
+		"bindbc-imgui": "~>1.0.0",
+		"bindbc-sdl": "~>1.3.0",
+		"erupted": "~>2.1.0",
+	},
+	"subConfigurations": {
+		"bindbc-imgui": "static-SDL2-Vulkan",
+		"bindbc-sdl": "static",
+	},
+	"versions": ["SDL_2018"],
+	"libs": ["SDL2", "vulkan"],
+}

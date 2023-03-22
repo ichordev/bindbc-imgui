@@ -3,7 +3,7 @@
 	"dependencies": {
 		"bindbc-imgui": "~>1.0.0",
 		"bindbc-sdl": "~>1.3.0",
-		"d-metal-binding": "~>1.0.8",
+		"d-metal-binding": "~>1.0.12",
 	},
 	"subConfigurations": {
 		"bindbc-imgui": "static-SDL2-Metal",
