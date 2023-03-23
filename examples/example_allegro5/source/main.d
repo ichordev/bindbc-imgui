@@ -25,6 +25,7 @@ int main(){
 			}
 			return 0;
 		}
+		loadAllegroPrimitives();
 	}
 	
 	// Set up Allegro
