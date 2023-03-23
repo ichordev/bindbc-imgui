@@ -10,8 +10,20 @@
 	"targetPath": "lib",
 	"targetName": "BindBC_ImGui",
 	
-	"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/*.o"],
-	"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/*.obj"],
+	"sourceFiles-posix": [
+		"$BIND_IMGUI_OBJDIR/imgui.o",
+		"$BIND_IMGUI_OBJDIR/imgui_demo.o",
+		"$BIND_IMGUI_OBJDIR/imgui_draw.o",
+		"$BIND_IMGUI_OBJDIR/imgui_tables.o",
+		"$BIND_IMGUI_OBJDIR/imgui_widgets.o",
+	],
+	"sourceFiles-windows": [
+		"$BIND_IMGUI_OBJDIR/imgui.obj",
+		"$BIND_IMGUI_OBJDIR/imgui_demo.obj",
+		"$BIND_IMGUI_OBJDIR/imgui_draw.obj",
+		"$BIND_IMGUI_OBJDIR/imgui_tables.obj",
+		"$BIND_IMGUI_OBJDIR/imgui_widgets.obj",
+	],
 	"dflags": ["-extern-std=c++11"],
 	"libs": ["stdc++"],
 	
@@ -28,6 +40,12 @@
 				"BindImGui_Static",
 				"ImGui_Impl_Allegro5"
 			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.obj"
+			],
 			"dependencies": {
 				"bindbc-allegro5": "~>1.0.0"
 			}
@@ -38,6 +56,14 @@
 				"BindImGui_Static",
 				"ImGui_Impl_Allegro5",
 				"ImGui_Impl_Metal"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.obj"
 			],
 			"dependencies": {
 				"bindbc-allegro5": "~>1.0.0",
@@ -60,6 +86,14 @@
 				"ImGui_Impl_Allegro5",
 				"ImGui_Impl_OpenGL2"
 			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.obj"
+			],
 			"dependencies": {
 				"bindbc-allegro5": "~>1.0.0",
 				"bindbc-opengl": "~>1.0.0"
@@ -73,6 +107,14 @@
 				"ImGui_Impl_OpenGL3",
 				"GL_30"
 			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.obj"
+			],
 			"dependencies": {
 				"bindbc-allegro5": "~>1.0.0",
 				"bindbc-opengl": "~>1.0.0"
@@ -84,6 +126,14 @@
 				"BindImGui_Static",
 				"ImGui_Impl_Allegro5",
 				"ImGui_Impl_SDLRenderer"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer.obj"
 			],
 			"dependencies": {
 				"bindbc-allegro5": "~>1.0.0",
@@ -97,6 +147,14 @@
 				"ImGui_Impl_Allegro5",
 				"ImGui_Impl_Vulkan"
 			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.obj"
+			],
 			"dependencies": {
 				"bindbc-allegro5": "~>1.0.0",
 				"erupted": "~>2.1.0"
@@ -108,6 +166,12 @@
 				"BindImGui_Static",
 				"ImGui_Impl_GLFW"
 			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.obj"
+			],
 			"dependencies": {
 				"bindbc-glfw": "~>1.0.0"
 			}
@@ -118,6 +182,14 @@
 				"BindImGui_Static",
 				"ImGui_Impl_GLFW",
 				"ImGui_Impl_Metal"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.obj"
 			],
 			"dependencies": {
 				"bindbc-glfw": "~>1.0.0",
@@ -140,6 +212,14 @@
 				"ImGui_Impl_GLFW",
 				"ImGui_Impl_OpenGL2"
 			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.obj"
+			],
 			"dependencies": {
 				"bindbc-glfw": "~>1.0.0",
 				"bindbc-opengl": "~>1.0.0"
@@ -153,6 +233,14 @@
 				"ImGui_Impl_OpenGL3",
 				"GL_30"
 			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.obj"
+			],
 			"dependencies": {
 				"bindbc-glfw": "~>1.0.0",
 				"bindbc-opengl": "~>1.0.0"
@@ -164,6 +252,14 @@
 				"BindImGui_Static",
 				"ImGui_Impl_GLFW",
 				"ImGui_Impl_SDLRenderer"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer.obj"
 			],
 			"dependencies": {
 				"bindbc-glfw": "~>1.0.0",
@@ -177,6 +273,14 @@
 				"ImGui_Impl_GLFW",
 				"ImGui_Impl_Vulkan"
 			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.obj"
+			],
 			"dependencies": {
 				"bindbc-glfw": "~>1.0.0",
 				"erupted": "~>2.1.0"
@@ -187,6 +291,12 @@
 			"versions": [
 				"BindImGui_Static",
 				"ImGui_Impl_macOS"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj"
 			]
 		},
 		{
@@ -195,6 +305,14 @@
 				"BindImGui_Static",
 				"ImGui_Impl_macOS",
 				"ImGui_Impl_Metal"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.obj"
 			],
 			"dependencies": {
 				"d-metal-binding": "~>1.0.12"
@@ -216,6 +334,14 @@
 				"ImGui_Impl_macOS",
 				"ImGui_Impl_OpenGL2"
 			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.obj"
+			],
 			"dependencies": {
 				"bindbc-opengl": "~>1.0.0"
 			}
@@ -228,6 +354,14 @@
 				"ImGui_Impl_OpenGL3",
 				"GL_30"
 			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.obj"
+			],
 			"dependencies": {
 				"bindbc-opengl": "~>1.0.0"
 			}
@@ -238,6 +372,14 @@
 				"BindImGui_Static",
 				"ImGui_Impl_macOS",
 				"ImGui_Impl_SDLRenderer"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer.obj"
 			],
 			"dependencies": {
 				"bindbc-sdl": "~>1.3.0"
@@ -250,6 +392,14 @@
 				"ImGui_Impl_macOS",
 				"ImGui_Impl_Vulkan"
 			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.obj"
+			],
 			"dependencies": {
 				"erupted": "~>2.1.0"
 			}
@@ -259,6 +409,12 @@
 			"versions": [
 				"BindImGui_Static",
 				"ImGui_Impl_SDL2"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj"
 			],
 			"dependencies": {
 				"bindbc-sdl": "~>1.3.0"
@@ -270,6 +426,14 @@
 				"BindImGui_Static",
 				"ImGui_Impl_SDL2",
 				"ImGui_Impl_Metal"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.obj"
 			],
 			"dependencies": {
 				"bindbc-sdl": "~>1.3.0",
@@ -292,6 +456,14 @@
 				"ImGui_Impl_SDL2",
 				"ImGui_Impl_OpenGL2"
 			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.obj"
+			],
 			"dependencies": {
 				"bindbc-sdl": "~>1.3.0",
 				"bindbc-opengl": "~>1.0.0"
@@ -305,6 +477,14 @@
 				"ImGui_Impl_OpenGL3",
 				"GL_30"
 			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.obj"
+			],
 			"dependencies": {
 				"bindbc-sdl": "~>1.3.0",
 				"bindbc-opengl": "~>1.0.0"
@@ -317,6 +497,14 @@
 				"ImGui_Impl_SDL2",
 				"ImGui_Impl_SDLRenderer"
 			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer.obj"
+			],
 			"dependencies": {
 				"bindbc-sdl": "~>1.3.0"
 			}
@@ -327,6 +515,14 @@
 				"BindImGui_Static",
 				"ImGui_Impl_SDL2",
 				"ImGui_Impl_Vulkan"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.obj"
 			],
 			"dependencies": {
 				"bindbc-sdl": "~>1.3.0",
@@ -357,6 +553,12 @@
 				"BindImGui_Static",
 				"ImGui_Impl_Allegro5"
 			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.obj"
+			],
 			"dependencies": {
 				"bindbc-allegro5": "~>1.0.0"
 			}
@@ -373,6 +575,14 @@
 				"BindImGui_Static",
 				"ImGui_Impl_Allegro5",
 				"ImGui_Impl_Metal"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.obj"
 			],
 			"dependencies": {
 				"bindbc-allegro5": "~>1.0.0",
@@ -401,6 +611,14 @@
 				"ImGui_Impl_Allegro5",
 				"ImGui_Impl_OpenGL2"
 			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.obj"
+			],
 			"dependencies": {
 				"bindbc-allegro5": "~>1.0.0",
 				"bindbc-opengl": "~>1.0.0"
@@ -420,6 +638,14 @@
 				"ImGui_Impl_OpenGL3",
 				"GL_30"
 			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.obj"
+			],
 			"dependencies": {
 				"bindbc-allegro5": "~>1.0.0",
 				"bindbc-opengl": "~>1.0.0"
@@ -437,6 +663,14 @@
 				"BindImGui_Static",
 				"ImGui_Impl_Allegro5",
 				"ImGui_Impl_SDLRenderer"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer.obj"
 			],
 			"dependencies": {
 				"bindbc-allegro5": "~>1.0.0",
@@ -456,6 +690,14 @@
 				"ImGui_Impl_Allegro5",
 				"ImGui_Impl_Vulkan"
 			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.obj"
+			],
 			"dependencies": {
 				"bindbc-allegro5": "~>1.0.0",
 				"erupted": "~>2.1.0"
@@ -473,6 +715,12 @@
 				"BindImGui_Static",
 				"ImGui_Impl_GLFW"
 			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.obj"
+			],
 			"dependencies": {
 				"bindbc-glfw": "~>1.0.0"
 			}
@@ -489,6 +737,14 @@
 				"BindImGui_Static",
 				"ImGui_Impl_GLFW",
 				"ImGui_Impl_Metal"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.obj"
 			],
 			"dependencies": {
 				"bindbc-glfw": "~>1.0.0",
@@ -517,6 +773,14 @@
 				"ImGui_Impl_GLFW",
 				"ImGui_Impl_OpenGL2"
 			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.obj"
+			],
 			"dependencies": {
 				"bindbc-glfw": "~>1.0.0",
 				"bindbc-opengl": "~>1.0.0"
@@ -536,6 +800,14 @@
 				"ImGui_Impl_OpenGL3",
 				"GL_30"
 			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.obj"
+			],
 			"dependencies": {
 				"bindbc-glfw": "~>1.0.0",
 				"bindbc-opengl": "~>1.0.0"
@@ -553,6 +825,14 @@
 				"BindImGui_Static",
 				"ImGui_Impl_GLFW",
 				"ImGui_Impl_SDLRenderer"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer.obj"
 			],
 			"dependencies": {
 				"bindbc-glfw": "~>1.0.0",
@@ -572,6 +852,14 @@
 				"ImGui_Impl_GLFW",
 				"ImGui_Impl_Vulkan"
 			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.obj"
+			],
 			"dependencies": {
 				"bindbc-glfw": "~>1.0.0",
 				"erupted": "~>2.1.0"
@@ -588,6 +876,12 @@
 			"versions": [
 				"BindImGui_Static",
 				"ImGui_Impl_macOS"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj"
 			]
 		},
 		{
@@ -602,6 +896,14 @@
 				"BindImGui_Static",
 				"ImGui_Impl_macOS",
 				"ImGui_Impl_Metal"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.obj"
 			],
 			"dependencies": {
 				"d-metal-binding": "~>1.0.12"
@@ -629,6 +931,14 @@
 				"ImGui_Impl_macOS",
 				"ImGui_Impl_OpenGL2"
 			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.obj"
+			],
 			"dependencies": {
 				"bindbc-opengl": "~>1.0.0"
 			}
@@ -647,6 +957,14 @@
 				"ImGui_Impl_OpenGL3",
 				"GL_30"
 			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.obj"
+			],
 			"dependencies": {
 				"bindbc-opengl": "~>1.0.0"
 			}
@@ -663,6 +981,14 @@
 				"BindImGui_Static",
 				"ImGui_Impl_macOS",
 				"ImGui_Impl_SDLRenderer"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer.obj"
 			],
 			"dependencies": {
 				"bindbc-sdl": "~>1.3.0"
@@ -681,6 +1007,14 @@
 				"ImGui_Impl_macOS",
 				"ImGui_Impl_Vulkan"
 			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.obj"
+			],
 			"dependencies": {
 				"erupted": "~>2.1.0"
 			}
@@ -696,6 +1030,12 @@
 			"versions": [
 				"BindImGui_Static",
 				"ImGui_Impl_SDL2"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj"
 			],
 			"dependencies": {
 				"bindbc-sdl": "~>1.3.0"
@@ -713,6 +1053,14 @@
 				"BindImGui_Static",
 				"ImGui_Impl_SDL2",
 				"ImGui_Impl_Metal"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.obj"
 			],
 			"dependencies": {
 				"bindbc-sdl": "~>1.3.0",
@@ -741,6 +1089,14 @@
 				"ImGui_Impl_SDL2",
 				"ImGui_Impl_OpenGL2"
 			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.obj"
+			],
 			"dependencies": {
 				"bindbc-sdl": "~>1.3.0",
 				"bindbc-opengl": "~>1.0.0"
@@ -760,6 +1116,14 @@
 				"ImGui_Impl_OpenGL3",
 				"GL_30"
 			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.obj"
+			],
 			"dependencies": {
 				"bindbc-sdl": "~>1.3.0",
 				"bindbc-opengl": "~>1.0.0"
@@ -778,6 +1142,14 @@
 				"ImGui_Impl_SDL2",
 				"ImGui_Impl_SDLRenderer"
 			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer.obj"
+			],
 			"dependencies": {
 				"bindbc-sdl": "~>1.3.0"
 			}
@@ -794,6 +1166,14 @@
 				"BindImGui_Static",
 				"ImGui_Impl_SDL2",
 				"ImGui_Impl_Vulkan"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.obj"
 			],
 			"dependencies": {
 				"bindbc-sdl": "~>1.3.0",
