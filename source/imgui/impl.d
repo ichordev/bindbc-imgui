@@ -25,6 +25,46 @@ version(ImGui_Impl_Allegro5){
 	void ImGui_ImplAllegro5_InvalidateDeviceObjects();
 }
 
+version(ImGui_Impl_GLFW){
+	import bindbc.glfw: GLFWwindow, GLFWmonitor;
+	
+	bool ImGui_ImplGlfw_InitForOpenGL(GLFWwindow* window, bool install_callbacks);
+	bool ImGui_ImplGlfw_InitForVulkan(GLFWwindow* window, bool install_callbacks);
+	bool ImGui_ImplGlfw_InitForOther(GLFWwindow* window, bool install_callbacks);
+	void ImGui_ImplGlfw_Shutdown();
+	void ImGui_ImplGlfw_NewFrame();
+	
+	void ImGui_ImplGlfw_InstallCallbacks(GLFWwindow* window);
+	void ImGui_ImplGlfw_RestoreCallbacks(GLFWwindow* window);
+	
+	void ImGui_ImplGlfw_SetCallbacksChainForAllWindows(bool chain_for_all_windows);
+	
+	void ImGui_ImplGlfw_WindowFocusCallback(GLFWwindow* window, int focused);
+	void ImGui_ImplGlfw_CursorEnterCallback(GLFWwindow* window, int entered);
+	void ImGui_ImplGlfw_CursorPosCallback(GLFWwindow* window, double x, double y);
+	void ImGui_ImplGlfw_MouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
+	void ImGui_ImplGlfw_ScrollCallback(GLFWwindow* window, double xoffset, double yoffset);
+	void ImGui_ImplGlfw_KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+	void ImGui_ImplGlfw_CharCallback(GLFWwindow* window, uint c);
+	void ImGui_ImplGlfw_MonitorCallback(GLFWmonitor* monitor, int event);
+}
+
+version(ImGui_Impl_macOS){
+	version(D_ObjectiveC){
+		extern(Objective-C):
+		extern class NSEvent;
+		extern class NSView;
+		
+		bool ImGui_ImplOSX_Init(NSView* view);
+		void ImGui_ImplOSX_Shutdown();
+		void ImGui_ImplOSX_NewFrame(NSView* view);
+	}else{
+		bool ImGui_ImplOSX_Init(void* view);
+		void ImGui_ImplOSX_Shutdown();
+		void ImGui_ImplOSX_NewFrame(void* view);
+	}
+}
+
 version(ImGui_Impl_Metal){
 	version(D_ObjectiveC){
 		import metal;
@@ -43,8 +83,6 @@ version(ImGui_Impl_Metal){
 }
 
 version(ImGui_Impl_OpenGL2){
-	import bindbc.opengl;
-	
 	bool ImGui_ImplOpenGL2_Init();
 	void ImGui_ImplOpenGL2_Shutdown();
 	void ImGui_ImplOpenGL2_NewFrame();
@@ -57,8 +95,6 @@ version(ImGui_Impl_OpenGL2){
 }
 
 version(ImGui_Impl_OpenGL3){
-	import bindbc.opengl;
-	
 	bool ImGui_ImplOpenGL3_Init(const(char)* glsl_version=null);
 	void ImGui_ImplOpenGL3_Shutdown();
 	void ImGui_ImplOpenGL3_NewFrame();
@@ -71,7 +107,7 @@ version(ImGui_Impl_OpenGL3){
 }
 
 version(ImGui_Impl_SDL2){
-	import bindbc.sdl;
+	import bindbc.sdl: SDL_Window, SDL_Renderer, SDL_Event;
 	
 	bool ImGui_ImplSDL2_InitForOpenGL(SDL_Window* window, void* sdl_gl_context);
 	bool ImGui_ImplSDL2_InitForVulkan(SDL_Window* window);
@@ -89,7 +125,7 @@ version(ImGui_Impl_SDL2){
 }
 
 version(ImGui_Impl_SDLRenderer){
-	import bindbc.sdl;
+	import bindbc.sdl: SDL_Renderer;
 	
 	bool ImGui_ImplSDLRenderer_Init(SDL_Renderer* renderer);
 	void ImGui_ImplSDLRenderer_Shutdown();

@@ -103,6 +103,158 @@
 			}
 		},
 		{
+			"name": "static-GLFW",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_GLFW"
+			],
+			"dependencies": {
+				"bindbc-glfw": "~>1.0.0"
+			}
+		},
+		{
+			"name": "static-GLFW-Metal",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_GLFW",
+				"ImGui_Impl_Metal"
+			],
+			"dependencies": {
+				"bindbc-glfw": "~>1.0.0",
+				"d-metal-binding": "~>1.0.12"
+			},
+			"lflags": [
+				"-framework CoreFoundation",
+				"-framework QuartzCore",
+				"-framework Metal",
+				"-framework MetalKit",
+				"-framework Cocoa",
+				"-framework IOKit",
+				"-framework CoreVideo"
+			]
+		},
+		{
+			"name": "static-GLFW-OpenGL2",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_GLFW",
+				"ImGui_Impl_OpenGL2"
+			],
+			"dependencies": {
+				"bindbc-glfw": "~>1.0.0",
+				"bindbc-opengl": "~>1.0.0"
+			}
+		},
+		{
+			"name": "static-GLFW-OpenGL3",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_GLFW",
+				"ImGui_Impl_OpenGL3",
+				"GL_30"
+			],
+			"dependencies": {
+				"bindbc-glfw": "~>1.0.0",
+				"bindbc-opengl": "~>1.0.0"
+			}
+		},
+		{
+			"name": "static-GLFW-SDLRenderer",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_GLFW",
+				"ImGui_Impl_SDLRenderer"
+			],
+			"dependencies": {
+				"bindbc-glfw": "~>1.0.0",
+				"bindbc-sdl": "~>1.3.0"
+			}
+		},
+		{
+			"name": "static-GLFW-Vulkan",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_GLFW",
+				"ImGui_Impl_Vulkan"
+			],
+			"dependencies": {
+				"bindbc-glfw": "~>1.0.0",
+				"erupted": "~>2.1.0"
+			}
+		},
+		{
+			"name": "static-macOS",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_macOS"
+			]
+		},
+		{
+			"name": "static-macOS-Metal",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_macOS",
+				"ImGui_Impl_Metal"
+			],
+			"dependencies": {
+				"d-metal-binding": "~>1.0.12"
+			},
+			"lflags": [
+				"-framework CoreFoundation",
+				"-framework QuartzCore",
+				"-framework Metal",
+				"-framework MetalKit",
+				"-framework Cocoa",
+				"-framework IOKit",
+				"-framework CoreVideo"
+			]
+		},
+		{
+			"name": "static-macOS-OpenGL2",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_macOS",
+				"ImGui_Impl_OpenGL2"
+			],
+			"dependencies": {
+				"bindbc-opengl": "~>1.0.0"
+			}
+		},
+		{
+			"name": "static-macOS-OpenGL3",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_macOS",
+				"ImGui_Impl_OpenGL3",
+				"GL_30"
+			],
+			"dependencies": {
+				"bindbc-opengl": "~>1.0.0"
+			}
+		},
+		{
+			"name": "static-macOS-SDLRenderer",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_macOS",
+				"ImGui_Impl_SDLRenderer"
+			],
+			"dependencies": {
+				"bindbc-sdl": "~>1.3.0"
+			}
+		},
+		{
+			"name": "static-macOS-Vulkan",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_macOS",
+				"ImGui_Impl_Vulkan"
+			],
+			"dependencies": {
+				"erupted": "~>2.1.0"
+			}
+		},
+		{
 			"name": "static-SDL2",
 			"versions": [
 				"BindImGui_Static",
@@ -306,6 +458,230 @@
 			],
 			"dependencies": {
 				"bindbc-allegro5": "~>1.0.0",
+				"erupted": "~>2.1.0"
+			}
+		},
+		{
+			"name": "staticBC-GLFW",
+			"subConfigurations": {
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": [
+				"betterC"
+			],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_GLFW"
+			],
+			"dependencies": {
+				"bindbc-glfw": "~>1.0.0"
+			}
+		},
+		{
+			"name": "staticBC-GLFW-Metal",
+			"subConfigurations": {
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": [
+				"betterC"
+			],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_GLFW",
+				"ImGui_Impl_Metal"
+			],
+			"dependencies": {
+				"bindbc-glfw": "~>1.0.0",
+				"d-metal-binding": "~>1.0.12"
+			},
+			"lflags": [
+				"-framework CoreFoundation",
+				"-framework QuartzCore",
+				"-framework Metal",
+				"-framework MetalKit",
+				"-framework Cocoa",
+				"-framework IOKit",
+				"-framework CoreVideo"
+			]
+		},
+		{
+			"name": "staticBC-GLFW-OpenGL2",
+			"subConfigurations": {
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": [
+				"betterC"
+			],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_GLFW",
+				"ImGui_Impl_OpenGL2"
+			],
+			"dependencies": {
+				"bindbc-glfw": "~>1.0.0",
+				"bindbc-opengl": "~>1.0.0"
+			}
+		},
+		{
+			"name": "staticBC-GLFW-OpenGL3",
+			"subConfigurations": {
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": [
+				"betterC"
+			],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_GLFW",
+				"ImGui_Impl_OpenGL3",
+				"GL_30"
+			],
+			"dependencies": {
+				"bindbc-glfw": "~>1.0.0",
+				"bindbc-opengl": "~>1.0.0"
+			}
+		},
+		{
+			"name": "staticBC-GLFW-SDLRenderer",
+			"subConfigurations": {
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": [
+				"betterC"
+			],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_GLFW",
+				"ImGui_Impl_SDLRenderer"
+			],
+			"dependencies": {
+				"bindbc-glfw": "~>1.0.0",
+				"bindbc-sdl": "~>1.3.0"
+			}
+		},
+		{
+			"name": "staticBC-GLFW-Vulkan",
+			"subConfigurations": {
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": [
+				"betterC"
+			],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_GLFW",
+				"ImGui_Impl_Vulkan"
+			],
+			"dependencies": {
+				"bindbc-glfw": "~>1.0.0",
+				"erupted": "~>2.1.0"
+			}
+		},
+		{
+			"name": "staticBC-macOS",
+			"subConfigurations": {
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": [
+				"betterC"
+			],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_macOS"
+			]
+		},
+		{
+			"name": "staticBC-macOS-Metal",
+			"subConfigurations": {
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": [
+				"betterC"
+			],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_macOS",
+				"ImGui_Impl_Metal"
+			],
+			"dependencies": {
+				"d-metal-binding": "~>1.0.12"
+			},
+			"lflags": [
+				"-framework CoreFoundation",
+				"-framework QuartzCore",
+				"-framework Metal",
+				"-framework MetalKit",
+				"-framework Cocoa",
+				"-framework IOKit",
+				"-framework CoreVideo"
+			]
+		},
+		{
+			"name": "staticBC-macOS-OpenGL2",
+			"subConfigurations": {
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": [
+				"betterC"
+			],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_macOS",
+				"ImGui_Impl_OpenGL2"
+			],
+			"dependencies": {
+				"bindbc-opengl": "~>1.0.0"
+			}
+		},
+		{
+			"name": "staticBC-macOS-OpenGL3",
+			"subConfigurations": {
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": [
+				"betterC"
+			],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_macOS",
+				"ImGui_Impl_OpenGL3",
+				"GL_30"
+			],
+			"dependencies": {
+				"bindbc-opengl": "~>1.0.0"
+			}
+		},
+		{
+			"name": "staticBC-macOS-SDLRenderer",
+			"subConfigurations": {
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": [
+				"betterC"
+			],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_macOS",
+				"ImGui_Impl_SDLRenderer"
+			],
+			"dependencies": {
+				"bindbc-sdl": "~>1.3.0"
+			}
+		},
+		{
+			"name": "staticBC-macOS-Vulkan",
+			"subConfigurations": {
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": [
+				"betterC"
+			],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_macOS",
+				"ImGui_Impl_Vulkan"
+			],
+			"dependencies": {
 				"erupted": "~>2.1.0"
 			}
 		},

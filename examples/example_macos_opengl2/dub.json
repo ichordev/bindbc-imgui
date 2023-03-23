@@ -1,0 +1,16 @@
+{
+	"name": "example-macos-opengl2",
+	"dependencies": {
+		"bindbc-imgui": "~>1.0.0",
+		"bindbc-opengl": "~>1.0.0",
+	},
+	"subConfigurations": {
+		"bindbc-imgui": "static-macOS-OpenGL2",
+	},
+	"targetType": "executable",
+	"lflags": [
+		"-L-framework Cocoa",
+		"-L-framework GameController",
+		"-L-framework OpenGL",
+	],
+}

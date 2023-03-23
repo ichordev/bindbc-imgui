@@ -19,12 +19,13 @@ implFrontends = {
 	# "Android": {
 	# 	"versions": ["ImGui_Impl_Android"],
 	# },
-	# "Apple": {
-	# 	"versions": ["ImGui_Impl_Apple"],
-	# },
-	# "GLFW": {
-	# 	"versions": ["ImGui_Impl_GLFW"],
-	# },
+	"GLFW": {
+		"dependencies": {"bindbc-glfw": "~>1.0.0"},
+		"versions": ["ImGui_Impl_GLFW"],
+	},
+	"macOS": {
+		"versions": ["ImGui_Impl_macOS"],
+	},
 	"SDL2": {
 		"dependencies": {"bindbc-sdl": "~>1.3.0"},
 		"versions": ["ImGui_Impl_SDL2"],

@@ -1,0 +1,25 @@
+{
+	"name": "example-glfw-opengl2",
+	"dependencies": {
+		"bindbc-imgui": "~>1.0.0",
+		"bindbc-glfw": "~>1.0.0",
+		"bindbc-opengl": "~>1.0.0",
+	},
+	"subConfigurations": {
+		"bindbc-imgui": "static-GLFW-OpenGL2",
+	},
+	"targetType": "executable",
+	"configurations": [
+		{
+			"name": "dynamic",
+			"subConfigurations": {"bindbc-glfw": "dynamic"},
+		},
+		{
+			"name": "static",
+			"subConfigurations": {"bindbc-glfw": "static"},
+		},
+	],
+	"libs-osx": ["glfw"],
+	"libs-linux": ["glfw3", "GL"],
+	"libs-windows": ["glfw3", "opengl32"],
+}

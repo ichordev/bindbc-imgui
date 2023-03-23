@@ -19,6 +19,6 @@
 			"subConfigurations": {"bindbc-sdl": "static"},
 			"libs": ["SDL2"],
 		},
-	],
+	],	
 	"versions": ["SDL_2018", "GL_30"],
 }

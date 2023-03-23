@@ -10,8 +10,8 @@
 | Name       | Description |
 |------------|-------------|
 | `Android`  | Not currently supported. |
-| `Apple`    | Not currently supported. |
-| `GLFW`     | Not currently supported. |
+| `GLFW`     | Untested. |
+| `macOS`    | Untested. Example not finished. |
 | `SDL2`     | Requires `bindbc-sdl` >=1.3.0. |
 | `SDL3`     | Not currently supported. |
 | `Win32`    | Not currently supported. |
