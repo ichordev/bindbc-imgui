@@ -330,7 +330,14 @@ static void FramePresent(ImGui_ImplVulkanH_Window* wd){
 // Main code
 int main(){
 	static if(!bindbc.sdl.config.staticBinding){
-		loadSDL();
+		if(loadSDL() != sdlSupport){
+			import bindbc.loader;
+			import core.stdc.stdio: printf;
+			foreach(error; errors){
+				printf("%s: %s\n", error.error, error.message);
+			}
+			return 0;
+		}
 	}
 	if(!loadGlobalLevelFunctions()){
 		/*

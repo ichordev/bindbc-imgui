@@ -23,6 +23,86 @@
 			]
 		},
 		{
+			"name": "static-Allegro5",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_Allegro5"
+			],
+			"dependencies": {
+				"bindbc-allegro5": "~>1.0.0"
+			}
+		},
+		{
+			"name": "static-Allegro5-Metal",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_Allegro5",
+				"ImGui_Impl_Metal"
+			],
+			"dependencies": {
+				"bindbc-allegro5": "~>1.0.0",
+				"d-metal-binding": "~>1.0.12"
+			},
+			"lflags": [
+				"-framework CoreFoundation",
+				"-framework QuartzCore",
+				"-framework Metal",
+				"-framework MetalKit",
+				"-framework Cocoa",
+				"-framework IOKit",
+				"-framework CoreVideo"
+			]
+		},
+		{
+			"name": "static-Allegro5-OpenGL2",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_Allegro5",
+				"ImGui_Impl_OpenGL2"
+			],
+			"dependencies": {
+				"bindbc-allegro5": "~>1.0.0",
+				"bindbc-opengl": "~>1.0.0"
+			}
+		},
+		{
+			"name": "static-Allegro5-OpenGL3",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_Allegro5",
+				"ImGui_Impl_OpenGL3",
+				"GL_30"
+			],
+			"dependencies": {
+				"bindbc-allegro5": "~>1.0.0",
+				"bindbc-opengl": "~>1.0.0"
+			}
+		},
+		{
+			"name": "static-Allegro5-SDLRenderer",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_Allegro5",
+				"ImGui_Impl_SDLRenderer"
+			],
+			"dependencies": {
+				"bindbc-allegro5": "~>1.0.0",
+				"bindbc-sdl": "~>1.3.0"
+			}
+		},
+		{
+			"name": "static-Allegro5-Vulkan",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_Allegro5",
+				"ImGui_Impl_Vulkan"
+			],
+			"dependencies": {
+				"bindbc-allegro5": "~>1.0.0",
+				"erupted": "~>2.1.0"
+			}
+		},
+		{
 			"name": "static-SDL2",
 			"versions": [
 				"BindImGui_Static",
@@ -112,6 +192,122 @@
 			"versions": [
 				"BindImGui_Static"
 			]
+		},
+		{
+			"name": "staticBC-Allegro5",
+			"subConfigurations": {
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": [
+				"betterC"
+			],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_Allegro5"
+			],
+			"dependencies": {
+				"bindbc-allegro5": "~>1.0.0"
+			}
+		},
+		{
+			"name": "staticBC-Allegro5-Metal",
+			"subConfigurations": {
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": [
+				"betterC"
+			],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_Allegro5",
+				"ImGui_Impl_Metal"
+			],
+			"dependencies": {
+				"bindbc-allegro5": "~>1.0.0",
+				"d-metal-binding": "~>1.0.12"
+			},
+			"lflags": [
+				"-framework CoreFoundation",
+				"-framework QuartzCore",
+				"-framework Metal",
+				"-framework MetalKit",
+				"-framework Cocoa",
+				"-framework IOKit",
+				"-framework CoreVideo"
+			]
+		},
+		{
+			"name": "staticBC-Allegro5-OpenGL2",
+			"subConfigurations": {
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": [
+				"betterC"
+			],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_Allegro5",
+				"ImGui_Impl_OpenGL2"
+			],
+			"dependencies": {
+				"bindbc-allegro5": "~>1.0.0",
+				"bindbc-opengl": "~>1.0.0"
+			}
+		},
+		{
+			"name": "staticBC-Allegro5-OpenGL3",
+			"subConfigurations": {
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": [
+				"betterC"
+			],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_Allegro5",
+				"ImGui_Impl_OpenGL3",
+				"GL_30"
+			],
+			"dependencies": {
+				"bindbc-allegro5": "~>1.0.0",
+				"bindbc-opengl": "~>1.0.0"
+			}
+		},
+		{
+			"name": "staticBC-Allegro5-SDLRenderer",
+			"subConfigurations": {
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": [
+				"betterC"
+			],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_Allegro5",
+				"ImGui_Impl_SDLRenderer"
+			],
+			"dependencies": {
+				"bindbc-allegro5": "~>1.0.0",
+				"bindbc-sdl": "~>1.3.0"
+			}
+		},
+		{
+			"name": "staticBC-Allegro5-Vulkan",
+			"subConfigurations": {
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": [
+				"betterC"
+			],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_Allegro5",
+				"ImGui_Impl_Vulkan"
+			],
+			"dependencies": {
+				"bindbc-allegro5": "~>1.0.0",
+				"erupted": "~>2.1.0"
+			}
 		},
 		{
 			"name": "staticBC-SDL2",

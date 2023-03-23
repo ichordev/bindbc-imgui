@@ -12,6 +12,19 @@ import imgui: ImDrawData;
 
 extern(C++):
 
+version(ImGui_Impl_Allegro5){
+	import bindbc.allegro5: ALLEGRO_DISPLAY, ALLEGRO_EVENT;
+	
+	bool ImGui_ImplAllegro5_Init(ALLEGRO_DISPLAY* display);
+	void ImGui_ImplAllegro5_Shutdown();
+	void ImGui_ImplAllegro5_NewFrame();
+	void ImGui_ImplAllegro5_RenderDrawData(ImDrawData* draw_data);
+	bool ImGui_ImplAllegro5_ProcessEvent(ALLEGRO_EVENT* event);
+	
+	bool ImGui_ImplAllegro5_CreateDeviceObjects();
+	void ImGui_ImplAllegro5_InvalidateDeviceObjects();
+}
+
 version(ImGui_Impl_Metal){
 	version(D_ObjectiveC){
 		import metal;

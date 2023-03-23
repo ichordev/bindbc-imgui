@@ -12,9 +12,10 @@ buildTypes = {
 	},
 }
 implFrontends = {
-	# "Allegro5": {
-	# 	"versions": ["ImGui_Impl_Allegro5"],
-	# },
+	"Allegro5": {
+		"dependencies": {"bindbc-allegro5": "~>1.0.0"},
+		"versions": ["ImGui_Impl_Allegro5"],
+	},
 	# "Android": {
 	# 	"versions": ["ImGui_Impl_Android"],
 	# },

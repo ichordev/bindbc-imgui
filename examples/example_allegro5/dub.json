@@ -1,0 +1,23 @@
+{
+	"name": "example-allegro5",
+	"dependencies": {
+		"bindbc-imgui": "~>1.0.0",
+		"bindbc-allegro5": "~>1.0.0",
+	},
+	"subConfigurations": {
+		"bindbc-imgui": "static-Allegro5",
+	},
+	"targetType": "executable",
+	"configurations": [
+		{
+			"name": "dynamic",
+			"subConfigurations": {"bindbc-allegro5": "dynamic"},
+		},
+		{
+			"name": "static",
+			"subConfigurations": {"bindbc-allegro5": "static"},
+			"libs": ["allegro", "allegro_primitives"],
+		},
+	],
+	"versions": ["Allegro_Primitives"],
+}

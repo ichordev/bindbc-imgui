@@ -15,8 +15,16 @@ import bindbc.opengl;
 
 // Main code
 int main(){
-	auto loadedGL = loadOpenGL();
-	//assert(loadedGL == glSupport);
+	static if(!bindbc.sdl.config.staticBinding){
+		if(loadSDL() != sdlSupport){
+			import bindbc.loader;
+			import core.stdc.stdio: printf;
+			foreach(error; errors){
+				printf("%s: %s\n", error.error, error.message);
+			}
+			return 0;
+		}
+	}
 	
 	// Set up SDL
 	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) != 0){
@@ -58,6 +66,16 @@ version(OSX){
 	SDL_WindowFlags window_flags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI;
 	SDL_Window* window = SDL_CreateWindow("Dear ImGui SDL2+OpenGL3 example", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, window_flags);
 	SDL_GLContext gl_context = SDL_GL_CreateContext(window);
+
+	if(loadOpenGL() != glSupport){
+		import bindbc.loader;
+		import core.stdc.stdio: printf;
+		foreach(error; errors){
+			printf("%s: %s\n", error.error, error.message);
+		}
+		return 0;
+	}
+	
 	SDL_GL_MakeCurrent(window, gl_context);
 	SDL_GL_SetSwapInterval(1); // Enable vsync
 	

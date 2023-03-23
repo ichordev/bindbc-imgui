@@ -6,6 +6,17 @@ static assert(SDL_VERSION_ATLEAST(2,0,17), "This backend requires SDL 2.0.17+ be
 
 // Main code
 int main(){
+	static if(!bindbc.sdl.config.staticBinding){
+		if(loadSDL() != sdlSupport){
+			import bindbc.loader;
+			import core.stdc.stdio: printf;
+			foreach(error; errors){
+				printf("%s: %s\n", error.error, error.message);
+			}
+			return 0;
+		}
+	}
+	
 	// Setup SDL
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) != 0){
 		printf("Error: %s\n", SDL_GetError());

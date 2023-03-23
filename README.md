@@ -4,7 +4,7 @@
 ## API & Rendering
 | Name       | Description |
 |------------|-------------|
-| `Allegro5` | Not currently supported. |
+| `Allegro5` | Untested. Requires `bindbc-allegro` >=1.0.0 |
 
 ## API-only
 | Name       | Description |
@@ -12,7 +12,7 @@
 | `Android`  | Not currently supported. |
 | `Apple`    | Not currently supported. |
 | `GLFW`     | Not currently supported. |
-| `SDL2`     | Requires bindbc-sdl >=1.3.0. |
+| `SDL2`     | Requires `bindbc-sdl` >=1.3.0. |
 | `SDL3`     | Not currently supported. |
 | `Win32`    | Not currently supported. |
 
@@ -26,7 +26,7 @@
 | `DX12`        | Not currently supported. |
 | `Metal`       | Untested. Requires `d-metal-binding` ~>1.0.12. x86_64 only due to Objective-C interoperability being DMD-exclusive. |
 | `OpenGL2`     | Untested. Requires `bindbc-opengl` ~>1.0.0. |
-| `OpenGL3`     | Untested. Requires `bindbc-opengl` ~>1.0.0. |
+| `OpenGL3`     | Requires `bindbc-opengl` ~>1.0.0. |
 | `SDLRenderer` | Requires `bindbc-sdl` ~>1.3.0. |
 | `Vulkan`      | Requires `erupted` ~>2.1.0. |
 

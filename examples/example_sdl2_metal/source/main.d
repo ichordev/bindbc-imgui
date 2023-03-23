@@ -13,6 +13,17 @@ import metal;
 //#import <QuartzCore/QuartzCore.h>
 
 int main(){
+	static if(!bindbc.sdl.config.staticBinding){
+		if(loadSDL() != sdlSupport){
+			import bindbc.loader;
+			import core.stdc.stdio: printf;
+			foreach(error; errors){
+				printf("%s: %s\n", error.error, error.message);
+			}
+			return 0;
+		}
+	}
+	
 	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
 	imgui.CreateContext();
