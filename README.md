@@ -24,8 +24,8 @@ Since this `int` is discarded, it's recommended to always supply `0`:
 ```d
 auto clipper = ImGuiListClipper(0);
 ```
-It's only recommended for you to use the `.init` of a struct when it
-is strictly necessary.
+It is recommended that you NEVER use `.init` of a Dear ImGui struct
+unless it is strictly necessary.
 
 # Backends
 
