@@ -32,7 +32,7 @@ is strictly necessary.
 ## API & Rendering
 | Name       | Description |
 |------------|-------------|
-| `Allegro5` | Untested. Requires `bindbc-allegro` >=1.0.0 |
+| `Allegro5` | Requires `bindbc-allegro` ~>1.0.0 |
 
 ## API-only
 | Name       | Description |
@@ -40,7 +40,7 @@ is strictly necessary.
 | `Android`  | Not currently supported. |
 | `GLFW`     | Untested. |
 | `macOS`    | Untested. Example not finished. |
-| `SDL2`     | Requires `bindbc-sdl` >=1.3.0. |
+| `SDL2`     | Requires `bindbc-sdl` ~>1.3.0. |
 | `SDL3`     | Not currently supported. |
 | `Win32`    | Not currently supported. |
 
