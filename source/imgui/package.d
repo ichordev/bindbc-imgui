@@ -34,9 +34,9 @@ version(ImGui_ImDrawIdx32){
 }
 
 version(ImGui_WChar32){
-	alias ImWchar = dchar;
+	alias ImWchar = uint;
 }else{
-	alias ImWchar = wchar;
+	alias ImWchar = ushort;
 }
 
 alias ImGuiID = uint;
