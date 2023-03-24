@@ -1,11 +1,11 @@
 
-#Quickstart guide
+# Quickstart guide
 
 Environment variable `$BIND_IMGUI_OBJDIR` has must point to a path with built object files for ImGui and any backends you use.
 
-#Binding-specific changes
+# Binding-specific changes
 
-##Enums
+## Enums
 Dear ImGui enums in these bindings ae reformatted like so:
 ```d
 void ImFn(ImGuiDir flags); //x
@@ -17,7 +17,7 @@ ImFn(ImFontAtlasFlags_NoMouseCursors); //x_y
 ImFn(ImFontAtlasFlags.NoMouseCursors); //x.y
 ```
 
-##Default constructors
+## Default constructors
 Any default constructors (that is, constructors with no parameters) from
 Dear ImGui are modified to take a single `int` to avoid compiler errors.
 Since this `int` is discarded, it's recommended to always supply `0`:
@@ -27,7 +27,7 @@ auto clipper = ImGuiListClipper(0);
 It's only recommended for you to use the `.init` of a struct when it
 is strictly necessary.
 
-#Backends
+# Backends
 
 ## API & Rendering
 | Name       | Description |
@@ -58,7 +58,7 @@ is strictly necessary.
 | `SDLRenderer` | Requires `bindbc-sdl` ~>1.3.0. |
 | `Vulkan`      | Requires `erupted` ~>2.1.0. |
 
-#Configuration
+# Configuration
 
 | Version identifier               | Description |
 |----------------------------------|-------------|
