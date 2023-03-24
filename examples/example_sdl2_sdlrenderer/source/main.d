@@ -37,22 +37,22 @@ int main(){
 	//SDL_RendererInfo info;
 	//SDL_GetRendererInfo(renderer, &info);
 	//SDL_Log("Current SDL_Renderer: %s", info.name);
-
+	
 	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
 	imgui.CreateContext();
 	ImGuiIO* io = GetIO();
 	io.ConfigFlags |= ImGuiConfigFlags.NavEnableKeyboard; // Enable Keyboard Controls
 	io.ConfigFlags |= ImGuiConfigFlags.NavEnableGamepad; // Enable Gamepad Controls
-
+	
 	// Setup Dear ImGui style
 	imgui.StyleColorsDark();
 	//imgui.StyleColorsLight();
-
+	
 	// Setup Platform/Renderer backends
 	ImGui_ImplSDL2_InitForSDLRenderer(window, renderer);
 	ImGui_ImplSDLRenderer_Init(renderer);
-
+	
 	// Load Fonts
 	// - If no fonts are loaded, dear imgui will use the default font. You can also load multiple fonts and use imgui.PushFont()/PopFont() to select them.
 	// - AddFontFromFileTTF() will return the ImFont* so you can store it if you need to select the font among multiple.
@@ -68,12 +68,12 @@ int main(){
 	//io.Fonts->AddFontFromFileTTF("../../misc/fonts/Cousine-Regular.ttf", 15.0f);
 	//ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, NULL, io.Fonts->GetGlyphRangesJapanese());
 	//IM_ASSERT(font != NULL);
-
+	
 	// Our state
 	bool show_demo_window = true;
 	bool show_another_window = false;
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-
+	
 	// Main loop
 	bool done = false;
 	while(!done){
@@ -88,20 +88,20 @@ int main(){
 			if(event.type == SDL_QUIT) done = true;
 			if(event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_CLOSE && event.window.windowID == SDL_GetWindowID(window)) done = true;
 		}
-
+		
 		// Start the Dear ImGui frame
 		ImGui_ImplSDLRenderer_NewFrame();
 		ImGui_ImplSDL2_NewFrame();
 		imgui.NewFrame();
-
+		
 		// 1. Show the big demo window (Most of the sample code is in imgui.ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
 		if(show_demo_window) imgui.ShowDemoWindow(&show_demo_window);
-
+		
 		// 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
 		{
 			static float f = 0.0f;
 			static int counter = 0;
-
+			
 			imgui.Begin("Hello, world!");						  // Create a window called "Hello, world!" and append into it.
 			
 			imgui.Text("This is some useful text.");			   // Display some text (you can use a format strings too)
@@ -119,7 +119,7 @@ int main(){
 			imgui.Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
 			imgui.End();
 		}
-
+		
 		// 3. Show another simple window.
 		if(show_another_window){
 			imgui.Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
@@ -128,7 +128,7 @@ int main(){
 				show_another_window = false;
 			imgui.End();
 		}
-
+		
 		// Rendering
 		imgui.Render();
 		SDL_RenderSetScale(renderer, io.DisplayFramebufferScale.x, io.DisplayFramebufferScale.y);
@@ -137,12 +137,12 @@ int main(){
 		ImGui_ImplSDLRenderer_RenderDrawData(imgui.GetDrawData());
 		SDL_RenderPresent(renderer);
 	}
-
+	
 	// Cleanup
 	ImGui_ImplSDLRenderer_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	imgui.DestroyContext();
-
+	
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();

@@ -5,7 +5,7 @@
 	"authors": ["Aya Partridge"],
 	"license": "Boost",
 	
-	"dependencies": {"bindbc-common": "~>0.0.3"},
+	"dependencies": {"bindbc-common": "~>0.0.5"},
 	"targetType": "staticLibrary",
 	"targetPath": "lib",
 	"targetName": "BindBC_ImGui",

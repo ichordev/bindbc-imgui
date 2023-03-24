@@ -10,7 +10,7 @@ import bindbc.imgui.config;
 
 import imgui: ImDrawData;
 
-extern(C++):
+extern(C++) @nogc nothrow:
 
 version(ImGui_Impl_Allegro5){
 	import bindbc.allegro5: ALLEGRO_DISPLAY, ALLEGRO_EVENT;

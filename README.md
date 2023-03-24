@@ -1,4 +1,32 @@
 
+#Quickstart guide
+
+Environment variable `$BIND_IMGUI_OBJDIR` has must point to a path with built object files for ImGui and any backends you use.
+
+#Binding-specific changes
+
+##Enums
+Dear ImGui enums in these bindings ae reformatted like so:
+```d
+void ImFn(ImGuiDir flags); //x
+//becomes:
+void ImFn(ImGuiDir_ flags); //x_
+
+ImFn(ImFontAtlasFlags_NoMouseCursors); //x_y
+//becomes:
+ImFn(ImFontAtlasFlags.NoMouseCursors); //x.y
+```
+
+##Default constructors
+Any default constructors (that is, constructors with no parameters) from
+Dear ImGui are modified to take a single `int` to avoid compiler errors.
+Since this `int` is discarded, it's recommended to always supply `0`:
+```d
+auto clipper = ImGuiListClipper(0);
+```
+It's only recommended for you to use the `.init` of a struct when it
+is strictly necessary.
+
 #Backends
 
 ## API & Rendering

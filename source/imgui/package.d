@@ -7,6 +7,7 @@
 module imgui;
 
 import bindbc.imgui.config;
+import bindbc.common.codegen: mangleofCppDefaultCtor;
 
 import core.vararg: va_list;
 import core.stdc.string: memcpy, memset, memmove, memcmp, strcmp;
@@ -49,25 +50,25 @@ alias ImGuiMemFreeFunc = extern(C++) void function(void* ptr, void* user_data);
 extern(C++) struct ImVec2{
 	float x=0f, y=0f;
 	
+	@nogc nothrow:
 	float opIndex(size_t idx) const;
 	ref float opIndex(size_t idx);
-//#ifdef IMGUI_DEFINE_MATH_OPERATORS
+	
 	pragma(inline,true){
 		ImVec2 opBinary(string op)(const float rhs) const if(op == "*" || op == "/"){ mixin("return ImVec2(x "~op~" rhs, y "~op~" rhs);"); }
 		ImVec2 opBinary(string op)(ref const ImVec2 rhs) const if(op == "+" || op == "-" || op == "*" || op == "/"){ mixin("return ImVec2(x "~op~" rhs.x, y "~op~" rhs.y);"); }
 		ref ImVec2 opOpAssign(string op)(const float rhs) if(op == "*" || op == "/"){ mixin("x "~op~"= rhs; y "~op~"= rhs;"); return this; }
 		ref ImVec2 opOpAssign(string op)(ref const ImVec2 rhs) if(op == "+" || op == "-" || op == "*" || op == "/"){ mixin("x "~op~"= rhs.x; y "~op~"= rhs.y);"); return this; }
 	}
-//#endif
 }
 
 extern(C++) struct ImVec4{
 	float x=0f, y=0f, z=0f, w=0f;
-//#ifdef IMGUI_DEFINE_MATH_OPERATORS
+	
+	@nogc nothrow:
 	pragma(inline,true){
 		ImVec4 opBinary(string op)(ref const ImVec4 rhs) const if(op == "+" || op == "-" || op == "*"){ mixin("return ImVec4(x "~op~" rhs.x, y "~op~" rhs.y, z "~op~" rhs.z, w "~op~" rhs.w);"); }
 	}
-//#endif
 }
 
 private immutable{
@@ -83,6 +84,7 @@ private immutable{
 extern(C++, "ImGui"){
 	private alias ItemsGetterFn = extern(C++) bool function(void* data, int idx, const(char)** out_text);
 	
+	@nogc nothrow:
 	ImGuiContext* CreateContext(ImFontAtlas* shared_font_atlas=null);
 	void DestroyContext(ImGuiContext* ctx=null);
 	ImGuiContext* GetCurrentContext();
@@ -1180,7 +1182,7 @@ enum ImGuiCond: ImGuiCond_{
 //struct ImNewWrapper{}
 //void* operator new(size_t _1, ImNewWrapper _2, void* ptr){ return ptr; }
 //void operator delete(void* _1, ImNewWrapper _2, void* _3){}
-pragma(inline,true){
+pragma(inline,true) @nogc nothrow{
 	auto IM_ALLOC(size_t _SIZE){ return MemAlloc(_SIZE); }
 	auto IM_FREE(void* _PTR){ MemFree(_PTR); }
 //#define IM_PLACEMENT_NEW(_PTR)              new(ImNewWrapper(), _PTR)
@@ -1193,16 +1195,16 @@ extern(C++) struct ImVector(T){
 	int Capacity = 0;
 	T* Data = null;
 	
-	// Provide standard typedefs but we don't use them ourselves.
 	alias value_type = T;
 	alias iterator = value_type*;
 	alias const_iterator = const(value_type)*;
 	
+	@nogc nothrow:
 	pragma(inline,true){
-	this(ref const ImVector!T src){ this = src; }
-	ImVector!T opAssign(ref const ImVector!T src){ clear(); resize(src.Size); if(src.Data) memcpy(Data, src.Data, cast(size_t)Size * T.sizeof); return this; }
-	~this(){ if(Data) IM_FREE(Data); }
-	
+		this(ref const ImVector!T src){ this = src; }
+		ImVector!T opAssign(ref const ImVector!T src){ clear(); resize(src.Size); if(src.Data) memcpy(Data, src.Data, cast(size_t)Size * T.sizeof); return this; }
+		~this(){ if(Data) IM_FREE(Data); }
+		
 		void clear(){ if (Data){ Size = Capacity = 0; IM_FREE(Data); Data=null; } }
 		static if(__traits(hasMember, T, "__dtor__")){
 			void clear_delete(){ for(int n = 0; n < Size; n++) IM_DELETE(Data[n]); clear(); }
@@ -1246,56 +1248,60 @@ extern(C++) struct ImVector(T){
 }
 
 extern(C++) struct ImGuiStyle{
-	float Alpha;
-	float DisabledAlpha;
-	ImVec2 WindowPadding;
-	float WindowRounding;
-	float WindowBorderSize;
-	ImVec2 WindowMinSize;
-	ImVec2 WindowTitleAlign;
-	ImGuiDir_ WindowMenuButtonPosition;
-	float ChildRounding;
-	float ChildBorderSize;
-	float PopupRounding;
-	float PopupBorderSize;
-	ImVec2 FramePadding;
-	float FrameRounding;
-	float FrameBorderSize;
-	ImVec2 ItemSpacing;
-	ImVec2 ItemInnerSpacing;
-	ImVec2 CellPadding;
-	ImVec2 TouchExtraPadding;
-	float IndentSpacing;
-	float ColumnsMinSpacing;
-	float ScrollbarSize;
-	float ScrollbarRounding;
-	float GrabMinSize;
-	float GrabRounding;
-	float LogSliderDeadzone;
-	float TabRounding;
-	float TabBorderSize;
-	float TabMinWidthForCloseButton;
-	ImGuiDir_ ColorButtonPosition;
-	ImVec2 ButtonTextAlign;
-	ImVec2 SelectableTextAlign;
-	float SeparatorTextBorderSize;
-	ImVec2 SeparatorTextAlign;
-	ImVec2 SeparatorTextPadding;
-	ImVec2 DisplayWindowPadding;
-	ImVec2 DisplaySafeAreaPadding;
-	float MouseCursorScale;
-	bool AntiAliasedLines;
-	bool AntiAliasedLinesUseTex;
-	bool AntiAliasedFill;
-	float CurveTessellationTol;
-	float CircleTessellationMaxError;
+	float Alpha = 1f;
+	float DisabledAlpha = 0.6f;
+	ImVec2 WindowPadding = ImVec2(8, 8);
+	float WindowRounding = 0f;
+	float WindowBorderSize = 1f;
+	ImVec2 WindowMinSize = ImVec2(32, 32);
+	ImVec2 WindowTitleAlign = ImVec2(0f, 0.5f);
+	ImGuiDir_ WindowMenuButtonPosition = ImGuiDir.Left;
+	float ChildRounding = 0f;
+	float ChildBorderSize = 1f;
+	float PopupRounding = 0f;
+	float PopupBorderSize = 1f;
+	ImVec2 FramePadding = ImVec2(4, 3);
+	float FrameRounding = 0f;
+	float FrameBorderSize = 0f;
+	ImVec2 ItemSpacing = ImVec2(8, 4);
+	ImVec2 ItemInnerSpacing = ImVec2(4, 4);
+	ImVec2 CellPadding = ImVec2(4, 2);
+	ImVec2 TouchExtraPadding = ImVec2(0, 0);
+	float IndentSpacing = 21f;
+	float ColumnsMinSpacing = 6f;
+	float ScrollbarSize = 14f;
+	float ScrollbarRounding = 9f;
+	float GrabMinSize = 12f;
+	float GrabRounding = 0f;
+	float LogSliderDeadzone = 4f;
+	float TabRounding = 4f;
+	float TabBorderSize = 0f;
+	float TabMinWidthForCloseButton = 0f;
+	ImGuiDir_ ColorButtonPosition = ImGuiDir.Right;
+	ImVec2 ButtonTextAlign = ImVec2(0.5f, 0.5f);
+	ImVec2 SelectableTextAlign = ImVec2(0f, 0f);
+	float SeparatorTextBorderSize = 3f;
+	ImVec2 SeparatorTextAlign = ImVec2(0f, 0.5f);
+	ImVec2 SeparatorTextPadding = ImVec2(20f, 3f);
+	ImVec2 DisplayWindowPadding = ImVec2(19, 19);
+	ImVec2 DisplaySafeAreaPadding = ImVec2(3, 3);
+	float MouseCursorScale = 1f;
+	bool AntiAliasedLines = true;
+	bool AntiAliasedLinesUseTex = true;
+	bool AntiAliasedFill = true;
+	float CurveTessellationTol = 1.25f;
+	float CircleTessellationMaxError = 0.3f;
 	ImVec4[ImGuiCol.COUNT] Colors;
+	alias Colours = Colors;
 	
-	//this();
+	@nogc nothrow:
+	pragma(mangle, "ImGuiStyle".mangleofCppDefaultCtor()) this(int _);
 	void ScaleAllSizes(float scale_factor);
 }
 
 extern(C++) struct ImGuiKeyData{
+	@disable this();
+	
 	bool Down;
 	float DownDuration;
 	float DownDurationPrev;
@@ -1303,72 +1309,57 @@ extern(C++) struct ImGuiKeyData{
 }
 
 extern(C++) struct ImGuiIO{
-	ImGuiConfigFlags_ ConfigFlags;
-	ImGuiBackendFlags_ BackendFlags;
-	ImVec2 DisplaySize;
-	float DeltaTime;
-	float IniSavingRate;
-	const(char)* IniFilename;
-	const(char)* LogFilename;
-	float MouseDoubleClickTime;
-	float MouseDoubleClickMaxDist;
-	float MouseDragThreshold;
-	float KeyRepeatDelay;
-	float KeyRepeatRate;
-	float HoverDelayNormal;
-	float HoverDelayShort;
-	void* UserData;
+	ImGuiConfigFlags_ ConfigFlags = ImGuiConfigFlags.None;
+	ImGuiBackendFlags_ BackendFlags = ImGuiBackendFlags.None;
+	ImVec2 DisplaySize = ImVec2(-1.0f, -1.0f);
+	float DeltaTime = 1f/60f;
+	float IniSavingRate = 5f;
+	const(char)* IniFilename = "imgui.ini";
+	const(char)* LogFilename = "imgui_log.txt";
+	float MouseDoubleClickTime = 0.3f;
+	float MouseDoubleClickMaxDist = 6f;
+	float MouseDragThreshold = 6f;
+	float KeyRepeatDelay = 0.275f;
+	float KeyRepeatRate = 0.05f;
+	float HoverDelayNormal = 0.3f;
+	float HoverDelayShort = 0.1f;
+	void* UserData = null;
 	
-	ImFontAtlas* Fonts;
-	float FontGlobalScale;
-	bool FontAllowUserScaling;
-	ImFont* FontDefault;
-	ImVec2 DisplayFramebufferScale;
+	ImFontAtlas* Fonts = null;
+	float FontGlobalScale = 1f;
+	bool FontAllowUserScaling = false;
+	ImFont* FontDefault = null;
+	ImVec2 DisplayFramebufferScale = ImVec2(1f, 1f);
 	
-	bool MouseDrawCursor;
-	bool ConfigMacOSXBehaviors;
-	bool ConfigInputTrickleEventQueue;
-	bool ConfigInputTextCursorBlink;
-	bool ConfigInputTextEnterKeepActive;
-	bool ConfigDragClickToInputText;
-	bool ConfigWindowsResizeFromEdges;
+	bool MouseDrawCursor = false;
+	bool ConfigMacOSXBehaviors = (){ version(OSX) return true; else return false; }();
+	bool ConfigInputTrickleEventQueue = true;
+	bool ConfigInputTextCursorBlink = true;
+	bool ConfigInputTextEnterKeepActive = false;
+	bool ConfigDragClickToInputText = false;
+	bool ConfigWindowsResizeFromEdges = true;
 	bool ConfigWindowsMoveFromTitleBarOnly;
-	float ConfigMemoryCompactTimer;
+	float ConfigMemoryCompactTimer = 60f;
 	
-	bool ConfigDebugBeginReturnValueOnce;
-	bool ConfigDebugBeginReturnValueLoop;
+	bool ConfigDebugBeginReturnValueOnce = false;
+	bool ConfigDebugBeginReturnValueLoop = false;
 	
-	const(char)* BackendPlatformName;
-	const(char)* BackendRendererName;
-	void* BackendPlatformUserData;
-	void* BackendRendererUserData;
-	void* BackendLanguageUserData;
+	const(char)* BackendPlatformName = null;
+	const(char)* BackendRendererName = null;
+	void* BackendPlatformUserData = null;
+	void* BackendRendererUserData = null;
+	void* BackendLanguageUserData = null;
 	
 	extern(C++) const(char)* function(void* user_data) GetClipboardTextFn;
 	extern(C++) void function(void* user_data, const(char)* text) SetClipboardTextFn;
 	void* ClipboardUserData;
 	
-	void function(ImGuiViewport* viewport, ImGuiPlatformImeData* data) SetPlatformImeDataFn;
+	extern(C++) void function(ImGuiViewport* viewport, ImGuiPlatformImeData* data) SetPlatformImeDataFn;
 version(ImGui_DisableObsoleteFunctions){
 	void* ImeWindowHandle;
 }else{
 	void* _UnusedPadding;
 }
-	
-	void AddKeyEvent(ImGuiKey key, bool down);
-	void AddKeyAnalogEvent(ImGuiKey key, bool down, float v);
-	void AddMousePosEvent(float x, float y);
-	void AddMouseButtonEvent(int button, bool down);
-	void AddMouseWheelEvent(float wheel_x, float wheel_y);
-	void AddFocusEvent(bool focused);
-	void AddInputCharacter(uint c);
-	void AddInputCharacterUTF16(wchar c);
-	void AddInputCharactersUTF8(const(char)* str);
-	
-	void SetKeyEventNativeData(ImGuiKey key, int native_keycode, int native_scancode, int native_legacy_index=-1);
-	void SetAppAcceptingEvents(bool accepting_events);
-	void ClearInputCharacters();
-	void ClearInputKeys();
 	
 	bool WantCaptureMouse;
 	bool WantCaptureKeyboard;
@@ -1394,7 +1385,7 @@ version(ImGui_DisableObsoleteKeyIO){
 	
 	ImGuiContext* Ctx;
 	
-	ImVec2 MousePos;
+	ImVec2 MousePos = ImVec2(float.max, -float.max);
 	bool[5] MouseDown;
 	float MouseWheel;
 	float MouseWheelH;
@@ -1406,7 +1397,7 @@ version(ImGui_DisableObsoleteKeyIO){
 	ImGuiKeyChord KeyMods;
 	ImGuiKeyData[ImGuiKey.KeysData_SIZE] KeysData;
 	bool WantCaptureMouseUnlessPopupClose;
-	ImVec2 MousePosPrev;
+	ImVec2 MousePosPrev = ImVec2(float.max, -float.max);
 	ImVec2[5] MouseClickedPos;
 	double[5] MouseClickedTime;
 	bool[5] MouseClicked;
@@ -1421,32 +1412,49 @@ version(ImGui_DisableObsoleteKeyIO){
 	float[5] MouseDragMaxDistanceSqr;
 	float PenPressure;
 	bool AppFocusLost;
-	bool AppAcceptingEvents;
-	byte BackendUsingLegacyKeyArrays;
-	bool BackendUsingLegacyNavInputArray;
+	bool AppAcceptingEvents = true;
+	byte BackendUsingLegacyKeyArrays = cast(byte)-1;
+	bool BackendUsingLegacyNavInputArray = true;
 	wchar InputQueueSurrogate;
 	ImVector!ImWchar InputQueueCharacters;
 	
-	//this();
+	@nogc nothrow:
+	void AddKeyEvent(ImGuiKey key, bool down);
+	void AddKeyAnalogEvent(ImGuiKey key, bool down, float v);
+	void AddMousePosEvent(float x, float y);
+	void AddMouseButtonEvent(int button, bool down);
+	void AddMouseWheelEvent(float wheel_x, float wheel_y);
+	void AddFocusEvent(bool focused);
+	void AddInputCharacter(uint c);
+	void AddInputCharacterUTF16(wchar c);
+	void AddInputCharactersUTF8(const(char)* str);
+	
+	void SetKeyEventNativeData(ImGuiKey key, int native_keycode, int native_scancode, int native_legacy_index=-1);
+	void SetAppAcceptingEvents(bool accepting_events);
+	void ClearInputCharacters();
+	void ClearInputKeys();
+	
+	pragma(mangle, "ImGuiIO".mangleofCppDefaultCtor()) this(int _);
 }
 
 extern(C++) struct ImGuiInputTextCallbackData{
-	ImGuiContext* Ctx;
-	ImGuiInputTextFlags_ EventFlag;
-	ImGuiInputTextFlags_ Flags;
-	void* UserData;
+	ImGuiContext* Ctx = null;
+	ImGuiInputTextFlags_ EventFlag = 0;
+	ImGuiInputTextFlags_ Flags = 0;
+	void* UserData = null;
 	
-	ImWchar EventChar;
-	ImGuiKey_ EventKey;
-	char* Buf;
-	int BufTextLen;
-	int BufSize;
-	bool BufDirty;
-	int CursorPos;
-	int SelectionStart;
-	int SelectionEnd;
+	ImWchar EventChar = 0;
+	ImGuiKey_ EventKey = 0;
+	char* Buf = null;
+	int BufTextLen = 0;
+	int BufSize = 0;
+	bool BufDirty = false;
+	int CursorPos = 0;
+	int SelectionStart = 0;
+	int SelectionEnd = 0;
 	
-	//this();
+	@nogc nothrow:
+	pragma(mangle, "ImGuiInputTextCallbackData".mangleofCppDefaultCtor()) this(int _);
 	void DeleteChars(int pos, int bytes_count);
 	void InsertChars(int pos, const(char)* text, const(char)* text_end=null);
 	void SelectAll(){ SelectionStart = 0; SelectionEnd = BufTextLen; }
@@ -1455,6 +1463,8 @@ extern(C++) struct ImGuiInputTextCallbackData{
 }
 
 extern(C++) struct ImGuiSizeCallbackData{
+	@disable this();
+	
 	void* UserData;
 	ImVec2 Pos;
 	ImVec2 CurrentSize;
@@ -1467,11 +1477,13 @@ extern(C++) struct ImGuiPayload{
 	
 	ImGuiID SourceId = 0;
 	ImGuiID SourceParentId = 0;
-	int DataFrameCount = 1;
+	int DataFrameCount = -1;
 	char[32 + 1] DataType;
 	bool Preview = false;
 	bool Delivery = false;
 	
+	@nogc nothrow:
+	this(int _){ Clear(); }
 	void Clear(){ SourceId = SourceParentId = 0; Data = null; DataSize = 0; memset(cast(void*)DataType.ptr, 0, DataType.sizeof); DataFrameCount = -1; Preview = Delivery = false; }
 	bool IsDataType(const(char)* type) const{ return DataFrameCount != -1 && strcmp(type, DataType.ptr) == 0; }
 	bool IsPreview() const{ return Preview; }
@@ -1501,22 +1513,17 @@ version(ImGui_WChar32){
 
 extern(C++) struct ImGuiOnceUponAFrame{
 	int RefFrame = -1; //NOTE: originally delcared as `mutable`
+	
+	@nogc nothrow:
 	T opCast(T: bool)() const{ int current_frame = GetFrameCount(); if(RefFrame == current_frame) return false; RefFrame = current_frame; return true; }
 }
 
 extern(C++) struct ImGuiTextFilter{
-	this(const(char)* default_filter);
-	bool Draw(const(char)* label="Filter (inc,-exc)", float width=0f);
-	bool PassFilter(const(char)* text, const(char)* text_end=null) const;
-	void Build();
-	void Clear(){ InputBuf[0] = 0; Build(); }
-	bool IsActive() const{ return !Filters.empty(); }
-	
-	
 	extern(C++) struct ImGuiTextRange{
 		const(char)* b = null;
 		const(char)* e = null;
 		
+		@nogc nothrow:
 		bool empty() const{ return b == e; }
 		void split(char separator, ImVector!(ImGuiTextRange)* out_) const;
 	}
@@ -1524,12 +1531,23 @@ extern(C++) struct ImGuiTextFilter{
 	char[256] InputBuf;
 	ImVector!ImGuiTextRange Filters;
 	int CountGrep;
+
+	@nogc nothrow:
+	this(const(char)* default_filter);
+	bool Draw(const(char)* label="Filter (inc,-exc)", float width=0f);
+	bool PassFilter(const(char)* text, const(char)* text_end=null) const;
+	void Build();
+	void Clear(){ InputBuf[0] = 0; Build(); }
+	bool IsActive() const{ return !Filters.empty(); }
 }
 
 extern(C++) struct ImGuiTextBuffer{
+	@disable this();
+	
 	ImVector!char Buf;
 	__gshared static char[1] EmptyString;
-	
+
+	@nogc nothrow:
 	pragma(inline,true) char opIndex(int i) const{ assert(Buf.Data != null); return Buf.Data[i]; }
 	const(char)* begin() const{ return Buf.Data ? &Buf.front() : EmptyString.ptr; }
 	const(char)* end() const{ return Buf.Data ? &Buf.back() : EmptyString.ptr; }
@@ -1544,16 +1562,23 @@ extern(C++) struct ImGuiTextBuffer{
 }
 
 extern(C++) struct ImGuiStorage{
+	@disable this();
+	
 	extern(C++) struct ImGuiStoragePair{
+		@disable this();
+		
 		ImGuiID key;
 		private union _Val{ int i; float f; void* p; }
 		_Val val;
+		
+		@nogc nothrow:
 		this(ImGuiID _key, int _val_i){ key = _key; val.i = _val_i; }
 		this(ImGuiID _key, float _val_f){ key = _key; val.f = _val_f; }
 		this(ImGuiID _key, void* _val_p){ key = _key; val.p = _val_p; }
 	}
 	ImVector!ImGuiStoragePair Data;
 	
+	@nogc nothrow:
 	void Clear(){ Data.clear(); }
 	int GetInt(ImGuiID key, int default_val=0) const;
 	void SetInt(ImGuiID key, int val);
@@ -1582,9 +1607,10 @@ extern(C++) struct ImGuiListClipper{
 	float ItemsHeight;
 	float StartPosY;
 	void* TempData;
-	
-	//this();
-	//~this();
+
+	@nogc nothrow:
+	pragma(mangle, "ImGuiListClipper".mangleofCppDefaultCtor()) this(int _);
+	~this();
 	void Begin(int items_count, float items_height=-1f);
 	void End();
 	bool Step();
@@ -1617,7 +1643,8 @@ enum IM_COL32_BLACK_TRANS = IM_COL32(0,0,0,0);
 
 extern(C++) struct ImColor{
 	ImVec4 Value;
-	
+
+	@nogc nothrow:
 	this(float r, float g, float b, float a=1f){ Value = ImVec4(r, g, b, a); }
 	this(ref const ImVec4 col){ Value = col; }
 	this(int r, int g, int b, int a=255){
@@ -1658,7 +1685,8 @@ extern(C++) struct ImDrawCmd{
 	uint ElemCount = 0;
 	ImDrawCallback UserCallback = null;
 	void* UserCallbackData = null;
-	
+
+	@nogc nothrow:
 	pragma(inline,true) ImTextureID GetTexID() const{ return cast(ImTextureID)TextureId; }
 }
 
@@ -1669,12 +1697,16 @@ extern(C++) struct ImDrawVert{
 }
 
 extern(C++) struct ImDrawCmdHeader{
+	@disable this();
+	
 	ImVec4 ClipRect;
 	ImTextureID TextureId;
 	uint VtxOffset;
 }
 
 extern(C++) struct ImDrawChannel{
+	@disable this();
+	
 	ImVector!ImDrawCmd _CmdBuffer;
 	ImVector!ImDrawIdx _IdxBuffer;
 }
@@ -1683,7 +1715,8 @@ extern(C++) struct ImDrawListSplitter{
 	int _Current = 0;
 	int _Count = 0;
 	ImVector!ImDrawChannel _Channels;
-	
+
+	@nogc nothrow:
 	pragma(inline,true){
 		~this(){ ClearFreeMemory(); }
 		void Clear(){ _Current = 0; _Count = 1; }
@@ -1728,7 +1761,7 @@ extern(C++) struct ImDrawList{
 	ImDrawListFlags_ Flags = 0;
 	
 	uint _VtxCurrentIdx = 0;
-	ImDrawListSharedData* _Data;
+	ImDrawListSharedData* _Data = null;
 	const(char)* _OwnerName = null;
 	ImDrawVert* _VtxWritePtr = null;
 	ImDrawIdx* _IdxWritePtr = null;
@@ -1738,7 +1771,8 @@ extern(C++) struct ImDrawList{
 	ImDrawCmdHeader _CmdHeader = { ClipRect: ImVec4(0,0,0,0), TextureId: null, VtxOffset: 0};
 	ImDrawListSplitter _Splitter;
 	float _FringeScale = 0;
-	
+
+	@nogc nothrow:
 	this(ImDrawListSharedData* shared_data){ _Data = shared_data; }
 	
 	~this(){ _ClearFreeMemory(); }
@@ -1830,7 +1864,9 @@ extern(C++) struct ImDrawData{
 	ImVec2 DisplayPos = ImVec2(0,0);
 	ImVec2 DisplaySize = ImVec2(0,0);
 	ImVec2 FramebufferScale = ImVec2(0,0);
-	
+
+	@nogc nothrow:
+	this(int _){ Clear(); }
 	void Clear(){ memset(cast(void*)&this, 0, this.sizeof); }
 	void DeIndexAllBuffers();
 	void ScaleClipRects(ref const ImVec2 fb_scale);
@@ -1839,30 +1875,32 @@ extern(C++) struct ImDrawData{
 extern(C++) struct ImFontConfig{
 	void* FontData;
 	int FontDataSize;
-	bool FontDataOwnedByAtlas;
+	bool FontDataOwnedByAtlas = true;
 	int FontNo;
 	float SizePixels;
-	int OversampleH;
-	int OversampleV;
+	int OversampleH = 3;
+	int OversampleV = 1;
 	bool PixelSnapH;
 	ImVec2 GlyphExtraSpacing;
 	ImVec2 GlyphOffset;
 	const(ImWchar)* GlyphRanges;
 	float GlyphMinAdvanceX;
-	float GlyphMaxAdvanceX;
+	float GlyphMaxAdvanceX = float.max;
 	bool MergeMode;
 	uint FontBuilderFlags;
-	float RasterizerMultiply;
-	ImWchar EllipsisChar;
+	float RasterizerMultiply = 1f;
+	alias RasteriserMultiply = RasterizerMultiply;
+	ImWchar EllipsisChar = cast(ImWchar)-1;
 	
 	char[40] Name;
 	ImFont* DstFont;
 	
-	//this();
+	@nogc nothrow:
+	pragma(mangle, "ImFontConfig".mangleofCppDefaultCtor()) this(int _);
 }
 
 extern(C++) struct ImFontGlyph{
-	uint Data; //NOTE: this was originally a bitfield. Bit-ordering in bitfields isn't standard.
+	uint Data; //NOTE: this was originally 3 bitfields (2,2,30). Bit-ordering in bitfields isn't standard.
 	float AdvanceX;
 	float X0, Y0, X1, Y1;
 	float U0, V0, U1, V1;
@@ -1871,7 +1909,8 @@ extern(C++) struct ImFontGlyph{
 extern(C++) struct ImFontGlyphRangesBuilder{
 	ImVector!uint UsedChars;
 	
-	//~this(){ Clear(); }
+	@nogc nothrow:
+	this(int _){ Clear(); }
 	pragma(inline,true){
 		void Clear(){
 			int size_in_bytes = (IM_UNICODE_CODEPOINT_MAX + 1) / 8;
@@ -1894,11 +1933,13 @@ extern(C++) struct ImFontAtlasCustomRect{
 	float GlyphAdvanceX = 0f;
 	ImVec2 GlyphOffset = ImVec2(0, 0);
 	ImFont* Font = null;
+	
+	@nogc nothrow:
 	bool IsPacked() const{ return X != 0xFFFF; }
 }
 
 alias ImFontAtlasFlags_ = int;
-enum ImFontAtlasFlags : ImFontAtlasFlags_{
+enum ImFontAtlasFlags: ImFontAtlasFlags_{
 	None               = 0,
 	NoPowerOfTwoHeight = 1 << 0,
 	NoMouseCursors     = 1 << 1,
@@ -1906,8 +1947,35 @@ enum ImFontAtlasFlags : ImFontAtlasFlags_{
 }
 
 extern(C++) struct ImFontAtlas{
-	//this();
-	//~this();
+	ImFontAtlasFlags_ Flags;
+	ImTextureID TexID;
+	int TexDesiredWidth;
+	int TexGlyphPadding;
+	bool Locked;
+	void* UserData;
+	
+	bool TexReady;
+	bool TexPixelsUseColors;
+	ubyte* TexPixelsAlpha8;
+	uint* TexPixelsRGBA32;
+	int TexWidth;
+	int TexHeight;
+	ImVec2 TexUvScale;
+	ImVec2 TexUvWhitePixel;
+	ImVector!(ImFont*) Fonts;
+	ImVector!ImFontAtlasCustomRect CustomRects;
+	ImVector!ImFontConfig ConfigData;
+	ImVec4[IM_DRAWLIST_TEX_LINES_WIDTH_MAX + 1] TexUvLines;
+	
+	const(ImFontBuilderIO)* FontBuilderIO;
+	uint FontBuilderFlags;
+	
+	int PackIdMouseCursors;
+	int PackIdLines;
+	
+	@nogc nothrow:
+	pragma(mangle, "ImFontAtlas".mangleofCppDefaultCtor()) this(int _);
+	~this();
 	ImFont* AddFont(const(ImFontConfig)* font_cfg);
 	ImFont* AddFontDefault(const(ImFontConfig)* font_cfg=null);
 	ImFont* AddFontFromFileTTF(const(char)* filename, float size_pixels, const(ImFontConfig)* font_cfg=null, const(ImWchar)* glyph_ranges=null);
@@ -1940,32 +2008,6 @@ extern(C++) struct ImFontAtlas{
 	
 	void CalcCustomRectUV(const(ImFontAtlasCustomRect)* rect, ImVec2* out_uv_min, ImVec2* out_uv_max) const;
 	bool GetMouseCursorTexData(ImGuiMouseCursor cursor, ImVec2* out_offset, ImVec2* out_size, ImVec2* out_uv_border, ImVec2* out_uv_fill);
-	
-	ImFontAtlasFlags_ Flags;
-	ImTextureID TexID;
-	int TexDesiredWidth;
-	int TexGlyphPadding;
-	bool Locked;
-	void* UserData;
-	
-	bool TexReady;
-	bool TexPixelsUseColors;
-	ubyte* TexPixelsAlpha8;
-	uint* TexPixelsRGBA32;
-	int TexWidth;
-	int TexHeight;
-	ImVec2 TexUvScale;
-	ImVec2 TexUvWhitePixel;
-	ImVector!(ImFont*) Fonts;
-	ImVector!ImFontAtlasCustomRect CustomRects;
-	ImVector!ImFontConfig ConfigData;
-	ImVec4[IM_DRAWLIST_TEX_LINES_WIDTH_MAX + 1] TexUvLines;
-	
-	const(ImFontBuilderIO)* FontBuilderIO;
-	uint FontBuilderFlags;
-	
-	int PackIdMouseCursors;
-	int PackIdLines;
 }
 
 extern(C++) struct ImFont{
@@ -1988,11 +2030,12 @@ extern(C++) struct ImFont{
 	bool DirtyLookupTables;
 	float Scale;
 	float Ascent, Descent;
-	int MetricsTotalSurface;// 4
-	ubyte[(IM_UNICODE_CODEPOINT_MAX+1)/4096/8] Used4kPagesMap;
+	int MetricsTotalSurface;
+	ubyte[(IM_UNICODE_CODEPOINT_MAX + 1) / 4096 / 8] Used4kPagesMap;
 	
-	//this();
-	//~this();
+	@nogc nothrow:
+	pragma(mangle, "ImFont".mangleofCppDefaultCtor()) this(int _);
+	~this();
 	const(ImFontGlyph)* FindGlyph(ImWchar c) const;
 	const(ImFontGlyph)* FindGlyphNoFallback(ImWchar c) const;
 	float GetCharAdvance(ImWchar c) const{ return (cast(int)c < IndexAdvanceX.Size) ? IndexAdvanceX[cast(int)c] : FallbackAdvanceX; }
@@ -2030,6 +2073,7 @@ extern(C++) struct ImGuiViewport{
 	
 	void* PlatformHandleRaw = null;
 	
+	@nogc nothrow:
 	ImVec2 GetCenter() const{ return ImVec2(Pos.x + Size.x * 0.5f, Pos.y + Size.y * 0.5f); }
 	alias GetCentre = GetCenter;
 	ImVec2 GetWorkCenter() const{ return ImVec2(WorkPos.x + WorkSize.x * 0.5f, WorkPos.y + WorkSize.y * 0.5f); }
@@ -2042,17 +2086,17 @@ extern(C++) struct ImGuiPlatformImeData{
 	float InputLineHeight = 0;
 }
 
-extern(C++, "ImGui"){
-version(ImGui_DisableObsoleteKeyIO){
-	pragma(inline, true) ImGuiKey GetKeyIndex(ImGuiKey key){ assert(key >= ImGuiKey.NamedKey_BEGIN && key < ImGuiKey.NamedKey_END, "ImGuiKey and native_index was merged together and native_index is disabled by `ImGui_DisableObsoleteKeyIO`. Please switch to ImGuiKey."); return key; }
-}else{
-	ImGuiKey GetKeyIndex(ImGuiKey key);
-}
+extern(C++, "ImGui") @nogc nothrow{
+	version(ImGui_DisableObsoleteKeyIO){
+		pragma(inline, true) ImGuiKey GetKeyIndex(ImGuiKey key){ assert(key >= ImGuiKey.NamedKey_BEGIN && key < ImGuiKey.NamedKey_END, "ImGuiKey and native_index was merged together and native_index is disabled by `ImGui_DisableObsoleteKeyIO`. Please switch to ImGuiKey."); return key; }
+	}else{
+		ImGuiKey GetKeyIndex(ImGuiKey key);
+	}
 }
 
 version(ImGui_DisableObsoleteFunctions){
 }else{
-	extern(C++, "ImGui"){
+	extern(C++, "ImGui") @nogc nothrow{
 		pragma(inline,true) void PushAllowKeyboardFocus(bool tab_stop){ PushTabStop(tab_stop); }
 		pragma(inline,true) void PopAllowKeyboardFocus(){ PopTabStop(); }
 		
