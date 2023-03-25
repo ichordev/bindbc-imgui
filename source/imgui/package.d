@@ -55,10 +55,10 @@ extern(C++) struct ImVec2{
 	ref float opIndex(size_t idx);
 	
 	pragma(inline,true){
-		ImVec2 opBinary(string op)(const float rhs) const if(op == "*" || op == "/"){ mixin("return ImVec2(x "~op~" rhs, y "~op~" rhs);"); }
-		ImVec2 opBinary(string op)(ref const ImVec2 rhs) const if(op == "+" || op == "-" || op == "*" || op == "/"){ mixin("return ImVec2(x "~op~" rhs.x, y "~op~" rhs.y);"); }
-		ref ImVec2 opOpAssign(string op)(const float rhs) if(op == "*" || op == "/"){ mixin("x "~op~"= rhs; y "~op~"= rhs;"); return this; }
-		ref ImVec2 opOpAssign(string op)(ref const ImVec2 rhs) if(op == "+" || op == "-" || op == "*" || op == "/"){ mixin("x "~op~"= rhs.x; y "~op~"= rhs.y);"); return this; }
+		ImVec2 opBinary(string op)(const float rhs) const{ mixin("return ImVec2(x "~op~" rhs, y "~op~" rhs);"); }
+		ImVec2 opBinary(string op)(auto ref const ImVec2 rhs) const{ mixin("return ImVec2(x "~op~" rhs.x, y "~op~" rhs.y);"); }
+		ref ImVec2 opOpAssign(string op)(const float rhs){ mixin("x "~op~"= rhs; y "~op~"= rhs;"); return this; }
+		ref ImVec2 opOpAssign(string op)(auto ref const ImVec2 rhs){ mixin("x "~op~"= rhs.x; y "~op~"= rhs.y);"); return this; }
 	}
 }
 
@@ -67,7 +67,7 @@ extern(C++) struct ImVec4{
 	
 	@nogc nothrow:
 	pragma(inline,true){
-		ImVec4 opBinary(string op)(ref const ImVec4 rhs) const if(op == "+" || op == "-" || op == "*"){ mixin("return ImVec4(x "~op~" rhs.x, y "~op~" rhs.y, z "~op~" rhs.z, w "~op~" rhs.w);"); }
+		ImVec4 opBinary(string op)(ref const ImVec4 rhs) const{ mixin("return ImVec4(x "~op~" rhs.x, y "~op~" rhs.y, z "~op~" rhs.z, w "~op~" rhs.w);"); }
 	}
 }
 
@@ -250,7 +250,7 @@ extern(C++, "ImGui"){
 	bool Button(const(char)* label, ref const ImVec2 size=Vec2_0_0);
 	bool SmallButton(const(char)* label);
 	bool InvisibleButton(const(char)* str_id, ref const ImVec2 size, ImGuiButtonFlags_ flags=0);
-	bool ArrowButton(const(char)* str_id, ImGuiDir dir);
+	bool ArrowButton(const(char)* str_id, ImGuiDir_ dir);
 	bool Checkbox(const(char)* label, bool* v);
 	bool CheckboxFlags(const(char)* label, int* flags, int flags_value);
 	bool CheckboxFlags(const(char)* label, uint* flags, uint flags_value);
@@ -551,7 +551,7 @@ enum ImGuiWindowFlags: ImGuiWindowFlags_{
 	NoFocusOnAppearing     = 1 << 12,
 	NoBringToFrontOnFocus  = 1 << 13,
 	AlwaysVerticalScrollbar = 1 << 14,
-	AlwaysHorizontalScrollbar = 1<< 15,
+	AlwaysHorizontalScrollbar = 1 << 15,
 	AlwaysUseWindowPadding = 1 << 16,
 	NoNavInputs            = 1 << 18,
 	NoNavFocus             = 1 << 19,
