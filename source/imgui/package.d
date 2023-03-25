@@ -1278,6 +1278,7 @@ extern(C++) struct ImGuiStyle{
 	float TabBorderSize = 0f;
 	float TabMinWidthForCloseButton = 0f;
 	ImGuiDir_ ColorButtonPosition = ImGuiDir.Right;
+	alias ColourButtonPosition = ColorButtonPosition;
 	ImVec2 ButtonTextAlign = ImVec2(0.5f, 0.5f);
 	ImVec2 SelectableTextAlign = ImVec2(0f, 0f);
 	float SeparatorTextBorderSize = 3f;
@@ -1873,27 +1874,27 @@ extern(C++) struct ImDrawData{
 }
 
 extern(C++) struct ImFontConfig{
-	void* FontData;
+	void* FontData = null;
 	int FontDataSize;
 	bool FontDataOwnedByAtlas = true;
-	int FontNo;
-	float SizePixels;
+	int FontNo = 0;
+	float SizePixels = 0f;
 	int OversampleH = 3;
 	int OversampleV = 1;
-	bool PixelSnapH;
+	bool PixelSnapH = false;
 	ImVec2 GlyphExtraSpacing;
 	ImVec2 GlyphOffset;
-	const(ImWchar)* GlyphRanges;
-	float GlyphMinAdvanceX;
+	const(ImWchar)* GlyphRanges = null;
+	float GlyphMinAdvanceX = 0f;
 	float GlyphMaxAdvanceX = float.max;
-	bool MergeMode;
-	uint FontBuilderFlags;
+	bool MergeMode = false;
+	uint FontBuilderFlags = 0;
 	float RasterizerMultiply = 1f;
 	alias RasteriserMultiply = RasterizerMultiply;
 	ImWchar EllipsisChar = cast(ImWchar)-1;
 	
 	char[40] Name;
-	ImFont* DstFont;
+	ImFont* DstFont = null;
 	
 	@nogc nothrow:
 	pragma(mangle, "ImFontConfig".mangleofCppDefaultCtor()) this(int _);

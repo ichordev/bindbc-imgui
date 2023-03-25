@@ -27,6 +27,9 @@ auto clipper = ImGuiListClipper(0);
 It is recommended that you NEVER use `.init` of a Dear ImGui struct
 unless it is strictly necessary.
 
+## ImVec Operator Overloads
+Operator overloads for `ImVec2` and `ImVec4` are defined unconditionally by default.
+
 # Backends
 
 ## API & Rendering
