@@ -25,7 +25,6 @@
 		"$BIND_IMGUI_OBJDIR/imgui_widgets.obj",
 	],
 	"dflags": ["-extern-std=c++11"],
-	"libs": ["stdc++"],
 	
 	"configurations": [
 		{

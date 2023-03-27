@@ -18,6 +18,6 @@
 			"subConfigurations": {"bindbc-allegro5": "static"},
 		},
 	],
-	"libs": ["allegro", "allegro_primitives"],
+	"libs": ["stdc++", "allegro", "allegro_primitives"],
 	"versions": ["Allegro_Primitives"],
 }

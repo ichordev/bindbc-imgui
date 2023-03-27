@@ -20,8 +20,7 @@
 			"libs": ["SDL2"],
 		},
 	],
-	"versions": ["SDL_2018"],
-	"libs": ["vulkan"],
+	"libs": ["stdc++", "vulkan"],
 	"lflags": [
 		"-framework CoreFoundation",
 		"-framework QuartzCore",
@@ -31,4 +30,5 @@
 		"-framework IOKit",
 		"-framework CoreVideo",
 	],
+	"versions": ["SDL_2018"],
 }

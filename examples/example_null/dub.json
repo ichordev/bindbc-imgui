@@ -6,4 +6,5 @@
 	"subConfigurations": {
 		"bindbc-imgui": "static",
 	},
+	"libs": ["stdc++"],
 }

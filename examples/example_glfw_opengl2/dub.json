@@ -19,6 +19,7 @@
 			"subConfigurations": {"bindbc-glfw": "static"},
 		},
 	],
+	"libs": "stdc++",
 	"libs-osx": ["glfw"],
 	"libs-linux": ["glfw3", "GL"],
 	"libs-windows": ["glfw3", "opengl32"],

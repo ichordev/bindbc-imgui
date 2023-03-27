@@ -20,5 +20,6 @@
 			"libs": ["SDL2"],
 		},
 	],	
+	"libs": ["stdc++"],
 	"versions": ["SDL_2018", "GL_30"],
 }
