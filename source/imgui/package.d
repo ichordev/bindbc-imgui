@@ -71,7 +71,7 @@ extern(C++) struct ImVec4{
 	}
 }
 
-private immutable{
+immutable{
 	auto Vec2_0_0 = ImVec2(0,0);
 	auto Vec2_0_1 = ImVec2(0,1);
 	auto Vec2_1_0 = ImVec2(1,0);
@@ -1202,7 +1202,7 @@ extern(C++) struct ImVector(T){
 	@nogc nothrow:
 	pragma(inline,true){
 		this(ref const ImVector!T src){ this = src; }
-		ImVector!T opAssign(ref const ImVector!T src){ clear(); resize(src.Size); if(src.Data) memcpy(Data, src.Data, cast(size_t)Size * T.sizeof); return this; }
+		ImVector!T opAssign(ref const ImVector!T src){ clear(); resize(src.Size); if(src.Data !is null) memcpy(Data, src.Data, cast(size_t)Size * T.sizeof); return this; }
 		~this(){ if(Data) IM_FREE(Data); }
 		
 		void clear(){ if (Data){ Size = Capacity = 0; IM_FREE(Data); Data=null; } }
@@ -1546,7 +1546,7 @@ extern(C++) struct ImGuiTextBuffer{
 	@disable this();
 	
 	ImVector!char Buf;
-	extern __gshared static char[1] EmptyString;
+	extern static __gshared char[1] EmptyString;
 
 	@nogc nothrow:
 	pragma(inline,true) char opIndex(int i) const{ assert(Buf.Data != null); return Buf.Data[i]; }
@@ -1988,6 +1988,7 @@ extern(C++) struct ImFontAtlas{
 	void ClearFonts();
 	void Clear();
 	
+	bool Build();
 	void GetTexDataAsAlpha8(ubyte** out_pixels, int* out_width, int* out_height, int* out_bytes_per_pixel=null);
 	void GetTexDataAsRGBA32(ubyte** out_pixels, int* out_width, int* out_height, int* out_bytes_per_pixel=null);
 	bool IsBuilt() const{ return Fonts.Size > 0 && TexReady; }
