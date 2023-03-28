@@ -1546,7 +1546,7 @@ extern(C++) struct ImGuiTextBuffer{
 	@disable this();
 	
 	ImVector!char Buf;
-	__gshared static char[1] EmptyString;
+	extern __gshared static char[1] EmptyString;
 
 	@nogc nothrow:
 	pragma(inline,true) char opIndex(int i) const{ assert(Buf.Data != null); return Buf.Data[i]; }
