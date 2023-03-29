@@ -167,13 +167,13 @@ extern(C++, "ImGui"){
 	void SetScrollFromPosY(float local_y, float center_y_ratio=0.5f);
 	void PushFont(ImFont* font);
 	void PopFont();
-	void PushStyleColor(ImGuiCol idx, uint col);
-	void PushStyleColor(ImGuiCol idx, ref const ImVec4 col);
+	void PushStyleColor(ImGuiCol_ idx, uint col);
+	void PushStyleColor(ImGuiCol_ idx, ref const ImVec4 col);
 	alias PushStyleColour = PushStyleColor;
 	void PopStyleColor(int count=1);
 	alias PopStyleColour = PopStyleColor;
-	void PushStyleVar(ImGuiStyleVar idx, float val);
-	void PushStyleVar(ImGuiStyleVar idx, ref const ImVec2 val);
+	void PushStyleVar(ImGuiStyleVar_ idx, float val);
+	void PushStyleVar(ImGuiStyleVar_ idx, ref const ImVec2 val);
 	void PopStyleVar(int count=1);
 	void PushTabStop(bool tab_stop);
 	void PopTabStop();
@@ -190,11 +190,11 @@ extern(C++, "ImGui"){
 	ImFont* GetFont();
 	float GetFontSize();
 	ImVec2 GetFontTexUvWhitePixel();
-	uint GetColorU32(ImGuiCol idx, float alpha_mul=1f);
+	uint GetColorU32(ImGuiCol_ idx, float alpha_mul=1f);
 	uint GetColorU32(ref const ImVec4 col);
 	uint GetColorU32(uint col);
 	alias GetColourU32 = GetColorU32;
-	const(ImVec4)* GetStyleColorVec4(ImGuiCol idx);
+	const(ImVec4)* GetStyleColorVec4(ImGuiCol_ idx);
 	alias GetStyleColourVec4 = GetStyleColorVec4;
 	
 	void Separator();
@@ -290,11 +290,11 @@ extern(C++, "ImGui"){
 	bool SliderInt2(const(char)* label, int* v, int v_min, int v_max, const(char)* format="%d", ImGuiSliderFlags_ flags=0);
 	bool SliderInt3(const(char)* label, int* v, int v_min, int v_max, const(char)* format="%d", ImGuiSliderFlags_ flags=0);
 	bool SliderInt4(const(char)* label, int* v, int v_min, int v_max, const(char)* format="%d", ImGuiSliderFlags_ flags=0);
-	bool SliderScalar(const(char)* label, ImGuiDataType data_type, void* p_data, const(void)* p_min, const(void)* p_max, const(char)* format=null, ImGuiSliderFlags_ flags=0);
-	bool SliderScalarN(const(char)* label, ImGuiDataType data_type, void* p_data, int components, const(void)* p_min, const(void)* p_max, const(char)* format=null, ImGuiSliderFlags_ flags=0);
+	bool SliderScalar(const(char)* label, ImGuiDataType_ data_type, void* p_data, const(void)* p_min, const(void)* p_max, const(char)* format=null, ImGuiSliderFlags_ flags=0);
+	bool SliderScalarN(const(char)* label, ImGuiDataType_ data_type, void* p_data, int components, const(void)* p_min, const(void)* p_max, const(char)* format=null, ImGuiSliderFlags_ flags=0);
 	bool VSliderFloat(const(char)* label, ref const ImVec2 size, float* v, float v_min, float v_max, const(char)* format="%.3f", ImGuiSliderFlags_ flags=0);
 	bool VSliderInt(const(char)* label, ref const ImVec2 size, int* v, int v_min, int v_max, const(char)* format="%d", ImGuiSliderFlags_ flags=0);
-	bool VSliderScalar(const(char)* label, ref const ImVec2 size, ImGuiDataType data_type, void* p_data, const(void)* p_min, const(void)* p_max, const(char)* format=null, ImGuiSliderFlags_ flags=0);
+	bool VSliderScalar(const(char)* label, ref const ImVec2 size, ImGuiDataType_ data_type, void* p_data, const(void)* p_min, const(void)* p_max, const(char)* format=null, ImGuiSliderFlags_ flags=0);
 	
 	bool InputText(const(char)* label, char* buf, size_t buf_size, ImGuiInputTextFlags_ flags=0, ImGuiInputTextCallback callback=null, void* user_data=null);
 	bool InputTextMultiline(const(char)* label, char* buf, size_t buf_size, ref const ImVec2 size=Vec2_0_0, ImGuiInputTextFlags_ flags=0, ImGuiInputTextCallback callback=null, void* user_data=null);
@@ -308,8 +308,8 @@ extern(C++, "ImGui"){
 	bool InputInt3(const(char)* label, int* v, ImGuiInputTextFlags_ flags=0);
 	bool InputInt4(const(char)* label, int* v, ImGuiInputTextFlags_ flags=0);
 	bool InputDouble(const(char)* label, double* v, double step=0.0, double step_fast=0.0, const(char)* format="%.6f", ImGuiInputTextFlags_ flags=0);
-	bool InputScalar(const(char)* label, ImGuiDataType data_type, void* p_data, const(void)* p_step=null, const(void)* p_step_fast=null, const(char)* format=null, ImGuiInputTextFlags_ flags=0);
-	bool InputScalarN(const(char)* label, ImGuiDataType data_type, void* p_data, int components, const(void)* p_step=null, const(void)* p_step_fast=null, const(char)* format=null, ImGuiInputTextFlags_ flags=0);
+	bool InputScalar(const(char)* label, ImGuiDataType_ data_type, void* p_data, const(void)* p_step=null, const(void)* p_step_fast=null, const(char)* format=null, ImGuiInputTextFlags_ flags=0);
+	bool InputScalarN(const(char)* label, ImGuiDataType_ data_type, void* p_data, int components, const(void)* p_step=null, const(void)* p_step_fast=null, const(char)* format=null, ImGuiInputTextFlags_ flags=0);
 	
 	bool ColorEdit3(const(char)* label, float* col, ImGuiColorEditFlags_ flags=0);
 	alias ColourEdit3 = ColorEdit3;
@@ -321,7 +321,7 @@ extern(C++, "ImGui"){
 	alias ColourPicker4 = ColorPicker4;
 	bool ColorButton(const(char)* desc_id, ref const ImVec4 col, ImGuiInputTextFlags_ flags=0, ref const ImVec2 size=Vec2_0_0);
 	alias ColourButton = ColorButton;
-	void SetColorEditOptions(ImGuiColorEditFlags flags);
+	void SetColorEditOptions(ImGuiColorEditFlags_ flags);
 	alias SetColourEditOptions = SetColorEditOptions;
 	
 	bool TreeNode(const(char)* label);
@@ -330,10 +330,10 @@ extern(C++, "ImGui"){
 	bool TreeNodeV(const(char)* str_id, const(char)* fmt, va_list args);
 	bool TreeNodeV(const(void)* ptr_id, const(char)* fmt, va_list args);
 	bool TreeNodeEx(const(char)* label, ImGuiTreeNodeFlags_ flags=0);
-	bool TreeNodeEx(const(char)* str_id, ImGuiTreeNodeFlags flags, const(char)* fmt, ...);
-	bool TreeNodeEx(const(void)* ptr_id, ImGuiTreeNodeFlags flags, const(char)* fmt, ...);
-	bool TreeNodeExV(const(char)* str_id, ImGuiTreeNodeFlags flags, const(char)* fmt, va_list args);
-	bool TreeNodeExV(const(void)* ptr_id, ImGuiTreeNodeFlags flags, const(char)* fmt, va_list args);
+	bool TreeNodeEx(const(char)* str_id, ImGuiTreeNodeFlags_ flags, const(char)* fmt, ...);
+	bool TreeNodeEx(const(void)* ptr_id, ImGuiTreeNodeFlags_ flags, const(char)* fmt, ...);
+	bool TreeNodeExV(const(char)* str_id, ImGuiTreeNodeFlags_ flags, const(char)* fmt, va_list args);
+	bool TreeNodeExV(const(void)* ptr_id, ImGuiTreeNodeFlags_ flags, const(char)* fmt, va_list args);
 	void TreePush(const(char)* str_id);
 	void TreePush(const(void)* ptr_id);
 	void TreePop();
@@ -378,7 +378,7 @@ extern(C++, "ImGui"){
 	
 	void OpenPopup(const(char)* str_id, ImGuiPopupFlags_ popup_flags=0);
 	void OpenPopup(ImGuiID id, ImGuiPopupFlags_ popup_flags=0);
-	void OpenPopupOnItemClick(const(char)* str_id=null, ImGuiPopupFlags popup_flags=ImGuiPopupFlags.MouseButtonRight);
+	void OpenPopupOnItemClick(const(char)* str_id=null, ImGuiPopupFlags_ popup_flags=1);
 	void CloseCurrentPopup();
 	
 	bool BeginPopupContextItem(const(char)* str_id=null, ImGuiPopupFlags_ popup_flags=1);
@@ -403,7 +403,7 @@ extern(C++, "ImGui"){
 	const(char)* TableGetColumnName(int column_n=-1);
 	ImGuiTableColumnFlags TableGetColumnFlags(int column_n=-1);
 	void TableSetColumnEnabled(int column_n, bool v);
-	void TableSetBgColor(ImGuiTableBgTarget target, uint color, int column_n=-1);
+	void TableSetBgColor(ImGuiTableBgTarget_ target, uint color, int column_n=-1);
 	alias TableSetBgColour = TableSetBgColor;
 	void Columns(int count=1, const(char)* id=null, bool border=true);
 	void NextColumn();
@@ -449,7 +449,7 @@ extern(C++, "ImGui"){
 	bool IsItemHovered(ImGuiHoveredFlags_ flags=0);
 	bool IsItemActive();
 	bool IsItemFocused();
-	bool IsItemClicked(ImGuiMouseButton mouse_button=ImGuiMouseButton.Left);
+	bool IsItemClicked(ImGuiMouseButton_ mouse_button=0);
 	bool IsItemVisible();
 	bool IsItemEdited();
 	bool IsItemActivated();
@@ -475,7 +475,7 @@ extern(C++, "ImGui"){
 	double GetTime();
 	int GetFrameCount();
 	ImDrawListSharedData* GetDrawListSharedData();
-	const(char)* GetStyleColorName(ImGuiCol idx);
+	const(char)* GetStyleColorName(ImGuiCol_ idx);
 	alias GetStyleColourName = GetStyleColorName;
 	void SetStateStorage(ImGuiStorage* storage);
 	ImGuiStorage* GetStateStorage();
@@ -493,26 +493,26 @@ extern(C++, "ImGui"){
 	void ColorConvertHSVtoRGB(float h, float s, float v, ref float out_r, ref float out_g, ref float out_b);
 	alias ColourConvertHSVtoRGB = ColorConvertHSVtoRGB;
 	
-	bool IsKeyDown(ImGuiKey key);
-	bool IsKeyPressed(ImGuiKey key, bool repeat=true);
-	bool IsKeyReleased(ImGuiKey key);
-	int GetKeyPressedAmount(ImGuiKey key, float repeat_delay, float rate);
-	const(char)* GetKeyName(ImGuiKey key);
+	bool IsKeyDown(ImGuiKey_ key);
+	bool IsKeyPressed(ImGuiKey_ key, bool repeat=true);
+	bool IsKeyReleased(ImGuiKey_ key);
+	int GetKeyPressedAmount(ImGuiKey_ key, float repeat_delay, float rate);
+	const(char)* GetKeyName(ImGuiKey_ key);
 	void SetNextFrameWantCaptureKeyboard(bool want_capture_keyboard);
 	
-	bool IsMouseDown(ImGuiMouseButton button);
-	bool IsMouseClicked(ImGuiMouseButton button, bool repeat=false);
-	bool IsMouseReleased(ImGuiMouseButton button);
-	bool IsMouseDoubleClicked(ImGuiMouseButton button);
-	int GetMouseClickedCount(ImGuiMouseButton button);
+	bool IsMouseDown(ImGuiMouseButton_ button);
+	bool IsMouseClicked(ImGuiMouseButton_ button, bool repeat=false);
+	bool IsMouseReleased(ImGuiMouseButton_ button);
+	bool IsMouseDoubleClicked(ImGuiMouseButton_ button);
+	int GetMouseClickedCount(ImGuiMouseButton_ button);
 	bool IsMouseHoveringRect(ref const ImVec2 r_min, ref const ImVec2 r_max, bool clip=true);
 	bool IsMousePosValid(const(ImVec2)* mouse_pos=null);
 	bool IsAnyMouseDown();
 	ImVec2 GetMousePos();
 	ImVec2 GetMousePosOnOpeningCurrentPopup();
-	bool IsMouseDragging(ImGuiMouseButton button, float lock_threshold=-1f);
-	ImVec2 GetMouseDragDelta(ImGuiMouseButton button=ImGuiMouseButton.Left, float lock_threshold=-1f);
-	void ResetMouseDragDelta(ImGuiMouseButton button=ImGuiMouseButton.Left);
+	bool IsMouseDragging(ImGuiMouseButton_ button, float lock_threshold=-1f);
+	ImVec2 GetMouseDragDelta(ImGuiMouseButton_ button=0, float lock_threshold=-1f);
+	void ResetMouseDragDelta(ImGuiMouseButton_ button=0);
 	ImGuiMouseCursor GetMouseCursor();
 	void SetMouseCursor(ImGuiMouseCursor cursor_type);
 	void SetNextFrameWantCaptureMouse(bool want_capture_mouse);
@@ -1310,8 +1310,8 @@ extern(C++) struct ImGuiKeyData{
 }
 
 extern(C++) struct ImGuiIO{
-	ImGuiConfigFlags_ ConfigFlags = ImGuiConfigFlags.None;
-	ImGuiBackendFlags_ BackendFlags = ImGuiBackendFlags.None;
+	ImGuiConfigFlags_ ConfigFlags = 0;
+	ImGuiBackendFlags_ BackendFlags = 0;
 	ImVec2 DisplaySize = ImVec2(-1.0f, -1.0f);
 	float DeltaTime = 1f/60f;
 	float IniSavingRate = 5f;
