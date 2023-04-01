@@ -125,7 +125,10 @@ version(ImGui_Impl_SDL2){
 }
 
 version(ImGui_Impl_SDLRenderer){
-	import bindbc.sdl: SDL_Renderer;
+	version(ImGui_Impl_SDL2){
+	}else{
+		import bindbc.sdl: SDL_Renderer;
+	}
 	
 	bool ImGui_ImplSDLRenderer_Init(SDL_Renderer* renderer);
 	void ImGui_ImplSDLRenderer_Shutdown();
