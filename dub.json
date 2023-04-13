@@ -1,9 +1,8 @@
 {
 	"name": "bindbc-imgui",
 	"description": "Static bindings to Dear ImGui, compatible with BetterC, @nogc and nothrow.",
-	"homepage": "",
 	"authors": ["Aya Partridge"],
-	"license": "Boost",
+	"license": "BSL-1.0",
 	
 	"dependencies": {"bindbc-common": "~>0.0.6"},
 	"targetType": "staticLibrary",
@@ -68,15 +67,6 @@
 				"bindbc-allegro5": "~>1.0.0",
 				"d-metal-binding": "~>1.0.12"
 			},
-			"lflags": [
-				"-framework CoreFoundation",
-				"-framework QuartzCore",
-				"-framework Metal",
-				"-framework MetalKit",
-				"-framework Cocoa",
-				"-framework IOKit",
-				"-framework CoreVideo"
-			]
 		},
 		{
 			"name": "static-Allegro5-OpenGL2",
@@ -194,15 +184,6 @@
 				"bindbc-glfw": "~>1.0.0",
 				"d-metal-binding": "~>1.0.12"
 			},
-			"lflags": [
-				"-framework CoreFoundation",
-				"-framework QuartzCore",
-				"-framework Metal",
-				"-framework MetalKit",
-				"-framework Cocoa",
-				"-framework IOKit",
-				"-framework CoreVideo"
-			]
 		},
 		{
 			"name": "static-GLFW-OpenGL2",
@@ -316,15 +297,6 @@
 			"dependencies": {
 				"d-metal-binding": "~>1.0.12"
 			},
-			"lflags": [
-				"-framework CoreFoundation",
-				"-framework QuartzCore",
-				"-framework Metal",
-				"-framework MetalKit",
-				"-framework Cocoa",
-				"-framework IOKit",
-				"-framework CoreVideo"
-			]
 		},
 		{
 			"name": "static-macOS-OpenGL2",
@@ -438,15 +410,6 @@
 				"bindbc-sdl": "~>1.3.0",
 				"d-metal-binding": "~>1.0.12"
 			},
-			"lflags": [
-				"-framework CoreFoundation",
-				"-framework QuartzCore",
-				"-framework Metal",
-				"-framework MetalKit",
-				"-framework Cocoa",
-				"-framework IOKit",
-				"-framework CoreVideo"
-			]
 		},
 		{
 			"name": "static-SDL2-OpenGL2",
@@ -587,15 +550,6 @@
 				"bindbc-allegro5": "~>1.0.0",
 				"d-metal-binding": "~>1.0.12"
 			},
-			"lflags": [
-				"-framework CoreFoundation",
-				"-framework QuartzCore",
-				"-framework Metal",
-				"-framework MetalKit",
-				"-framework Cocoa",
-				"-framework IOKit",
-				"-framework CoreVideo"
-			]
 		},
 		{
 			"name": "staticBC-Allegro5-OpenGL2",
@@ -749,15 +703,6 @@
 				"bindbc-glfw": "~>1.0.0",
 				"d-metal-binding": "~>1.0.12"
 			},
-			"lflags": [
-				"-framework CoreFoundation",
-				"-framework QuartzCore",
-				"-framework Metal",
-				"-framework MetalKit",
-				"-framework Cocoa",
-				"-framework IOKit",
-				"-framework CoreVideo"
-			]
 		},
 		{
 			"name": "staticBC-GLFW-OpenGL2",
@@ -907,15 +852,6 @@
 			"dependencies": {
 				"d-metal-binding": "~>1.0.12"
 			},
-			"lflags": [
-				"-framework CoreFoundation",
-				"-framework QuartzCore",
-				"-framework Metal",
-				"-framework MetalKit",
-				"-framework Cocoa",
-				"-framework IOKit",
-				"-framework CoreVideo"
-			]
 		},
 		{
 			"name": "staticBC-macOS-OpenGL2",
@@ -1065,15 +1001,6 @@
 				"bindbc-sdl": "~>1.3.0",
 				"d-metal-binding": "~>1.0.12"
 			},
-			"lflags": [
-				"-framework CoreFoundation",
-				"-framework QuartzCore",
-				"-framework Metal",
-				"-framework MetalKit",
-				"-framework Cocoa",
-				"-framework IOKit",
-				"-framework CoreVideo"
-			]
 		},
 		{
 			"name": "staticBC-SDL2-OpenGL2",

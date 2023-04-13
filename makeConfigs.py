@@ -77,15 +77,6 @@ implRenderers = {
 		"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_metal.obj"],
 		"dependencies": {"d-metal-binding": "~>1.0.12"},
 		"versions": ["ImGui_Impl_Metal"],
-		"lflags": [
-			"-framework CoreFoundation",
-			"-framework QuartzCore",
-			"-framework Metal",
-			"-framework MetalKit",
-			"-framework Cocoa",
-			"-framework IOKit",
-			"-framework CoreVideo",
-		],
 	},
 	"OpenGL2": {
 		"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.o"],

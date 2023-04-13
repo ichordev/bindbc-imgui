@@ -10,8 +10,8 @@
 	"targetType": "executable",
 	"libs": ["stdc++"],
 	"lflags": [
-		"-L-framework Cocoa",
-		"-L-framework GameController",
-		"-L-framework OpenGL",
+		"-L-framework","Cocoa",
+		"-L-framework","GameController",
+		"-L-framework","OpenGL",
 	],
 }

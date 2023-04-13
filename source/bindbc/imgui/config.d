@@ -19,6 +19,6 @@ enum imguiVersion = (){
 	else                   return Version(1,89,4);
 }();
 
-import bindbc.common.codegen;
+//import bindbc.common.codegen;
 
-mixin(makeFnBindFns(staticBinding));
+//mixin(makeFnBindFns(staticBinding));
