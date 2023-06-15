@@ -282,9 +282,9 @@ extern(C++, "ImGui"){
 	bool DragScalarN(const(char)* label, ImGuiDataType data_type, void* p_data, int components, float v_speed=1f, const(void)* p_min=null, const(void)* p_max=null, const(char)* format=null, ImGuiSliderFlags_ flags=0);
 	
 	bool SliderFloat(const(char)* label, float* v, float v_min, float v_max, const(char)* format="%.3f", ImGuiSliderFlags_ flags=0);
-	bool SliderFloat2(const(char)** label, float v, float v_min, float v_max, const(char)* format="%.3f", ImGuiSliderFlags_ flags=0);
-	bool SliderFloat3(const(char)** label, float v, float v_min, float v_max, const(char)* format="%.3f", ImGuiSliderFlags_ flags=0);
-	bool SliderFloat4(const(char)** label, float v, float v_min, float v_max, const(char)* format="%.3f", ImGuiSliderFlags_ flags=0);
+	bool SliderFloat2(const(char)* label, float* v, float v_min, float v_max, const(char)* format="%.3f", ImGuiSliderFlags_ flags=0);
+	bool SliderFloat3(const(char)* label, float* v, float v_min, float v_max, const(char)* format="%.3f", ImGuiSliderFlags_ flags=0);
+	bool SliderFloat4(const(char)* label, float* v, float v_min, float v_max, const(char)* format="%.3f", ImGuiSliderFlags_ flags=0);
 	bool SliderAngle(const(char)* label, float* v_rad, float v_degrees_min=-360f, float v_degrees_max=+360f, const(char)* format="%.0f deg", ImGuiSliderFlags_ flags=0);
 	bool SliderInt(const(char)* label, int* v, int v_min, int v_max, const(char)* format="%d", ImGuiSliderFlags_ flags=0);
 	bool SliderInt2(const(char)* label, int* v, int v_min, int v_max, const(char)* format="%d", ImGuiSliderFlags_ flags=0);
