@@ -1,7 +1,19 @@
-import json
 from copy import deepcopy
+import json
+import re
 
 buildTypes = {
+	"dynamic": {
+		"dependencies": {"bindbc-loader": "~>1.1.1"},
+	},
+	"dynamicBC": {
+		"dependencies": {"bindbc-loader": "~>1.1.1"},
+		"subConfigurations": {
+			"bindbc-loader": "yesBC",
+			"bindbc-common": "yesBC",
+		},
+		"buildOptions": ["betterC"],
+	},
 	"static": {
 		"versions": ["BindImGui_Static"],
 	},
@@ -26,7 +38,7 @@ implFrontends = {
 	"GLFW": {
 		"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_glfw.o"],
 		"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_glfw.obj"],
-		"dependencies": {"bindbc-glfw": "~>1.0.0"},
+		"dependencies": {"bindbc-glfw": "~>1.1.0"},
 		"versions": ["ImGui_Impl_GLFW"],
 	},
 	"macOS": {
@@ -37,7 +49,7 @@ implFrontends = {
 	"SDL2": {
 		"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o"],
 		"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj"],
-		"dependencies": {"bindbc-sdl": "~>1.3.0"},
+		"dependencies": {"bindbc-sdl": "~>1.4.1"},
 		"versions": ["ImGui_Impl_SDL2"],
 	},
 	# "SDL3": {
@@ -81,20 +93,20 @@ implRenderers = {
 	"OpenGL2": {
 		"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.o"],
 		"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.obj"],
-		"dependencies": {"bindbc-opengl": "~>1.0.0"},
+		"dependencies": {"bindbc-opengl": "~>1.1.0"},
 		"versions": ["ImGui_Impl_OpenGL2"],
 	},
 	"OpenGL3": {
 		"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.o"],
 		"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.obj"],
-		"dependencies": {"bindbc-opengl": "~>1.0.0"},
+		"dependencies": {"bindbc-opengl": "~>1.1.0"},
 		"versions": ["ImGui_Impl_OpenGL3", "GL_30"],
 	},
 	"SDLRenderer": {
-		"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer.o"],
-		"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer.obj"],
-		"dependencies": {"bindbc-sdl": "~>1.3.0"},
-		"versions": ["ImGui_Impl_SDLRenderer"],
+		"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.o"],
+		"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.obj"],
+		"dependencies": {"bindbc-sdl": "~>1.4.1"},
+		"versions": ["ImGui_Impl_SDLRenderer2"],
 	},
 	"Vulkan": {
 		"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.o"],
@@ -138,4 +150,41 @@ for buildName, buildType in buildTypes.items():
 			configC['name'] += f'-{rendererName}'
 			configs.append(configC)
 
-print(json.dumps({'configurations': configs}, indent='\t'))
+out = json.dumps({
+	"name": "bindbc-imgui",
+	"description": "Static & dynamic bindings to Dear ImGui, compatible with BetterC, @nogc, and nothrow.",
+	"authors": ["Aya Partridge"],
+	"license": "BSL-1.0",
+	
+	"dependencies": {"bindbc-common": "~>0.1.0"},
+	"targetType": "staticLibrary",
+	"targetPath": "lib",
+	"targetName": "BindBC_ImGui",
+	
+	"sourceFiles-posix": [
+		"$BIND_IMGUI_OBJDIR/imgui.o",
+		"$BIND_IMGUI_OBJDIR/imgui_demo.o",
+		"$BIND_IMGUI_OBJDIR/imgui_draw.o",
+		"$BIND_IMGUI_OBJDIR/imgui_tables.o",
+		"$BIND_IMGUI_OBJDIR/imgui_widgets.o",
+	],
+	"sourceFiles-windows": [
+		"$BIND_IMGUI_OBJDIR/imgui.obj",
+		"$BIND_IMGUI_OBJDIR/imgui_demo.obj",
+		"$BIND_IMGUI_OBJDIR/imgui_draw.obj",
+		"$BIND_IMGUI_OBJDIR/imgui_tables.obj",
+		"$BIND_IMGUI_OBJDIR/imgui_widgets.obj",
+	],
+	"dflags-dmd": ["-extern-std=c++11"],
+	"dflags-ldc": ["-extern-std=c++11"],
+	"dflags-gdc": ["--extern-std=c++11"],
+	
+	'configurations': configs
+}, indent='\t')
+
+#collapse single-item lists/dicts
+out = re.sub(r"(?<=[\[\{])\n(?P<tabs>\t+)\t(\"(\\\"|[^\"])*\"(: \"(\\\"|[^\"])*\")?)\n(?P=tabs)(?=[\]\}])", r"\g<2>", out)
+#add line breaks for separation
+out = re.sub(r"^\t\"(dependencies|sourceFiles-posix|configurations)\"", r"\t\n\g<0>", out, 3, re.MULTILINE)
+
+print(out)

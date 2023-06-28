@@ -12,13 +12,9 @@ enum staticBinding = (){
 	else return false;
 }();
 
-import bindbc.common.versions;
+public import bindbc.common.versions;
 
 enum imguiVersion = (){
-	version(ImGui_1_89_4)  return Version(1,89,4); //just a placeholder
-	else                   return Version(1,89,4);
+	version(any)           return Version(1,89,6); //ImGui_1_89_6
+	else                   return Version(1,89,6);
 }();
-
-//import bindbc.common.codegen;
-
-//mixin(makeFnBindFns(staticBinding));
