@@ -1,14 +1,27 @@
 {
 	"name": "example-macos-opengl2",
+	"targetType": "executable",
 	"dependencies": {
-		"bindbc-imgui": "~>1.0.0",
+		"bindbc-imgui": {"path": "../../"},
 		"bindbc-opengl": "~>1.0.0",
 	},
-	"subConfigurations": {
-		"bindbc-imgui": "static-macOS-OpenGL2",
-	},
-	"targetType": "executable",
-	"libs": ["stdc++"],
+	"configurations": [
+		{
+			"name": "dynamic",
+			"subConfigurations": {
+				"bindbc-imgui": "dynamic-macOS-OpenGL2",
+				"bindbc-sdl": "dynamic",
+			},
+		},
+		{
+			"name": "static",
+			"subConfigurations": {
+				"bindbc-imgui": "static-macOS-OpenGL2",
+				"bindbc-sdl": "static",
+			},
+			"libs": ["stdc++"],
+		},
+	],
 	"lflags": [
 		"-L-framework","Cocoa",
 		"-L-framework","GameController",

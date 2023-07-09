@@ -1,26 +1,28 @@
 {
 	"name": "example-sdl2-metal",
-	"dependencies": {
-		"bindbc-imgui": "~>1.0.0",
-		"bindbc-sdl": "~>1.3.0",
-		"d-metal-binding": "~>1.1.1",
-	},
-	"subConfigurations": {
-		"bindbc-imgui": "static-SDL2-Metal",
-	},
 	"targetType": "executable",
+	"dependencies": {
+		"bindbc-imgui": {"path": "../../"},
+		"bindbc-sdl": "~>1.4.0",
+		"d-metal-binding": "~>1.1.0",
+	},
 	"configurations": [
 		{
 			"name": "dynamic",
-			"subConfigurations": {"bindbc-sdl": "dynamic"},
+			"subConfigurations": {
+				"bindbc-imgui": "dynamic-SDL2-Metal",
+				"bindbc-sdl": "dynamic",
+			},
 		},
 		{
 			"name": "static",
-			"subConfigurations": {"bindbc-sdl": "static"},
-			"libs": ["SDL2"],
+			"subConfigurations": {
+				"bindbc-imgui": "static-SDL2-Metal",
+				"bindbc-sdl": "static",
+			},
+			"libs": ["stdc++", "SDL2"],
 		},
 	],
-	"libs": ["stdc++", "vulkan"],
 	"lflags": [
 		"-framework","Foundation",
 		"-framework","CoreFoundation",

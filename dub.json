@@ -30,123 +30,12 @@
 	"configurations": [
 		{
 			"name": "dynamic",
-			"dependencies": {"bindbc-loader": "~>1.1.1"}
-		},
-		{
-			"name": "dynamic-Allegro5",
-			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
-				"bindbc-allegro5": "~>1.0.0"
-			},
-			"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.o"],
-			"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.obj"],
-			"versions": ["ImGui_Impl_Allegro5"]
-		},
-		{
-			"name": "dynamic-Allegro5-Metal",
-			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
-				"bindbc-allegro5": "~>1.0.0",
-				"d-metal-binding": "~>1.0.12"
-			},
-			"sourceFiles-posix": [
-				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.o",
-				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.o"
-			],
-			"sourceFiles-windows": [
-				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.obj",
-				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.obj"
-			],
-			"versions": [
-				"ImGui_Impl_Allegro5",
-				"ImGui_Impl_Metal"
-			]
-		},
-		{
-			"name": "dynamic-Allegro5-OpenGL2",
-			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
-				"bindbc-allegro5": "~>1.0.0",
-				"bindbc-opengl": "~>1.1.0"
-			},
-			"sourceFiles-posix": [
-				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.o",
-				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.o"
-			],
-			"sourceFiles-windows": [
-				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.obj",
-				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.obj"
-			],
-			"versions": [
-				"ImGui_Impl_Allegro5",
-				"ImGui_Impl_OpenGL2"
-			]
-		},
-		{
-			"name": "dynamic-Allegro5-OpenGL3",
-			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
-				"bindbc-allegro5": "~>1.0.0",
-				"bindbc-opengl": "~>1.1.0"
-			},
-			"sourceFiles-posix": [
-				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.o",
-				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.o"
-			],
-			"sourceFiles-windows": [
-				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.obj",
-				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.obj"
-			],
-			"versions": [
-				"ImGui_Impl_Allegro5",
-				"ImGui_Impl_OpenGL3",
-				"GL_30"
-			]
-		},
-		{
-			"name": "dynamic-Allegro5-SDLRenderer",
-			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
-				"bindbc-allegro5": "~>1.0.0",
-				"bindbc-sdl": "~>1.4.1"
-			},
-			"sourceFiles-posix": [
-				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.o",
-				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.o"
-			],
-			"sourceFiles-windows": [
-				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.obj",
-				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.obj"
-			],
-			"versions": [
-				"ImGui_Impl_Allegro5",
-				"ImGui_Impl_SDLRenderer2"
-			]
-		},
-		{
-			"name": "dynamic-Allegro5-Vulkan",
-			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
-				"bindbc-allegro5": "~>1.0.0",
-				"erupted": "~>2.1.0"
-			},
-			"sourceFiles-posix": [
-				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.o",
-				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.o"
-			],
-			"sourceFiles-windows": [
-				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.obj",
-				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.obj"
-			],
-			"versions": [
-				"ImGui_Impl_Allegro5",
-				"ImGui_Impl_Vulkan"
-			]
+			"dependencies": {"bindbc-loader": "~>1.1.0"}
 		},
 		{
 			"name": "dynamic-GLFW",
 			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
+				"bindbc-loader": "~>1.1.0",
 				"bindbc-glfw": "~>1.1.0"
 			},
 			"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_glfw.o"],
@@ -156,9 +45,9 @@
 		{
 			"name": "dynamic-GLFW-Metal",
 			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
+				"bindbc-loader": "~>1.1.0",
 				"bindbc-glfw": "~>1.1.0",
-				"d-metal-binding": "~>1.0.12"
+				"d-metal-binding": "~>1.1.0"
 			},
 			"sourceFiles-posix": [
 				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.o",
@@ -176,7 +65,7 @@
 		{
 			"name": "dynamic-GLFW-OpenGL2",
 			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
+				"bindbc-loader": "~>1.1.0",
 				"bindbc-glfw": "~>1.1.0",
 				"bindbc-opengl": "~>1.1.0"
 			},
@@ -196,7 +85,7 @@
 		{
 			"name": "dynamic-GLFW-OpenGL3",
 			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
+				"bindbc-loader": "~>1.1.0",
 				"bindbc-glfw": "~>1.1.0",
 				"bindbc-opengl": "~>1.1.0"
 			},
@@ -215,11 +104,11 @@
 			]
 		},
 		{
-			"name": "dynamic-GLFW-SDLRenderer",
+			"name": "dynamic-GLFW-SDLRenderer2",
 			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
+				"bindbc-loader": "~>1.1.0",
 				"bindbc-glfw": "~>1.1.0",
-				"bindbc-sdl": "~>1.4.1"
+				"bindbc-sdl": "~>1.4.0"
 			},
 			"sourceFiles-posix": [
 				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.o",
@@ -237,7 +126,7 @@
 		{
 			"name": "dynamic-GLFW-Vulkan",
 			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
+				"bindbc-loader": "~>1.1.0",
 				"bindbc-glfw": "~>1.1.0",
 				"erupted": "~>2.1.0"
 			},
@@ -256,7 +145,7 @@
 		},
 		{
 			"name": "dynamic-macOS",
-			"dependencies": {"bindbc-loader": "~>1.1.1"},
+			"dependencies": {"bindbc-loader": "~>1.1.0"},
 			"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_osx.o"],
 			"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj"],
 			"versions": ["ImGui_Impl_macOS"]
@@ -264,8 +153,8 @@
 		{
 			"name": "dynamic-macOS-Metal",
 			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
-				"d-metal-binding": "~>1.0.12"
+				"bindbc-loader": "~>1.1.0",
+				"d-metal-binding": "~>1.1.0"
 			},
 			"sourceFiles-posix": [
 				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.o",
@@ -283,7 +172,7 @@
 		{
 			"name": "dynamic-macOS-OpenGL2",
 			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
+				"bindbc-loader": "~>1.1.0",
 				"bindbc-opengl": "~>1.1.0"
 			},
 			"sourceFiles-posix": [
@@ -302,7 +191,7 @@
 		{
 			"name": "dynamic-macOS-OpenGL3",
 			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
+				"bindbc-loader": "~>1.1.0",
 				"bindbc-opengl": "~>1.1.0"
 			},
 			"sourceFiles-posix": [
@@ -320,10 +209,10 @@
 			]
 		},
 		{
-			"name": "dynamic-macOS-SDLRenderer",
+			"name": "dynamic-macOS-SDLRenderer2",
 			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
-				"bindbc-sdl": "~>1.4.1"
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-sdl": "~>1.4.0"
 			},
 			"sourceFiles-posix": [
 				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.o",
@@ -341,7 +230,7 @@
 		{
 			"name": "dynamic-macOS-Vulkan",
 			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
+				"bindbc-loader": "~>1.1.0",
 				"erupted": "~>2.1.0"
 			},
 			"sourceFiles-posix": [
@@ -360,8 +249,8 @@
 		{
 			"name": "dynamic-SDL2",
 			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
-				"bindbc-sdl": "~>1.4.1"
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-sdl": "~>1.4.0"
 			},
 			"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o"],
 			"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj"],
@@ -370,9 +259,9 @@
 		{
 			"name": "dynamic-SDL2-Metal",
 			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
-				"bindbc-sdl": "~>1.4.1",
-				"d-metal-binding": "~>1.0.12"
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-sdl": "~>1.4.0",
+				"d-metal-binding": "~>1.1.0"
 			},
 			"sourceFiles-posix": [
 				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o",
@@ -390,8 +279,8 @@
 		{
 			"name": "dynamic-SDL2-OpenGL2",
 			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
-				"bindbc-sdl": "~>1.4.1",
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-sdl": "~>1.4.0",
 				"bindbc-opengl": "~>1.1.0"
 			},
 			"sourceFiles-posix": [
@@ -410,8 +299,8 @@
 		{
 			"name": "dynamic-SDL2-OpenGL3",
 			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
-				"bindbc-sdl": "~>1.4.1",
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-sdl": "~>1.4.0",
 				"bindbc-opengl": "~>1.1.0"
 			},
 			"sourceFiles-posix": [
@@ -429,10 +318,10 @@
 			]
 		},
 		{
-			"name": "dynamic-SDL2-SDLRenderer",
+			"name": "dynamic-SDL2-SDLRenderer2",
 			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
-				"bindbc-sdl": "~>1.4.1"
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-sdl": "~>1.4.0"
 			},
 			"sourceFiles-posix": [
 				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o",
@@ -450,8 +339,8 @@
 		{
 			"name": "dynamic-SDL2-Vulkan",
 			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
-				"bindbc-sdl": "~>1.4.1",
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-sdl": "~>1.4.0",
 				"erupted": "~>2.1.0"
 			},
 			"sourceFiles-posix": [
@@ -469,7 +358,7 @@
 		},
 		{
 			"name": "dynamicBC",
-			"dependencies": {"bindbc-loader": "~>1.1.1"},
+			"dependencies": {"bindbc-loader": "~>1.1.0"},
 			"subConfigurations": {
 				"bindbc-loader": "yesBC",
 				"bindbc-common": "yesBC"
@@ -477,150 +366,9 @@
 			"buildOptions": ["betterC"]
 		},
 		{
-			"name": "dynamicBC-Allegro5",
-			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
-				"bindbc-allegro5": "~>1.0.0"
-			},
-			"subConfigurations": {
-				"bindbc-loader": "yesBC",
-				"bindbc-common": "yesBC"
-			},
-			"buildOptions": ["betterC"],
-			"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.o"],
-			"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.obj"],
-			"versions": ["ImGui_Impl_Allegro5"]
-		},
-		{
-			"name": "dynamicBC-Allegro5-Metal",
-			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
-				"bindbc-allegro5": "~>1.0.0",
-				"d-metal-binding": "~>1.0.12"
-			},
-			"subConfigurations": {
-				"bindbc-loader": "yesBC",
-				"bindbc-common": "yesBC"
-			},
-			"buildOptions": ["betterC"],
-			"sourceFiles-posix": [
-				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.o",
-				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.o"
-			],
-			"sourceFiles-windows": [
-				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.obj",
-				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.obj"
-			],
-			"versions": [
-				"ImGui_Impl_Allegro5",
-				"ImGui_Impl_Metal"
-			]
-		},
-		{
-			"name": "dynamicBC-Allegro5-OpenGL2",
-			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
-				"bindbc-allegro5": "~>1.0.0",
-				"bindbc-opengl": "~>1.1.0"
-			},
-			"subConfigurations": {
-				"bindbc-loader": "yesBC",
-				"bindbc-common": "yesBC"
-			},
-			"buildOptions": ["betterC"],
-			"sourceFiles-posix": [
-				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.o",
-				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.o"
-			],
-			"sourceFiles-windows": [
-				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.obj",
-				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.obj"
-			],
-			"versions": [
-				"ImGui_Impl_Allegro5",
-				"ImGui_Impl_OpenGL2"
-			]
-		},
-		{
-			"name": "dynamicBC-Allegro5-OpenGL3",
-			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
-				"bindbc-allegro5": "~>1.0.0",
-				"bindbc-opengl": "~>1.1.0"
-			},
-			"subConfigurations": {
-				"bindbc-loader": "yesBC",
-				"bindbc-common": "yesBC"
-			},
-			"buildOptions": ["betterC"],
-			"sourceFiles-posix": [
-				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.o",
-				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.o"
-			],
-			"sourceFiles-windows": [
-				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.obj",
-				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.obj"
-			],
-			"versions": [
-				"ImGui_Impl_Allegro5",
-				"ImGui_Impl_OpenGL3",
-				"GL_30"
-			]
-		},
-		{
-			"name": "dynamicBC-Allegro5-SDLRenderer",
-			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
-				"bindbc-allegro5": "~>1.0.0",
-				"bindbc-sdl": "~>1.4.1"
-			},
-			"subConfigurations": {
-				"bindbc-loader": "yesBC",
-				"bindbc-common": "yesBC"
-			},
-			"buildOptions": ["betterC"],
-			"sourceFiles-posix": [
-				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.o",
-				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.o"
-			],
-			"sourceFiles-windows": [
-				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.obj",
-				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.obj"
-			],
-			"versions": [
-				"ImGui_Impl_Allegro5",
-				"ImGui_Impl_SDLRenderer2"
-			]
-		},
-		{
-			"name": "dynamicBC-Allegro5-Vulkan",
-			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
-				"bindbc-allegro5": "~>1.0.0",
-				"erupted": "~>2.1.0"
-			},
-			"subConfigurations": {
-				"bindbc-loader": "yesBC",
-				"bindbc-common": "yesBC"
-			},
-			"buildOptions": ["betterC"],
-			"sourceFiles-posix": [
-				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.o",
-				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.o"
-			],
-			"sourceFiles-windows": [
-				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.obj",
-				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.obj"
-			],
-			"versions": [
-				"ImGui_Impl_Allegro5",
-				"ImGui_Impl_Vulkan"
-			]
-		},
-		{
 			"name": "dynamicBC-GLFW",
 			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
+				"bindbc-loader": "~>1.1.0",
 				"bindbc-glfw": "~>1.1.0"
 			},
 			"subConfigurations": {
@@ -635,9 +383,9 @@
 		{
 			"name": "dynamicBC-GLFW-Metal",
 			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
+				"bindbc-loader": "~>1.1.0",
 				"bindbc-glfw": "~>1.1.0",
-				"d-metal-binding": "~>1.0.12"
+				"d-metal-binding": "~>1.1.0"
 			},
 			"subConfigurations": {
 				"bindbc-loader": "yesBC",
@@ -660,7 +408,7 @@
 		{
 			"name": "dynamicBC-GLFW-OpenGL2",
 			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
+				"bindbc-loader": "~>1.1.0",
 				"bindbc-glfw": "~>1.1.0",
 				"bindbc-opengl": "~>1.1.0"
 			},
@@ -685,7 +433,7 @@
 		{
 			"name": "dynamicBC-GLFW-OpenGL3",
 			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
+				"bindbc-loader": "~>1.1.0",
 				"bindbc-glfw": "~>1.1.0",
 				"bindbc-opengl": "~>1.1.0"
 			},
@@ -709,11 +457,11 @@
 			]
 		},
 		{
-			"name": "dynamicBC-GLFW-SDLRenderer",
+			"name": "dynamicBC-GLFW-SDLRenderer2",
 			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
+				"bindbc-loader": "~>1.1.0",
 				"bindbc-glfw": "~>1.1.0",
-				"bindbc-sdl": "~>1.4.1"
+				"bindbc-sdl": "~>1.4.0"
 			},
 			"subConfigurations": {
 				"bindbc-loader": "yesBC",
@@ -736,7 +484,7 @@
 		{
 			"name": "dynamicBC-GLFW-Vulkan",
 			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
+				"bindbc-loader": "~>1.1.0",
 				"bindbc-glfw": "~>1.1.0",
 				"erupted": "~>2.1.0"
 			},
@@ -760,7 +508,7 @@
 		},
 		{
 			"name": "dynamicBC-macOS",
-			"dependencies": {"bindbc-loader": "~>1.1.1"},
+			"dependencies": {"bindbc-loader": "~>1.1.0"},
 			"subConfigurations": {
 				"bindbc-loader": "yesBC",
 				"bindbc-common": "yesBC"
@@ -773,8 +521,8 @@
 		{
 			"name": "dynamicBC-macOS-Metal",
 			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
-				"d-metal-binding": "~>1.0.12"
+				"bindbc-loader": "~>1.1.0",
+				"d-metal-binding": "~>1.1.0"
 			},
 			"subConfigurations": {
 				"bindbc-loader": "yesBC",
@@ -797,7 +545,7 @@
 		{
 			"name": "dynamicBC-macOS-OpenGL2",
 			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
+				"bindbc-loader": "~>1.1.0",
 				"bindbc-opengl": "~>1.1.0"
 			},
 			"subConfigurations": {
@@ -821,7 +569,7 @@
 		{
 			"name": "dynamicBC-macOS-OpenGL3",
 			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
+				"bindbc-loader": "~>1.1.0",
 				"bindbc-opengl": "~>1.1.0"
 			},
 			"subConfigurations": {
@@ -844,10 +592,10 @@
 			]
 		},
 		{
-			"name": "dynamicBC-macOS-SDLRenderer",
+			"name": "dynamicBC-macOS-SDLRenderer2",
 			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
-				"bindbc-sdl": "~>1.4.1"
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-sdl": "~>1.4.0"
 			},
 			"subConfigurations": {
 				"bindbc-loader": "yesBC",
@@ -870,7 +618,7 @@
 		{
 			"name": "dynamicBC-macOS-Vulkan",
 			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
+				"bindbc-loader": "~>1.1.0",
 				"erupted": "~>2.1.0"
 			},
 			"subConfigurations": {
@@ -894,8 +642,8 @@
 		{
 			"name": "dynamicBC-SDL2",
 			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
-				"bindbc-sdl": "~>1.4.1"
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-sdl": "~>1.4.0"
 			},
 			"subConfigurations": {
 				"bindbc-loader": "yesBC",
@@ -909,9 +657,9 @@
 		{
 			"name": "dynamicBC-SDL2-Metal",
 			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
-				"bindbc-sdl": "~>1.4.1",
-				"d-metal-binding": "~>1.0.12"
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-sdl": "~>1.4.0",
+				"d-metal-binding": "~>1.1.0"
 			},
 			"subConfigurations": {
 				"bindbc-loader": "yesBC",
@@ -934,8 +682,8 @@
 		{
 			"name": "dynamicBC-SDL2-OpenGL2",
 			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
-				"bindbc-sdl": "~>1.4.1",
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-sdl": "~>1.4.0",
 				"bindbc-opengl": "~>1.1.0"
 			},
 			"subConfigurations": {
@@ -959,8 +707,8 @@
 		{
 			"name": "dynamicBC-SDL2-OpenGL3",
 			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
-				"bindbc-sdl": "~>1.4.1",
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-sdl": "~>1.4.0",
 				"bindbc-opengl": "~>1.1.0"
 			},
 			"subConfigurations": {
@@ -983,10 +731,10 @@
 			]
 		},
 		{
-			"name": "dynamicBC-SDL2-SDLRenderer",
+			"name": "dynamicBC-SDL2-SDLRenderer2",
 			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
-				"bindbc-sdl": "~>1.4.1"
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-sdl": "~>1.4.0"
 			},
 			"subConfigurations": {
 				"bindbc-loader": "yesBC",
@@ -1009,8 +757,8 @@
 		{
 			"name": "dynamicBC-SDL2-Vulkan",
 			"dependencies": {
-				"bindbc-loader": "~>1.1.1",
-				"bindbc-sdl": "~>1.4.1",
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-sdl": "~>1.4.0",
 				"erupted": "~>2.1.0"
 			},
 			"subConfigurations": {
@@ -1034,117 +782,6 @@
 		{
 			"name": "static",
 			"versions": ["BindImGui_Static"]
-		},
-		{
-			"name": "static-Allegro5",
-			"versions": [
-				"BindImGui_Static",
-				"ImGui_Impl_Allegro5"
-			],
-			"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.o"],
-			"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.obj"],
-			"dependencies": {"bindbc-allegro5": "~>1.0.0"}
-		},
-		{
-			"name": "static-Allegro5-Metal",
-			"versions": [
-				"BindImGui_Static",
-				"ImGui_Impl_Allegro5",
-				"ImGui_Impl_Metal"
-			],
-			"sourceFiles-posix": [
-				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.o",
-				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.o"
-			],
-			"sourceFiles-windows": [
-				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.obj",
-				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.obj"
-			],
-			"dependencies": {
-				"bindbc-allegro5": "~>1.0.0",
-				"d-metal-binding": "~>1.0.12"
-			}
-		},
-		{
-			"name": "static-Allegro5-OpenGL2",
-			"versions": [
-				"BindImGui_Static",
-				"ImGui_Impl_Allegro5",
-				"ImGui_Impl_OpenGL2"
-			],
-			"sourceFiles-posix": [
-				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.o",
-				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.o"
-			],
-			"sourceFiles-windows": [
-				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.obj",
-				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.obj"
-			],
-			"dependencies": {
-				"bindbc-allegro5": "~>1.0.0",
-				"bindbc-opengl": "~>1.1.0"
-			}
-		},
-		{
-			"name": "static-Allegro5-OpenGL3",
-			"versions": [
-				"BindImGui_Static",
-				"ImGui_Impl_Allegro5",
-				"ImGui_Impl_OpenGL3",
-				"GL_30"
-			],
-			"sourceFiles-posix": [
-				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.o",
-				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.o"
-			],
-			"sourceFiles-windows": [
-				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.obj",
-				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.obj"
-			],
-			"dependencies": {
-				"bindbc-allegro5": "~>1.0.0",
-				"bindbc-opengl": "~>1.1.0"
-			}
-		},
-		{
-			"name": "static-Allegro5-SDLRenderer",
-			"versions": [
-				"BindImGui_Static",
-				"ImGui_Impl_Allegro5",
-				"ImGui_Impl_SDLRenderer2"
-			],
-			"sourceFiles-posix": [
-				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.o",
-				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.o"
-			],
-			"sourceFiles-windows": [
-				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.obj",
-				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.obj"
-			],
-			"dependencies": {
-				"bindbc-allegro5": "~>1.0.0",
-				"bindbc-sdl": "~>1.4.1"
-			}
-		},
-		{
-			"name": "static-Allegro5-Vulkan",
-			"versions": [
-				"BindImGui_Static",
-				"ImGui_Impl_Allegro5",
-				"ImGui_Impl_Vulkan"
-			],
-			"sourceFiles-posix": [
-				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.o",
-				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.o"
-			],
-			"sourceFiles-windows": [
-				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.obj",
-				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.obj"
-			],
-			"dependencies": {
-				"bindbc-allegro5": "~>1.0.0",
-				"erupted": "~>2.1.0"
-			}
 		},
 		{
 			"name": "static-GLFW",
@@ -1173,7 +810,7 @@
 			],
 			"dependencies": {
 				"bindbc-glfw": "~>1.1.0",
-				"d-metal-binding": "~>1.0.12"
+				"d-metal-binding": "~>1.1.0"
 			}
 		},
 		{
@@ -1218,7 +855,7 @@
 			}
 		},
 		{
-			"name": "static-GLFW-SDLRenderer",
+			"name": "static-GLFW-SDLRenderer2",
 			"versions": [
 				"BindImGui_Static",
 				"ImGui_Impl_GLFW",
@@ -1234,7 +871,7 @@
 			],
 			"dependencies": {
 				"bindbc-glfw": "~>1.1.0",
-				"bindbc-sdl": "~>1.4.1"
+				"bindbc-sdl": "~>1.4.0"
 			}
 		},
 		{
@@ -1281,7 +918,7 @@
 				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj",
 				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.obj"
 			],
-			"dependencies": {"d-metal-binding": "~>1.0.12"}
+			"dependencies": {"d-metal-binding": "~>1.1.0"}
 		},
 		{
 			"name": "static-macOS-OpenGL2",
@@ -1319,7 +956,7 @@
 			"dependencies": {"bindbc-opengl": "~>1.1.0"}
 		},
 		{
-			"name": "static-macOS-SDLRenderer",
+			"name": "static-macOS-SDLRenderer2",
 			"versions": [
 				"BindImGui_Static",
 				"ImGui_Impl_macOS",
@@ -1333,7 +970,7 @@
 				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj",
 				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.obj"
 			],
-			"dependencies": {"bindbc-sdl": "~>1.4.1"}
+			"dependencies": {"bindbc-sdl": "~>1.4.0"}
 		},
 		{
 			"name": "static-macOS-Vulkan",
@@ -1360,7 +997,7 @@
 			],
 			"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o"],
 			"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj"],
-			"dependencies": {"bindbc-sdl": "~>1.4.1"}
+			"dependencies": {"bindbc-sdl": "~>1.4.0"}
 		},
 		{
 			"name": "static-SDL2-Metal",
@@ -1378,8 +1015,8 @@
 				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.obj"
 			],
 			"dependencies": {
-				"bindbc-sdl": "~>1.4.1",
-				"d-metal-binding": "~>1.0.12"
+				"bindbc-sdl": "~>1.4.0",
+				"d-metal-binding": "~>1.1.0"
 			}
 		},
 		{
@@ -1398,7 +1035,7 @@
 				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.obj"
 			],
 			"dependencies": {
-				"bindbc-sdl": "~>1.4.1",
+				"bindbc-sdl": "~>1.4.0",
 				"bindbc-opengl": "~>1.1.0"
 			}
 		},
@@ -1419,12 +1056,12 @@
 				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.obj"
 			],
 			"dependencies": {
-				"bindbc-sdl": "~>1.4.1",
+				"bindbc-sdl": "~>1.4.0",
 				"bindbc-opengl": "~>1.1.0"
 			}
 		},
 		{
-			"name": "static-SDL2-SDLRenderer",
+			"name": "static-SDL2-SDLRenderer2",
 			"versions": [
 				"BindImGui_Static",
 				"ImGui_Impl_SDL2",
@@ -1438,7 +1075,7 @@
 				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj",
 				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.obj"
 			],
-			"dependencies": {"bindbc-sdl": "~>1.4.1"}
+			"dependencies": {"bindbc-sdl": "~>1.4.0"}
 		},
 		{
 			"name": "static-SDL2-Vulkan",
@@ -1456,7 +1093,7 @@
 				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.obj"
 			],
 			"dependencies": {
-				"bindbc-sdl": "~>1.4.1",
+				"bindbc-sdl": "~>1.4.0",
 				"erupted": "~>2.1.0"
 			}
 		},
@@ -1465,129 +1102,6 @@
 			"subConfigurations": {"bindbc-common": "yesBC"},
 			"buildOptions": ["betterC"],
 			"versions": ["BindImGui_Static"]
-		},
-		{
-			"name": "staticBC-Allegro5",
-			"subConfigurations": {"bindbc-common": "yesBC"},
-			"buildOptions": ["betterC"],
-			"versions": [
-				"BindImGui_Static",
-				"ImGui_Impl_Allegro5"
-			],
-			"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.o"],
-			"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.obj"],
-			"dependencies": {"bindbc-allegro5": "~>1.0.0"}
-		},
-		{
-			"name": "staticBC-Allegro5-Metal",
-			"subConfigurations": {"bindbc-common": "yesBC"},
-			"buildOptions": ["betterC"],
-			"versions": [
-				"BindImGui_Static",
-				"ImGui_Impl_Allegro5",
-				"ImGui_Impl_Metal"
-			],
-			"sourceFiles-posix": [
-				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.o",
-				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.o"
-			],
-			"sourceFiles-windows": [
-				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.obj",
-				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.obj"
-			],
-			"dependencies": {
-				"bindbc-allegro5": "~>1.0.0",
-				"d-metal-binding": "~>1.0.12"
-			}
-		},
-		{
-			"name": "staticBC-Allegro5-OpenGL2",
-			"subConfigurations": {"bindbc-common": "yesBC"},
-			"buildOptions": ["betterC"],
-			"versions": [
-				"BindImGui_Static",
-				"ImGui_Impl_Allegro5",
-				"ImGui_Impl_OpenGL2"
-			],
-			"sourceFiles-posix": [
-				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.o",
-				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.o"
-			],
-			"sourceFiles-windows": [
-				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.obj",
-				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.obj"
-			],
-			"dependencies": {
-				"bindbc-allegro5": "~>1.0.0",
-				"bindbc-opengl": "~>1.1.0"
-			}
-		},
-		{
-			"name": "staticBC-Allegro5-OpenGL3",
-			"subConfigurations": {"bindbc-common": "yesBC"},
-			"buildOptions": ["betterC"],
-			"versions": [
-				"BindImGui_Static",
-				"ImGui_Impl_Allegro5",
-				"ImGui_Impl_OpenGL3",
-				"GL_30"
-			],
-			"sourceFiles-posix": [
-				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.o",
-				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.o"
-			],
-			"sourceFiles-windows": [
-				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.obj",
-				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.obj"
-			],
-			"dependencies": {
-				"bindbc-allegro5": "~>1.0.0",
-				"bindbc-opengl": "~>1.1.0"
-			}
-		},
-		{
-			"name": "staticBC-Allegro5-SDLRenderer",
-			"subConfigurations": {"bindbc-common": "yesBC"},
-			"buildOptions": ["betterC"],
-			"versions": [
-				"BindImGui_Static",
-				"ImGui_Impl_Allegro5",
-				"ImGui_Impl_SDLRenderer2"
-			],
-			"sourceFiles-posix": [
-				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.o",
-				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.o"
-			],
-			"sourceFiles-windows": [
-				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.obj",
-				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.obj"
-			],
-			"dependencies": {
-				"bindbc-allegro5": "~>1.0.0",
-				"bindbc-sdl": "~>1.4.1"
-			}
-		},
-		{
-			"name": "staticBC-Allegro5-Vulkan",
-			"subConfigurations": {"bindbc-common": "yesBC"},
-			"buildOptions": ["betterC"],
-			"versions": [
-				"BindImGui_Static",
-				"ImGui_Impl_Allegro5",
-				"ImGui_Impl_Vulkan"
-			],
-			"sourceFiles-posix": [
-				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.o",
-				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.o"
-			],
-			"sourceFiles-windows": [
-				"$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.obj",
-				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.obj"
-			],
-			"dependencies": {
-				"bindbc-allegro5": "~>1.0.0",
-				"erupted": "~>2.1.0"
-			}
 		},
 		{
 			"name": "staticBC-GLFW",
@@ -1620,7 +1134,7 @@
 			],
 			"dependencies": {
 				"bindbc-glfw": "~>1.1.0",
-				"d-metal-binding": "~>1.0.12"
+				"d-metal-binding": "~>1.1.0"
 			}
 		},
 		{
@@ -1669,7 +1183,7 @@
 			}
 		},
 		{
-			"name": "staticBC-GLFW-SDLRenderer",
+			"name": "staticBC-GLFW-SDLRenderer2",
 			"subConfigurations": {"bindbc-common": "yesBC"},
 			"buildOptions": ["betterC"],
 			"versions": [
@@ -1687,7 +1201,7 @@
 			],
 			"dependencies": {
 				"bindbc-glfw": "~>1.1.0",
-				"bindbc-sdl": "~>1.4.1"
+				"bindbc-sdl": "~>1.4.0"
 			}
 		},
 		{
@@ -1740,7 +1254,7 @@
 				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj",
 				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.obj"
 			],
-			"dependencies": {"d-metal-binding": "~>1.0.12"}
+			"dependencies": {"d-metal-binding": "~>1.1.0"}
 		},
 		{
 			"name": "staticBC-macOS-OpenGL2",
@@ -1782,7 +1296,7 @@
 			"dependencies": {"bindbc-opengl": "~>1.1.0"}
 		},
 		{
-			"name": "staticBC-macOS-SDLRenderer",
+			"name": "staticBC-macOS-SDLRenderer2",
 			"subConfigurations": {"bindbc-common": "yesBC"},
 			"buildOptions": ["betterC"],
 			"versions": [
@@ -1798,7 +1312,7 @@
 				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj",
 				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.obj"
 			],
-			"dependencies": {"bindbc-sdl": "~>1.4.1"}
+			"dependencies": {"bindbc-sdl": "~>1.4.0"}
 		},
 		{
 			"name": "staticBC-macOS-Vulkan",
@@ -1829,7 +1343,7 @@
 			],
 			"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o"],
 			"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj"],
-			"dependencies": {"bindbc-sdl": "~>1.4.1"}
+			"dependencies": {"bindbc-sdl": "~>1.4.0"}
 		},
 		{
 			"name": "staticBC-SDL2-Metal",
@@ -1849,8 +1363,8 @@
 				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.obj"
 			],
 			"dependencies": {
-				"bindbc-sdl": "~>1.4.1",
-				"d-metal-binding": "~>1.0.12"
+				"bindbc-sdl": "~>1.4.0",
+				"d-metal-binding": "~>1.1.0"
 			}
 		},
 		{
@@ -1871,7 +1385,7 @@
 				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.obj"
 			],
 			"dependencies": {
-				"bindbc-sdl": "~>1.4.1",
+				"bindbc-sdl": "~>1.4.0",
 				"bindbc-opengl": "~>1.1.0"
 			}
 		},
@@ -1894,12 +1408,12 @@
 				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.obj"
 			],
 			"dependencies": {
-				"bindbc-sdl": "~>1.4.1",
+				"bindbc-sdl": "~>1.4.0",
 				"bindbc-opengl": "~>1.1.0"
 			}
 		},
 		{
-			"name": "staticBC-SDL2-SDLRenderer",
+			"name": "staticBC-SDL2-SDLRenderer2",
 			"subConfigurations": {"bindbc-common": "yesBC"},
 			"buildOptions": ["betterC"],
 			"versions": [
@@ -1915,7 +1429,7 @@
 				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj",
 				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.obj"
 			],
-			"dependencies": {"bindbc-sdl": "~>1.4.1"}
+			"dependencies": {"bindbc-sdl": "~>1.4.0"}
 		},
 		{
 			"name": "staticBC-SDL2-Vulkan",
@@ -1935,7 +1449,7 @@
 				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.obj"
 			],
 			"dependencies": {
-				"bindbc-sdl": "~>1.4.1",
+				"bindbc-sdl": "~>1.4.0",
 				"erupted": "~>2.1.0"
 			}
 		}

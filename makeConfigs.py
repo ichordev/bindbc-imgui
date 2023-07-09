@@ -4,10 +4,10 @@ import re
 
 buildTypes = {
 	"dynamic": {
-		"dependencies": {"bindbc-loader": "~>1.1.1"},
+		"dependencies": {"bindbc-loader": "~>1.1.0"},
 	},
 	"dynamicBC": {
-		"dependencies": {"bindbc-loader": "~>1.1.1"},
+		"dependencies": {"bindbc-loader": "~>1.1.0"},
 		"subConfigurations": {
 			"bindbc-loader": "yesBC",
 			"bindbc-common": "yesBC",
@@ -24,12 +24,12 @@ buildTypes = {
 	},
 }
 implFrontends = {
-	"Allegro5": {
-		"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.o"],
-		"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.obj"],
-		"dependencies": {"bindbc-allegro5": "~>1.0.0"},
-		"versions": ["ImGui_Impl_Allegro5"],
-	},
+	#"Allegro5": {
+	#	"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.o"],
+	#	"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_allegro5.obj"],
+	#	"dependencies": {"bindbc-allegro5": "~>1.0.0"},
+	#	"versions": ["ImGui_Impl_Allegro5"],
+	#},
 	# "Android": {
 	# 	"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_android.o"],
 	# 	"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_android.obj"],
@@ -49,7 +49,7 @@ implFrontends = {
 	"SDL2": {
 		"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o"],
 		"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj"],
-		"dependencies": {"bindbc-sdl": "~>1.4.1"},
+		"dependencies": {"bindbc-sdl": "~>1.4.0"},
 		"versions": ["ImGui_Impl_SDL2"],
 	},
 	# "SDL3": {
@@ -87,7 +87,7 @@ implRenderers = {
 	"Metal": {
 		"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_metal.o"],
 		"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_metal.obj"],
-		"dependencies": {"d-metal-binding": "~>1.0.12"},
+		"dependencies": {"d-metal-binding": "~>1.1.0"},
 		"versions": ["ImGui_Impl_Metal"],
 	},
 	"OpenGL2": {
@@ -102,10 +102,10 @@ implRenderers = {
 		"dependencies": {"bindbc-opengl": "~>1.1.0"},
 		"versions": ["ImGui_Impl_OpenGL3", "GL_30"],
 	},
-	"SDLRenderer": {
+	"SDLRenderer2": {
 		"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.o"],
 		"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.obj"],
-		"dependencies": {"bindbc-sdl": "~>1.4.1"},
+		"dependencies": {"bindbc-sdl": "~>1.4.0"},
 		"versions": ["ImGui_Impl_SDLRenderer2"],
 	},
 	"Vulkan": {

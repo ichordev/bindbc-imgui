@@ -1,24 +1,26 @@
 {
-	"name": "example-null",
+	"name": "example-sdl2-sdlrenderer2",
 	"targetType": "executable",
 	"dependencies": {
 		"bindbc-imgui": {"path": "../../"},
+		"bindbc-sdl": "~>1.4.0",
 	},
 	"configurations": [
 		{
 			"name": "dynamic",
 			"subConfigurations": {
-				"bindbc-imgui": "dynamic",
+				"bindbc-imgui": "dynamic-SDL2-SDLRenderer2",
 				"bindbc-sdl": "dynamic",
 			},
 		},
 		{
 			"name": "static",
 			"subConfigurations": {
-				"bindbc-imgui": "static",
+				"bindbc-imgui": "static-SDL2-SDLRenderer2",
 				"bindbc-sdl": "static",
 			},
-			"libs": ["stdc++"],
+			"libs": ["stdc++", "SDL2"],
 		},
 	],
+	"versions": ["SDL_2018"],
 }

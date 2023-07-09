@@ -753,20 +753,6 @@ enum ImGuiCond: ImGuiCond_{
 	Appearing     = 1 << 3,
 }
 
-//struct ImNewWrapper{}
-//void* operator new(size_t _1, ImNewWrapper _2, void* ptr){ return ptr; }
-//void operator delete(void* _1, ImNewWrapper _2, void* _3){}
-pragma(inline,true) nothrow @nogc{
-	auto IM_ALLOC(size_t _SIZE){ return MemAlloc(_SIZE); }
-	auto IM_FREE(void* _PTR){ MemFree(_PTR); }
-//#define IM_PLACEMENT_NEW(_PTR)              new(ImNewWrapper(), _PTR)
-//#define IM_NEW(_TYPE)                       new(ImNewWrapper(), ImGui::MemAlloc(sizeof(_TYPE))) _TYPE
-	void IM_DELETE(T)(T* p){
-		static if(__traits(hasMember, T, "__dtor__")) p.__dtor__();
-		MemFree(cast(void*)p);
-	}
-}
-
 extern(C++) struct ImVector(T){
 	int Size = 0;
 	int Capacity = 0;
@@ -851,7 +837,7 @@ extern(C++) struct ImVector(T){
 			if(new_size > Capacity) reserve(_grow_capacity(new_size));
 			Size = new_size;
 		}
-		void resize(int new_size, auto ref const T v){
+		void resize(int new_size, const T v){
 			if(new_size > Capacity) reserve(_grow_capacity(new_size));
 			if(new_size > Size){
 				for(int n = Size; n < new_size; n++) memcpy(&Data[n], &v, v.sizeof);
@@ -879,7 +865,7 @@ extern(C++) struct ImVector(T){
 			Capacity = new_capacity;
 		}
 		
-		void push_back(auto ref const T v){
+		void push_back(const T v){
 			if(Size == Capacity) reserve(_grow_capacity(Size + 1));
 			memcpy(&Data[Size], &v, v.sizeof);
 			Size++;
@@ -888,7 +874,7 @@ extern(C++) struct ImVector(T){
 			assert(Size > 0);
 			Size--;
 		}
-		void push_front(auto ref const T v){
+		void push_front(const T v){
 			if(Size == 0) push_back(v);
 			else insert(Data, v);
 		}
@@ -914,7 +900,7 @@ extern(C++) struct ImVector(T){
 			Size--;
 			return Data + off;
 		}
-		T* insert(const(T)* it, auto ref const T v){
+		T* insert(const(T)* it, const T v){
 			assert(it >= Data && it <= Data + Size);
 			const ptrdiff_t off = it - Data;
 			if(Size == Capacity) reserve(_grow_capacity(Size + 1));
@@ -923,15 +909,15 @@ extern(C++) struct ImVector(T){
 			Size++;
 			return Data + off;
 		}
-		bool contains(auto ref const T v) const{
+		bool contains(const T v) const{
 			const(T)* data = Data;
 			const(T)* data_end = Data + Size;
 			while(data < data_end){
-				if(*data++ == v) return true;
+				if(*(data++) == v) return true;
 			}
 			return false;
 		}
-		inout(T)* find(auto ref const T v) inout{
+		inout(T)* find(const T v) inout{
 			inout(T)* data = Data;
 			const(T)* data_end = Data + Size;
 			while(data < data_end){
@@ -940,7 +926,7 @@ extern(C++) struct ImVector(T){
 			}
 			return data;
 		}
-		bool find_erase(auto ref const T v){
+		bool find_erase(const T v){
 			const(T)* it = find(v);
 			if(it < Data + Size){
 				erase(it);
@@ -948,7 +934,7 @@ extern(C++) struct ImVector(T){
 			}
 			return false;
 		}
-		bool find_erase_unsorted(auto ref const T v){
+		bool find_erase_unsorted(const T v){
 			const(T)* it = find(v);
 			if(it < Data + Size){
 				erase_unsorted(it);
@@ -2367,7 +2353,20 @@ alias ColourConvertFloat4ToU32 = ColorConvertFloat4ToU32;
 alias ColourConvertRGBtoHSV = ColorConvertRGBtoHSV;
 alias ColourConvertHSVtoRGB = ColorConvertHSVtoRGB;
 
+pragma(inline,true) nothrow @nogc{
+	auto IM_ALLOC(size_t _SIZE){ return MemAlloc(_SIZE); }
+	auto IM_FREE(void* _PTR){ MemFree(_PTR); }
+	void IM_DELETE(T)(T* p){
+		static if(__traits(hasMember, T, "__dtor__")) p.__dtor__();
+		MemFree(cast(void*)p);
+	}
+}
+
 static if(!staticBinding):
 import bindbc.loader;
 
-mixin(makeDynloadFns("ImGui", makeLibPaths(["imgui"]), [__MODULE__]));
+mixin(makeDynloadFns("ImGui", makeLibPaths(["imgui"]), [
+	__MODULE__,
+	"imgui.impl",
+	"imgui.internal"
+]));

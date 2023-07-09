@@ -1,23 +1,26 @@
 {
 	"name": "example-allegro5",
+	"targetType": "executable",
 	"dependencies": {
-		"bindbc-imgui": "~>1.0.0",
+		"bindbc-imgui": {"path": "../../"},
 		"bindbc-allegro5": "~>1.0.0",
 	},
-	"subConfigurations": {
-		"bindbc-imgui": "static-Allegro5",
-	},
-	"targetType": "executable",
 	"configurations": [
 		{
 			"name": "dynamic",
-			"subConfigurations": {"bindbc-allegro5": "dynamic"},
+			"subConfigurations": {
+				"bindbc-imgui": "dynamic-Allegro5",
+				"bindbc-allegro5": "dynamic",
+			},
 		},
 		{
 			"name": "static",
-			"subConfigurations": {"bindbc-allegro5": "static"},
+			"subConfigurations": {
+				"bindbc-imgui": "static-Allegro5",
+				"bindbc-allegro5": "static",
+			},
+			"libs": ["stdc++", "allegro", "allegro_primitives"],
 		},
 	],
-	"libs": ["stdc++", "allegro", "allegro_primitives"],
 	"versions": ["Allegro_Primitives"],
 }

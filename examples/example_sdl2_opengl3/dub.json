@@ -1,25 +1,27 @@
 {
 	"name": "example-sdl2-opengl3",
+	"targetType": "executable",
 	"dependencies": {
-		"bindbc-imgui": "~>1.0.0",
-		"bindbc-sdl": "~>1.3.0",
+		"bindbc-imgui": {"path": "../../"},
+		"bindbc-sdl": "~>1.4.0",
 		"bindbc-opengl": "~>1.0.0",
 	},
-	"subConfigurations": {
-		"bindbc-imgui": "static-SDL2-OpenGL3",
-	},
-	"targetType": "executable",
 	"configurations": [
 		{
 			"name": "dynamic",
-			"subConfigurations": {"bindbc-sdl": "dynamic"},
+			"subConfigurations": {
+				"bindbc-imgui": "dynamic-SDL2-OpenGL3",
+				"bindbc-sdl": "dynamic",
+			},
 		},
 		{
 			"name": "static",
-			"subConfigurations": {"bindbc-sdl": "static"},
-			"libs": ["SDL2"],
+			"subConfigurations": {
+				"bindbc-imgui": "static-SDL2-OpenGL3",
+				"bindbc-sdl": "static",
+			},
+			"libs": ["stdc++", "SDL2"],
 		},
-	],	
-	"libs": ["stdc++"],
+	],
 	"versions": ["SDL_2018", "GL_30"],
 }

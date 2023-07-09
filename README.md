@@ -47,8 +47,8 @@ Operator overloads for `ImVec2` and `ImVec4` are defined unconditionally.
 | `Android`  | Not currently supported. |
 | `GLFW`     | Untested. Requires `bindbc-glfw` ~>1.1.0. |
 | `macOS`    | Untested. Example not finished. |
-| `SDL2`     | Requires `bindbc-sdl` ~>1.4.1. |
-| `SDL3`     | Will be added once SDL3 is stable and bindbc-sdl has updated. |
+| `SDL2`     | Requires `bindbc-sdl` ~>1.4.0. |
+| `SDL3`     | Will be added once SDL3 is stable and BindBC-SDL has updated. |
 | `Win32`    | Not currently supported. |
 
 ### Rendering only
@@ -60,10 +60,10 @@ Operator overloads for `ImVec2` and `ImVec4` are defined unconditionally.
 | `DX10`         | Not currently supported. |
 | `DX11`         | Not currently supported. |
 | `DX12`         | Not currently supported. |
-| `Metal`        | Untested. Requires `d-metal-binding` ~>1.0.12. x86_64 only due to Objective-C interoperability being DMD-exclusive. |
+| `Metal`        | Untested. Requires `d-metal-binding` ~>1.1.0. x86_64 only due to Objective-C interoperability being DMD-exclusive. |
 | `OpenGL2`      | Untested. Requires `bindbc-opengl` ~>1.1.0. |
 | `OpenGL3`      | Requires `bindbc-opengl` ~>1.1.0. |
-| `SDLRenderer2` | Requires `bindbc-sdl` ~>1.4.1. |
+| `SDLRenderer2` | Requires `bindbc-sdl` ~>1.4.0. |
 | `Vulkan`       | Requires `erupted` ~>2.1.0. |
 
 ## Configuration
