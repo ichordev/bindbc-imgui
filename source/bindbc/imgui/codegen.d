@@ -7,6 +7,6 @@
 module bindbc.imgui.codegen;
 
 import bindbc.imgui.config;
-import bindbc.common.codegen;
+import bindbc.common;
 
-mixin(makeFnBindFns(staticBinding));
+mixin(makeFnBindFns(staticBinding, Version(0,1,1)));

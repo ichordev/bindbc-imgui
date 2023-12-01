@@ -4,7 +4,7 @@
 	"authors": ["Aya Partridge"],
 	"license": "BSL-1.0",
 	
-	"dependencies": {"bindbc-common": "~>0.1.0"},
+	"dependencies": {"bindbc-common": "~>0.1.1"},
 	"targetType": "staticLibrary",
 	"targetPath": "lib",
 	"targetName": "BindBC_ImGui",
@@ -23,9 +23,9 @@
 		"$BIND_IMGUI_OBJDIR/imgui_tables.obj",
 		"$BIND_IMGUI_OBJDIR/imgui_widgets.obj"
 	],
-	"dflags-dmd": ["-extern-std=c++11"],
-	"dflags-ldc": ["-extern-std=c++11"],
-	"dflags-gdc": ["--extern-std=c++11"],
+	"dflags-dmd": ["-extern-std=c++11", "-preview=in"],
+	"dflags-ldc": ["-extern-std=c++11", "-preview=in"],
+	"dflags-gdc": ["--extern-std=c++11", "--preview=in"],
 	
 	"configurations": [
 		{

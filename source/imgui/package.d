@@ -20,8 +20,11 @@ enum IMGUI_VERSION        = "1.89.6";
 enum IMGUI_VERSION_NUM    = 18960;
 
 pragma(inline,true) bool IMGUI_CHECKVERSION() nothrow @nogc{
-	return DebugCheckVersionAndDataLayout(IMGUI_VERSION,
-		ImGuiIO.sizeof, ImGuiStyle.sizeof, ImVec2.sizeof, ImVec4.sizeof, ImDrawVert.sizeof, ImDrawIdx.sizeof
+	return DebugCheckVersionAndDataLayout(
+		IMGUI_VERSION,
+		ImGuiIO.sizeof, ImGuiStyle.sizeof,
+		ImVec2.sizeof, ImVec4.sizeof,
+		ImDrawVert.sizeof, ImDrawIdx.sizeof
 	);
 }
 
@@ -62,12 +65,18 @@ extern(C++) struct ImVec2{
 	
 	nothrow @nogc:
 	ref float opIndex(size_t idx){
-		assert(idx == 0 || idx == 1);
-		return (cast(float*)cast(void*)cast(char*)this)[idx];
+		switch(idx){
+			case 0: return x;
+			case 1: return y;
+			default: assert(0);
+		}
 	}
 	float opIndex(size_t idx) const{
-		assert(idx == 0 || idx == 1);
-		return (cast(const(float)*)cast(const(void)*)cast(const(char)*)this)[idx];
+		switch(idx){
+			case 0: return x;
+			case 1: return y;
+			default: assert(0);
+		}
 	}
 	
 	pragma(inline,true){
@@ -999,7 +1008,7 @@ extern(C++) struct ImGuiStyle{
 	alias Colours = Colors;
 	
 	nothrow @nogc:
-	pragma(mangle, [__traits(identifier, typeof(this))].mangleofCppDefaultCtor()) this(int _);
+	//pragma(mangle, [__traits(identifier, typeof(this))].mangleofCppDefaultCtor()) this(int _);
 	void ScaleAllSizes(float scale_factor);
 }
 
@@ -1133,7 +1142,7 @@ version(ImGui_DisableObsoleteFunctions){
 	void ClearInputCharacters();
 	void ClearInputKeys();
 	
-	pragma(mangle, [__traits(identifier, typeof(this))].mangleofCppDefaultCtor()) this(int _);
+	//pragma(mangle, [__traits(identifier, typeof(this))].mangleofCppDefaultCtor()) this(int _);
 }
 
 extern(C++) struct ImGuiInputTextCallbackData{
@@ -1153,7 +1162,7 @@ extern(C++) struct ImGuiInputTextCallbackData{
 	int SelectionEnd = 0;
 	
 	nothrow @nogc:
-	pragma(mangle, [__traits(identifier, typeof(this))].mangleofCppDefaultCtor()) this(int _);
+	//pragma(mangle, [__traits(identifier, typeof(this))].mangleofCppDefaultCtor()) this(int _);
 	void DeleteChars(int pos, int bytes_count);
 	void InsertChars(int pos, const(char)* text, const(char)* text_end=null);
 	void SelectAll(){ SelectionStart = 0; SelectionEnd = BufTextLen; }
@@ -1328,7 +1337,7 @@ extern(C++) struct ImGuiListClipper{
 	void* TempData;
 
 	nothrow @nogc:
-	pragma(mangle, [__traits(identifier, typeof(this))].mangleofCppDefaultCtor()) this(int _);
+	//pragma(mangle, [__traits(identifier, typeof(this))].mangleofCppDefaultCtor()) this(int _);
 	~this();
 	void Begin(int items_count, float items_height=-1f);
 	void End();
@@ -1506,7 +1515,7 @@ extern(C++) struct ImDrawList{
 	this(ImDrawListSharedData* shared_data){ _Data = shared_data; }
 	
 	~this(){ _ClearFreeMemory(); }
-	void PushClipRect(ref const ImVec2 clip_rect_min, ref const ImVec2 clip_rect_max, bool intersect_with_current_clip_rect=false);
+	void PushClipRect(in ImVec2 clip_rect_min, in ImVec2 clip_rect_max, bool intersect_with_current_clip_rect=false);
 	void PushClipRectFullScreen();
 	void PopClipRect();
 	void PushTextureID(ImTextureID texture_id);
@@ -1522,28 +1531,28 @@ extern(C++) struct ImDrawList{
 		}
 	}
 	
-	void AddLine(ref const ImVec2 p1, ref const ImVec2 p2, uint col, float thickness=1f);
-	void AddRect(ref const ImVec2 p_min, ref const ImVec2 p_max, uint col, float rounding=0f, ImDrawFlags_ flags=0, float thickness=1f);
-	void AddRectFilled(ref const ImVec2 p_min, ref const ImVec2 p_max, uint col, float rounding=0f, ImDrawFlags_ flags=0);
-	void AddRectFilledMultiColor(ref const ImVec2 p_min, ref const ImVec2 p_max, uint col_upr_left, uint col_upr_right, uint col_bot_right, uint col_bot_left);
-	void AddQuad(ref const ImVec2 p1, ref const ImVec2 p2, ref const ImVec2 p3, ref const ImVec2 p4, uint col, float thickness=1f);
-	void AddQuadFilled(ref const ImVec2 p1, ref const ImVec2 p2, ref const ImVec2 p3, ref const ImVec2 p4, uint col);
-	void AddTriangle(ref const ImVec2 p1, ref const ImVec2 p2, ref const ImVec2 p3, uint col, float thickness=1f);
-	void AddTriangleFilled(ref const ImVec2 p1, ref const ImVec2 p2, ref const ImVec2 p3, uint col);
-	void AddCircle(ref const ImVec2 center, float radius, uint col, int num_segments=0, float thickness=1f);
-	void AddCircleFilled(ref const ImVec2 center, float radius, uint col, int num_segments=0);
-	void AddNgon(ref const ImVec2 center, float radius, uint col, int num_segments, float thickness=1f);
-	void AddNgonFilled(ref const ImVec2 center, float radius, uint col, int num_segments);
-	void AddText(ref const ImVec2 pos, uint col, const(char)* text_begin, const(char)* text_end=null);
-	void AddText(const(ImFont)* font, float font_size, ref const ImVec2 pos, uint col, const(char)* text_begin, const(char)* text_end=null, float wrap_width=0f, const(ImVec4)* cpu_fine_clip_rect=null);
+	void AddLine(in ImVec2 p1, in ImVec2 p2, uint col, float thickness=1f);
+	void AddRect(in ImVec2 p_min, in ImVec2 p_max, uint col, float rounding=0f, ImDrawFlags_ flags=0, float thickness=1f);
+	void AddRectFilled(in ImVec2 p_min, in ImVec2 p_max, uint col, float rounding=0f, ImDrawFlags_ flags=0);
+	void AddRectFilledMultiColor(in ImVec2 p_min, in ImVec2 p_max, uint col_upr_left, uint col_upr_right, uint col_bot_right, uint col_bot_left);
+	void AddQuad(in ImVec2 p1, in ImVec2 p2, in ImVec2 p3, in ImVec2 p4, uint col, float thickness=1f);
+	void AddQuadFilled(in ImVec2 p1, in ImVec2 p2, in ImVec2 p3, in ImVec2 p4, uint col);
+	void AddTriangle(in ImVec2 p1, in ImVec2 p2, in ImVec2 p3, uint col, float thickness=1f);
+	void AddTriangleFilled(in ImVec2 p1, in ImVec2 p2, in ImVec2 p3, uint col);
+	void AddCircle(in ImVec2 center, float radius, uint col, int num_segments=0, float thickness=1f);
+	void AddCircleFilled(in ImVec2 center, float radius, uint col, int num_segments=0);
+	void AddNgon(in ImVec2 center, float radius, uint col, int num_segments, float thickness=1f);
+	void AddNgonFilled(in ImVec2 center, float radius, uint col, int num_segments);
+	void AddText(in ImVec2 pos, uint col, const(char)* text_begin, const(char)* text_end=null);
+	void AddText(const(ImFont)* font, float font_size, in ImVec2 pos, uint col, const(char)* text_begin, const(char)* text_end=null, float wrap_width=0f, const(ImVec4)* cpu_fine_clip_rect=null);
 	void AddPolyline(const(ImVec2)* points, int num_points, uint col, ImDrawFlags_ flags, float thickness);
 	void AddConvexPolyFilled(const(ImVec2)* points, int num_points, uint col);
-	void AddBezierCubic(ref const ImVec2 p1, ref const ImVec2 p2, ref const ImVec2 p3, ref const ImVec2 p4, uint col, float thickness, int num_segments=0);
-	void AddBezierQuadratic(ref const ImVec2 p1, ref const ImVec2 p2, ref const ImVec2 p3, uint col, float thickness, int num_segments=0);
+	void AddBezierCubic(in ImVec2 p1, in ImVec2 p2, in ImVec2 p3, in ImVec2 p4, uint col, float thickness, int num_segments=0);
+	void AddBezierQuadratic(in ImVec2 p1, in ImVec2 p2, in ImVec2 p3, uint col, float thickness, int num_segments=0);
 	
-	void AddImage(ImTextureID user_texture_id, ref const ImVec2 p_min, ref const ImVec2 p_max, ref const ImVec2 uv_min=Vec2_0_0, ref const ImVec2 uv_max=Vec2_1_1, uint col=IM_COL32_WHITE);
-	void AddImageQuad(ImTextureID user_texture_id, ref const ImVec2 p1, ref const ImVec2 p2, ref const ImVec2 p3, ref const ImVec2 p4, ref const ImVec2 uv1=Vec2_0_0, ref const ImVec2 uv2=Vec2_1_0, ref const ImVec2 uv3=Vec2_1_1, ref const ImVec2 uv4=Vec2_0_1, uint col=IM_COL32_WHITE);
-	void AddImageRounded(ImTextureID user_texture_id, ref const ImVec2 p_min, ref const ImVec2 p_max, ref const ImVec2 uv_min, ref const ImVec2 uv_max, uint col, float rounding, ImDrawFlags_ flags=0);
+	void AddImage(ImTextureID user_texture_id, in ImVec2 p_min, in ImVec2 p_max, in ImVec2 uv_min=Vec2_0_0, in ImVec2 uv_max=Vec2_1_1, uint col=IM_COL32_WHITE);
+	void AddImageQuad(ImTextureID user_texture_id, in ImVec2 p1, in ImVec2 p2, in ImVec2 p3, in ImVec2 p4, in ImVec2 uv1=Vec2_0_0, in ImVec2 uv2=Vec2_1_0, in ImVec2 uv3=Vec2_1_1, in ImVec2 uv4=Vec2_0_1, uint col=IM_COL32_WHITE);
+	void AddImageRounded(ImTextureID user_texture_id, in ImVec2 p_min, in ImVec2 p_max, in ImVec2 uv_min, in ImVec2 uv_max, uint col, float rounding, ImDrawFlags_ flags=0);
 	
 	pragma(inline,true){
 		void PathClear(){ _Path.Size = 0; }
@@ -1562,11 +1571,11 @@ extern(C++) struct ImDrawList{
 			_Path.Size = 0;
 		}
 	}
-	void PathArcTo(ref const ImVec2 center, float radius, float a_min, float a_max, int num_segments=0);
-	void PathArcToFast(ref const ImVec2 center, float radius, int a_min_of_12, int a_max_of_12);
-	void PathBezierCubicCurveTo(ref const ImVec2 p2, ref const ImVec2 p3, ref const ImVec2 p4, int num_segments=0);
-	void PathBezierQuadraticCurveTo(ref const ImVec2 p2, ref const ImVec2 p3, int num_segments=0);
-	void PathRect(ref const ImVec2 rect_min, ref const ImVec2 rect_max, float rounding=0f, ImDrawFlags_ flags=0);
+	void PathArcTo(in ImVec2 center, float radius, float a_min, float a_max, int num_segments=0);
+	void PathArcToFast(in ImVec2 center, float radius, int a_min_of_12, int a_max_of_12);
+	void PathBezierCubicCurveTo(in ImVec2 p2, in ImVec2 p3, in ImVec2 p4, int num_segments=0);
+	void PathBezierQuadraticCurveTo(in ImVec2 p2, in ImVec2 p3, int num_segments=0);
+	void PathRect(in ImVec2 rect_min, in ImVec2 rect_max, float rounding=0f, ImDrawFlags_ flags=0);
 	
 	void AddCallback(ImDrawCallback callback, void* callback_data);
 	void AddDrawCmd();
@@ -1580,9 +1589,9 @@ extern(C++) struct ImDrawList{
 	
 	void PrimReserve(int idx_count, int vtx_count);
 	void PrimUnreserve(int idx_count, int vtx_count);
-	void PrimRect(ref const ImVec2 a, ref const ImVec2 b, uint col);
-	void PrimRectUV(ref const ImVec2 a, ref const ImVec2 b, ref const ImVec2 uv_a, ref const ImVec2 uv_b, uint col);
-	void PrimQuadUV(ref const ImVec2 a, ref const ImVec2 b, ref const ImVec2 c, ref const ImVec2 d, ref const ImVec2 uv_a, ref const ImVec2 uv_b, ref const ImVec2 uv_c, ref const ImVec2 uv_d, uint col);
+	void PrimRect(in ImVec2 a, in ImVec2 b, uint col);
+	void PrimRectUV(in ImVec2 a, in ImVec2 b, in ImVec2 uv_a, in ImVec2 uv_b, uint col);
+	void PrimQuadUV(in ImVec2 a, in ImVec2 b, in ImVec2 c, in ImVec2 d, in ImVec2 uv_a, in ImVec2 uv_b, in ImVec2 uv_c, in ImVec2 uv_d, uint col);
 	pragma(inline,true){
 		void PrimWriteVtx(const ImVec2 pos, const ImVec2 uv, uint col){
 			_VtxWritePtr.pos = pos;
@@ -1609,8 +1618,8 @@ extern(C++) struct ImDrawList{
 	void _OnChangedTextureID();
 	void _OnChangedVtxOffset();
 	int _CalcCircleAutoSegmentCount(float radius) const;
-	void _PathArcToFastEx(ref const ImVec2 center, float radius, int a_min_sample, int a_max_sample, int a_step);
-	void _PathArcToN(ref const ImVec2 center, float radius, float a_min, float a_max, int num_segments);
+	void _PathArcToFastEx(in ImVec2 center, float radius, int a_min_sample, int a_max_sample, int a_step);
+	void _PathArcToN(in ImVec2 center, float radius, float a_min, float a_max, int num_segments);
 }
 
 extern(C++) struct ImDrawData{
@@ -1627,7 +1636,7 @@ extern(C++) struct ImDrawData{
 	this(int _){ Clear(); }
 	void Clear(){ memset(cast(void*)&this, 0, this.sizeof); }
 	void DeIndexAllBuffers();
-	void ScaleClipRects(ref const ImVec2 fb_scale);
+	void ScaleClipRects(in ImVec2 fb_scale);
 }
 
 extern(C++) struct ImFontConfig{
@@ -1654,7 +1663,7 @@ extern(C++) struct ImFontConfig{
 	ImFont* DstFont = null;
 	
 	nothrow @nogc:
-	pragma(mangle, [__traits(identifier, typeof(this))].mangleofCppDefaultCtor()) this(int _);
+	//pragma(mangle, [__traits(identifier, typeof(this))].mangleofCppDefaultCtor()) this(int _);
 }
 
 extern(C++) struct ImFontGlyph{
@@ -1740,7 +1749,7 @@ extern(C++) struct ImFontAtlas{
 	int PackIdLines;
 	
 	nothrow @nogc:
-	pragma(mangle, [__traits(identifier, typeof(this))].mangleofCppDefaultCtor()) this(int _);
+	//pragma(mangle, [__traits(identifier, typeof(this))].mangleofCppDefaultCtor()) this(int _);
 	~this();
 	ImFont* AddFont(const(ImFontConfig)* font_cfg);
 	ImFont* AddFontDefault(const(ImFontConfig)* font_cfg=null);
@@ -1770,7 +1779,7 @@ extern(C++) struct ImFontAtlas{
 	const(ImWchar)* GetGlyphRangesVietnamese();
 	
 	int AddCustomRectRegular(int width, int height);
-	int AddCustomRectFontGlyph(ImFont* font, ImWchar id, int width, int height, float advance_x, ref const ImVec2 offset=Vec2_0_0);
+	int AddCustomRectFontGlyph(ImFont* font, ImWchar id, int width, int height, float advance_x, in ImVec2 offset=Vec2_0_0);
 	ImFontAtlasCustomRect* GetCustomRectByIndex(int index){
 		assert(index >= 0);
 		return &CustomRects[index];
@@ -1804,7 +1813,7 @@ extern(C++) struct ImFont{
 	ubyte[(IM_UNICODE_CODEPOINT_MAX + 1) / 4096 / 8] Used4kPagesMap;
 	
 	nothrow @nogc:
-	pragma(mangle, [__traits(identifier, typeof(this))].mangleofCppDefaultCtor()) this(int _);
+	//pragma(mangle, [__traits(identifier, typeof(this))].mangleofCppDefaultCtor()) this(int _);
 	~this();
 	const(ImFontGlyph)* FindGlyph(ImWchar c) const;
 	const(ImFontGlyph)* FindGlyphNoFallback(ImWchar c) const;
@@ -1814,8 +1823,8 @@ extern(C++) struct ImFont{
 	
 	ImVec2 CalcTextSizeA(float size, float max_width, float wrap_width, const(char)* text_begin, const(char)* text_end=null, const(char)** remaining=null) const;
 	const(char)* CalcWordWrapPositionA(float scale, const(char)* text, const(char)* text_end, float wrap_width) const;
-	void RenderChar(ImDrawList* draw_list, float size, ref const ImVec2 pos, uint col, ImWchar c) const;
-	void RenderText(ImDrawList* draw_list, float size, ref const ImVec2 pos, uint col, ref const ImVec4 clip_rect, const(char)* text_begin, const(char)* text_end, float wrap_width=0f, bool cpu_fine_clip=false) const;
+	void RenderChar(ImDrawList* draw_list, float size, in ImVec2 pos, uint col, ImWchar c) const;
+	void RenderText(ImDrawList* draw_list, float size, in ImVec2 pos, uint col, in ImVec4 clip_rect, const(char)* text_begin, const(char)* text_end, float wrap_width=0f, bool cpu_fine_clip=false) const;
 	
 	void BuildLookupTable();
 	void ClearOutputData();
@@ -1893,469 +1902,469 @@ version(ImGui_DisableObsoleteFunctions){
 }
 
 mixin(joinFnBinds((){
-	string[][] ret;
-	ret ~= makeFnBinds([
-		[q{ImGuiContext*}, q{CreateContext}, q{ImFontAtlas* shared_font_atlas=null}, `C++, "ImGui"`],
-		[q{void}, q{DestroyContext}, q{ImGuiContext* ctx=null}, `C++, "ImGui"`],
-		[q{ImGuiContext*}, q{GetCurrentContext}, q{}, `C++, "ImGui"`],
-		[q{void}, q{SetCurrentContext}, q{ImGuiContext* ctx}, `C++, "ImGui"`],
+	FnBind[] ret = [
+		{q{ImGuiContext*}, q{CreateContext}, q{ImFontAtlas* shared_font_atlas=null}, ext: `C++, "ImGui"`},
+		{q{void}, q{DestroyContext}, q{ImGuiContext* ctx=null}, ext: `C++, "ImGui"`},
+		{q{ImGuiContext*}, q{GetCurrentContext}, q{}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetCurrentContext}, q{ImGuiContext* ctx}, ext: `C++, "ImGui"`},
 		
-		[q{ImGuiIO*}, q{GetIO}, q{}, `C++, "ImGui"`],
-		[q{ImGuiStyle*}, q{GetStyle}, q{}, `C++, "ImGui"`],
-		[q{void}, q{NewFrame}, q{}, `C++, "ImGui"`],
-		[q{void}, q{EndFrame}, q{}, `C++, "ImGui"`],
-		[q{void}, q{Render}, q{}, `C++, "ImGui"`],
-		[q{ImDrawData*}, q{GetDrawData}, q{}, `C++, "ImGui"`],
+		{q{ImGuiIO*}, q{GetIO}, q{}, ext: `C++, "ImGui"`},
+		{q{ImGuiStyle*}, q{GetStyle}, q{}, ext: `C++, "ImGui"`},
+		{q{void}, q{NewFrame}, q{}, ext: `C++, "ImGui"`},
+		{q{void}, q{EndFrame}, q{}, ext: `C++, "ImGui"`},
+		{q{void}, q{Render}, q{}, ext: `C++, "ImGui"`},
+		{q{ImDrawData*}, q{GetDrawData}, q{}, ext: `C++, "ImGui"`},
 		
-		[q{void}, q{ShowDemoWindow}, q{bool* p_open=null}, `C++, "ImGui"`],
-		[q{void}, q{ShowMetricsWindow}, q{bool* p_open=null}, `C++, "ImGui"`],
-		[q{void}, q{ShowDebugLogWindow}, q{bool* p_open=null}, `C++, "ImGui"`],
-		[q{void}, q{ShowStackToolWindow}, q{bool* p_open=null}, `C++, "ImGui"`],
-		[q{void}, q{ShowAboutWindow}, q{bool* p_open=null}, `C++, "ImGui"`],
-		[q{void}, q{ShowStyleEditor}, q{ImGuiStyle* ref_=null}, `C++, "ImGui"`],
-		[q{bool}, q{ShowStyleSelector}, q{const(char)* label}, `C++, "ImGui"`],
-		[q{void}, q{ShowFontSelector}, q{const(char)* label}, `C++, "ImGui"`],
-		[q{void}, q{ShowUserGuide}, q{}, `C++, "ImGui"`],
-		[q{const(char)*}, q{GetVersion}, q{}, `C++, "ImGui"`],
+		{q{void}, q{ShowDemoWindow}, q{bool* p_open=null}, ext: `C++, "ImGui"`},
+		{q{void}, q{ShowMetricsWindow}, q{bool* p_open=null}, ext: `C++, "ImGui"`},
+		{q{void}, q{ShowDebugLogWindow}, q{bool* p_open=null}, ext: `C++, "ImGui"`},
+		{q{void}, q{ShowStackToolWindow}, q{bool* p_open=null}, ext: `C++, "ImGui"`},
+		{q{void}, q{ShowAboutWindow}, q{bool* p_open=null}, ext: `C++, "ImGui"`},
+		{q{void}, q{ShowStyleEditor}, q{ImGuiStyle* ref_=null}, ext: `C++, "ImGui"`},
+		{q{bool}, q{ShowStyleSelector}, q{const(char)* label}, ext: `C++, "ImGui"`},
+		{q{void}, q{ShowFontSelector}, q{const(char)* label}, ext: `C++, "ImGui"`},
+		{q{void}, q{ShowUserGuide}, q{}, ext: `C++, "ImGui"`},
+		{q{const(char)*}, q{GetVersion}, q{}, ext: `C++, "ImGui"`},
 		
-		[q{void}, q{StyleColorsDark}, q{ImGuiStyle* dst=null}, `C++, "ImGui"`],
-		[q{void}, q{StyleColorsLight}, q{ImGuiStyle* dst=null}, `C++, "ImGui"`],
-		[q{void}, q{StyleColorsClassic}, q{ImGuiStyle* dst=null}, `C++, "ImGui"`],
+		{q{void}, q{StyleColorsDark}, q{ImGuiStyle* dst=null}, ext: `C++, "ImGui"`},
+		{q{void}, q{StyleColorsLight}, q{ImGuiStyle* dst=null}, ext: `C++, "ImGui"`},
+		{q{void}, q{StyleColorsClassic}, q{ImGuiStyle* dst=null}, ext: `C++, "ImGui"`},
 		
-		[q{bool}, q{Begin}, q{const(char)* name, bool* p_open=null, ImGuiWindowFlags_ flags=0}, `C++, "ImGui"`],
-		[q{void}, q{End}, q{}, `C++, "ImGui"`],
+		{q{bool}, q{Begin}, q{const(char)* name, bool* p_open=null, ImGuiWindowFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{void}, q{End}, q{}, ext: `C++, "ImGui"`},
 		
-		[q{bool}, q{BeginChild}, q{const(char)* str_id, ref const ImVec2 size=Vec2_0_0, bool border=false, ImGuiWindowFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{BeginChild}, q{ImGuiID id, ref const ImVec2 size=Vec2_0_0, bool border=false, ImGuiWindowFlags_ flags=0}, `C++, "ImGui"`],
-		[q{void}, q{EndChild}, q{}, `C++, "ImGui"`],
+		{q{bool}, q{BeginChild}, q{const(char)* str_id, in ImVec2 size=Vec2_0_0, bool border=false, ImGuiWindowFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{BeginChild}, q{ImGuiID id, in ImVec2 size=Vec2_0_0, bool border=false, ImGuiWindowFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{void}, q{EndChild}, q{}, ext: `C++, "ImGui"`},
 		
-		[q{bool}, q{IsWindowAppearing}, q{}, `C++, "ImGui"`],
-		[q{bool}, q{IsWindowCollapsed}, q{}, `C++, "ImGui"`],
-		[q{bool}, q{IsWindowFocused}, q{ImGuiFocusedFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{IsWindowHovered}, q{ImGuiHoveredFlags_ flags=0}, `C++, "ImGui"`],
-		[q{ImDrawList*}, q{GetWindowDrawList}, q{}, `C++, "ImGui"`],
-		[q{ImVec2}, q{GetWindowPos}, q{}, `C++, "ImGui"`],
-		[q{ImVec2}, q{GetWindowSize}, q{}, `C++, "ImGui"`],
-		[q{float}, q{GetWindowWidth}, q{}, `C++, "ImGui"`],
-		[q{float}, q{GetWindowHeight}, q{}, `C++, "ImGui"`],
+		{q{bool}, q{IsWindowAppearing}, q{}, ext: `C++, "ImGui"`},
+		{q{bool}, q{IsWindowCollapsed}, q{}, ext: `C++, "ImGui"`},
+		{q{bool}, q{IsWindowFocused}, q{ImGuiFocusedFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{IsWindowHovered}, q{ImGuiHoveredFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{ImDrawList*}, q{GetWindowDrawList}, q{}, ext: `C++, "ImGui"`},
+		{q{ImVec2}, q{GetWindowPos}, q{}, ext: `C++, "ImGui"`},
+		{q{ImVec2}, q{GetWindowSize}, q{}, ext: `C++, "ImGui"`},
+		{q{float}, q{GetWindowWidth}, q{}, ext: `C++, "ImGui"`},
+		{q{float}, q{GetWindowHeight}, q{}, ext: `C++, "ImGui"`},
 		
-		[q{void}, q{SetNextWindowPos}, q{ref const ImVec2 pos, ImGuiCond_ cond=0, ref const ImVec2 pivot=Vec2_0_0}, `C++, "ImGui"`],
-		[q{void}, q{SetNextWindowSize}, q{ref const ImVec2 size, ImGuiCond_ cond=0}, `C++, "ImGui"`],
-		[q{void}, q{SetNextWindowSizeConstraints}, q{ref const ImVec2 size_min, ref const ImVec2 size_max, ImGuiSizeCallback custom_callback=null, void* custom_callback_data=null}, `C++, "ImGui"`],
-		[q{void}, q{SetNextWindowContentSize}, q{ref const ImVec2 size}, `C++, "ImGui"`],
-		[q{void}, q{SetNextWindowCollapsed}, q{bool collapsed, ImGuiCond_ cond=0}, `C++, "ImGui"`],
-		[q{void}, q{SetNextWindowFocus}, q{}, `C++, "ImGui"`],
-		[q{void}, q{SetNextWindowScroll}, q{ref const ImVec2 scroll}, `C++, "ImGui"`],
-		[q{void}, q{SetNextWindowBgAlpha}, q{float alpha}, `C++, "ImGui"`],
-		[q{void}, q{SetWindowPos}, q{ref const ImVec2 pos, ImGuiCond_ cond=0}, `C++, "ImGui"`],
-		[q{void}, q{SetWindowSize}, q{ref const ImVec2 size, ImGuiCond_ cond=0}, `C++, "ImGui"`],
-		[q{void}, q{SetWindowCollapsed}, q{bool collapsed, ImGuiCond_ cond=0}, `C++, "ImGui"`],
-		[q{void}, q{SetWindowFocus}, q{}, `C++, "ImGui"`],
-		[q{void}, q{SetWindowFontScale}, q{float scale}, `C++, "ImGui"`],
-		[q{void}, q{SetWindowPos}, q{const(char)* name, ref const ImVec2 pos, ImGuiCond_ cond=0}, `C++, "ImGui"`],
-		[q{void}, q{SetWindowSize}, q{const(char)* name, ref const ImVec2 size, ImGuiCond_ cond=0}, `C++, "ImGui"`],
-		[q{void}, q{SetWindowCollapsed}, q{const(char)* name, bool collapsed, ImGuiCond_ cond=0}, `C++, "ImGui"`],
-		[q{void}, q{SetWindowFocus}, q{const(char)* name}, `C++, "ImGui"`],
+		{q{void}, q{SetNextWindowPos}, q{in ImVec2 pos, ImGuiCond_ cond=0, in ImVec2 pivot=Vec2_0_0}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetNextWindowSize}, q{in ImVec2 size, ImGuiCond_ cond=0}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetNextWindowSizeConstraints}, q{in ImVec2 size_min, in ImVec2 size_max, ImGuiSizeCallback custom_callback=null, void* custom_callback_data=null}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetNextWindowContentSize}, q{in ImVec2 size}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetNextWindowCollapsed}, q{bool collapsed, ImGuiCond_ cond=0}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetNextWindowFocus}, q{}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetNextWindowScroll}, q{in ImVec2 scroll}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetNextWindowBgAlpha}, q{float alpha}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetWindowPos}, q{in ImVec2 pos, ImGuiCond_ cond=0}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetWindowSize}, q{in ImVec2 size, ImGuiCond_ cond=0}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetWindowCollapsed}, q{bool collapsed, ImGuiCond_ cond=0}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetWindowFocus}, q{}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetWindowFontScale}, q{float scale}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetWindowPos}, q{const(char)* name, in ImVec2 pos, ImGuiCond_ cond=0}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetWindowSize}, q{const(char)* name, in ImVec2 size, ImGuiCond_ cond=0}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetWindowCollapsed}, q{const(char)* name, bool collapsed, ImGuiCond_ cond=0}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetWindowFocus}, q{const(char)* name}, ext: `C++, "ImGui"`},
 		
-		[q{ImVec2}, q{GetContentRegionAvail}, q{}, `C++, "ImGui"`],
-		[q{ImVec2}, q{GetContentRegionMax}, q{}, `C++, "ImGui"`],
-		[q{ImVec2}, q{GetWindowContentRegionMin}, q{}, `C++, "ImGui"`],
-		[q{ImVec2}, q{GetWindowContentRegionMax}, q{}, `C++, "ImGui"`],
+		{q{ImVec2}, q{GetContentRegionAvail}, q{}, ext: `C++, "ImGui"`},
+		{q{ImVec2}, q{GetContentRegionMax}, q{}, ext: `C++, "ImGui"`},
+		{q{ImVec2}, q{GetWindowContentRegionMin}, q{}, ext: `C++, "ImGui"`},
+		{q{ImVec2}, q{GetWindowContentRegionMax}, q{}, ext: `C++, "ImGui"`},
 		
-		[q{float}, q{GetScrollX}, q{}, `C++, "ImGui"`],
-		[q{float}, q{GetScrollY}, q{}, `C++, "ImGui"`],
-		[q{void}, q{SetScrollX}, q{float scroll_x}, `C++, "ImGui"`],
-		[q{void}, q{SetScrollY}, q{float scroll_y}, `C++, "ImGui"`],
-		[q{float}, q{GetScrollMaxX}, q{}, `C++, "ImGui"`],
-		[q{float}, q{GetScrollMaxY}, q{}, `C++, "ImGui"`],
-		[q{void}, q{SetScrollHereX}, q{float center_x_ratio=0.5f}, `C++, "ImGui"`],
-		[q{void}, q{SetScrollHereY}, q{float center_y_ratio=0.5f}, `C++, "ImGui"`],
-		[q{void}, q{SetScrollFromPosX}, q{float local_x, float center_x_ratio=0.5f}, `C++, "ImGui"`],
-		[q{void}, q{SetScrollFromPosY}, q{float local_y, float center_y_ratio=0.5f}, `C++, "ImGui"`],
-		[q{void}, q{PushFont}, q{ImFont* font}, `C++, "ImGui"`],
-		[q{void}, q{PopFont}, q{}, `C++, "ImGui"`],
-		[q{void}, q{PushStyleColor}, q{ImGuiCol_ idx, uint col}, `C++, "ImGui"`],
-		[q{void}, q{PushStyleColor}, q{ImGuiCol_ idx, ref const ImVec4 col}, `C++, "ImGui"`],
-		[q{void}, q{PopStyleColor}, q{int count=1}, `C++, "ImGui"`],
-		[q{void}, q{PushStyleVar}, q{ImGuiStyleVar_ idx, float val}, `C++, "ImGui"`],
-		[q{void}, q{PushStyleVar}, q{ImGuiStyleVar_ idx, ref const ImVec2 val}, `C++, "ImGui"`],
-		[q{void}, q{PopStyleVar}, q{int count=1}, `C++, "ImGui"`],
-		[q{void}, q{PushTabStop}, q{bool tab_stop}, `C++, "ImGui"`],
-		[q{void}, q{PopTabStop}, q{}, `C++, "ImGui"`],
-		[q{void}, q{PushButtonRepeat}, q{bool repeat}, `C++, "ImGui"`],
-		[q{void}, q{PopButtonRepeat}, q{}, `C++, "ImGui"`],
+		{q{float}, q{GetScrollX}, q{}, ext: `C++, "ImGui"`},
+		{q{float}, q{GetScrollY}, q{}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetScrollX}, q{float scroll_x}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetScrollY}, q{float scroll_y}, ext: `C++, "ImGui"`},
+		{q{float}, q{GetScrollMaxX}, q{}, ext: `C++, "ImGui"`},
+		{q{float}, q{GetScrollMaxY}, q{}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetScrollHereX}, q{float center_x_ratio=0.5f}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetScrollHereY}, q{float center_y_ratio=0.5f}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetScrollFromPosX}, q{float local_x, float center_x_ratio=0.5f}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetScrollFromPosY}, q{float local_y, float center_y_ratio=0.5f}, ext: `C++, "ImGui"`},
+		{q{void}, q{PushFont}, q{ImFont* font}, ext: `C++, "ImGui"`},
+		{q{void}, q{PopFont}, q{}, ext: `C++, "ImGui"`},
+		{q{void}, q{PushStyleColor}, q{ImGuiCol_ idx, uint col}, ext: `C++, "ImGui"`},
+		{q{void}, q{PushStyleColor}, q{ImGuiCol_ idx, in ImVec4 col}, ext: `C++, "ImGui"`},
+		{q{void}, q{PopStyleColor}, q{int count=1}, ext: `C++, "ImGui"`},
+		{q{void}, q{PushStyleVar}, q{ImGuiStyleVar_ idx, float val}, ext: `C++, "ImGui"`},
+		{q{void}, q{PushStyleVar}, q{ImGuiStyleVar_ idx, in ImVec2 val}, ext: `C++, "ImGui"`},
+		{q{void}, q{PopStyleVar}, q{int count=1}, ext: `C++, "ImGui"`},
+		{q{void}, q{PushTabStop}, q{bool tab_stop}, ext: `C++, "ImGui"`},
+		{q{void}, q{PopTabStop}, q{}, ext: `C++, "ImGui"`},
+		{q{void}, q{PushButtonRepeat}, q{bool repeat}, ext: `C++, "ImGui"`},
+		{q{void}, q{PopButtonRepeat}, q{}, ext: `C++, "ImGui"`},
 		
-		[q{void}, q{PushItemWidth}, q{float item_width}, `C++, "ImGui"`],
-		[q{void}, q{PopItemWidth}, q{}, `C++, "ImGui"`],
-		[q{void}, q{SetNextItemWidth}, q{float item_width}, `C++, "ImGui"`],
-		[q{float}, q{CalcItemWidth}, q{}, `C++, "ImGui"`],
-		[q{void}, q{PushTextWrapPos}, q{float wrap_local_pos_x=0f}, `C++, "ImGui"`],
-		[q{void}, q{PopTextWrapPos}, q{}, `C++, "ImGui"`],
+		{q{void}, q{PushItemWidth}, q{float item_width}, ext: `C++, "ImGui"`},
+		{q{void}, q{PopItemWidth}, q{}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetNextItemWidth}, q{float item_width}, ext: `C++, "ImGui"`},
+		{q{float}, q{CalcItemWidth}, q{}, ext: `C++, "ImGui"`},
+		{q{void}, q{PushTextWrapPos}, q{float wrap_local_pos_x=0f}, ext: `C++, "ImGui"`},
+		{q{void}, q{PopTextWrapPos}, q{}, ext: `C++, "ImGui"`},
 		
-		[q{ImFont*}, q{GetFont}, q{}, `C++, "ImGui"`],
-		[q{float}, q{GetFontSize}, q{}, `C++, "ImGui"`],
-		[q{ImVec2}, q{GetFontTexUvWhitePixel}, q{}, `C++, "ImGui"`],
-		[q{uint}, q{GetColorU32}, q{ImGuiCol_ idx, float alpha_mul=1f}, `C++, "ImGui"`],
-		[q{uint}, q{GetColorU32}, q{ref const ImVec4 col}, `C++, "ImGui"`],
-		[q{uint}, q{GetColorU32}, q{uint col}, `C++, "ImGui"`],
-		[q{const(ImVec4)*}, q{GetStyleColorVec4}, q{ImGuiCol_ idx}, `C++, "ImGui"`],
+		{q{ImFont*}, q{GetFont}, q{}, ext: `C++, "ImGui"`},
+		{q{float}, q{GetFontSize}, q{}, ext: `C++, "ImGui"`},
+		{q{ImVec2}, q{GetFontTexUvWhitePixel}, q{}, ext: `C++, "ImGui"`},
+		{q{uint}, q{GetColorU32}, q{ImGuiCol_ idx, float alpha_mul=1f}, ext: `C++, "ImGui"`},
+		{q{uint}, q{GetColorU32}, q{in ImVec4 col}, ext: `C++, "ImGui"`},
+		{q{uint}, q{GetColorU32}, q{uint col}, ext: `C++, "ImGui"`},
+		{q{const(ImVec4)*}, q{GetStyleColorVec4}, q{ImGuiCol_ idx}, ext: `C++, "ImGui"`},
 		
-		[q{void}, q{Separator}, q{}, `C++, "ImGui"`],
-		[q{void}, q{SameLine}, q{float offset_from_start_x=0f, float spacing=-1f}, `C++, "ImGui"`],
-		[q{void}, q{NewLine}, q{}, `C++, "ImGui"`],
-		[q{void}, q{Spacing}, q{}, `C++, "ImGui"`],
-		[q{void}, q{Dummy}, q{ref const ImVec2 size}, `C++, "ImGui"`],
-		[q{void}, q{Indent}, q{float indent_w=0f}, `C++, "ImGui"`],
-		[q{void}, q{Unindent}, q{float indent_w=0f}, `C++, "ImGui"`],
-		[q{void}, q{BeginGroup}, q{}, `C++, "ImGui"`],
-		[q{void}, q{EndGroup}, q{}, `C++, "ImGui"`],
-		[q{ImVec2}, q{GetCursorPos}, q{}, `C++, "ImGui"`],
-		[q{float}, q{GetCursorPosX}, q{}, `C++, "ImGui"`],
-		[q{float}, q{GetCursorPosY}, q{}, `C++, "ImGui"`],
-		[q{void}, q{SetCursorPos}, q{ref const ImVec2 local_pos}, `C++, "ImGui"`],
-		[q{void}, q{SetCursorPosX}, q{float local_x}, `C++, "ImGui"`],
-		[q{void}, q{SetCursorPosY}, q{float local_y}, `C++, "ImGui"`],
-		[q{ImVec2}, q{GetCursorStartPos}, q{}, `C++, "ImGui"`],
-		[q{ImVec2}, q{GetCursorScreenPos}, q{}, `C++, "ImGui"`],
-		[q{void}, q{SetCursorScreenPos}, q{ref const ImVec2 pos}, `C++, "ImGui"`],
-		[q{void}, q{AlignTextToFramePadding}, q{}, `C++, "ImGui"`],
-		[q{float}, q{GetTextLineHeight}, q{}, `C++, "ImGui"`],
-		[q{float}, q{GetTextLineHeightWithSpacing}, q{}, `C++, "ImGui"`],
-		[q{float}, q{GetFrameHeight}, q{}, `C++, "ImGui"`],
-		[q{float}, q{GetFrameHeightWithSpacing}, q{}, `C++, "ImGui"`],
+		{q{void}, q{Separator}, q{}, ext: `C++, "ImGui"`},
+		{q{void}, q{SameLine}, q{float offset_from_start_x=0f, float spacing=-1f}, ext: `C++, "ImGui"`},
+		{q{void}, q{NewLine}, q{}, ext: `C++, "ImGui"`},
+		{q{void}, q{Spacing}, q{}, ext: `C++, "ImGui"`},
+		{q{void}, q{Dummy}, q{in ImVec2 size}, ext: `C++, "ImGui"`},
+		{q{void}, q{Indent}, q{float indent_w=0f}, ext: `C++, "ImGui"`},
+		{q{void}, q{Unindent}, q{float indent_w=0f}, ext: `C++, "ImGui"`},
+		{q{void}, q{BeginGroup}, q{}, ext: `C++, "ImGui"`},
+		{q{void}, q{EndGroup}, q{}, ext: `C++, "ImGui"`},
+		{q{ImVec2}, q{GetCursorPos}, q{}, ext: `C++, "ImGui"`},
+		{q{float}, q{GetCursorPosX}, q{}, ext: `C++, "ImGui"`},
+		{q{float}, q{GetCursorPosY}, q{}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetCursorPos}, q{in ImVec2 local_pos}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetCursorPosX}, q{float local_x}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetCursorPosY}, q{float local_y}, ext: `C++, "ImGui"`},
+		{q{ImVec2}, q{GetCursorStartPos}, q{}, ext: `C++, "ImGui"`},
+		{q{ImVec2}, q{GetCursorScreenPos}, q{}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetCursorScreenPos}, q{in ImVec2 pos}, ext: `C++, "ImGui"`},
+		{q{void}, q{AlignTextToFramePadding}, q{}, ext: `C++, "ImGui"`},
+		{q{float}, q{GetTextLineHeight}, q{}, ext: `C++, "ImGui"`},
+		{q{float}, q{GetTextLineHeightWithSpacing}, q{}, ext: `C++, "ImGui"`},
+		{q{float}, q{GetFrameHeight}, q{}, ext: `C++, "ImGui"`},
+		{q{float}, q{GetFrameHeightWithSpacing}, q{}, ext: `C++, "ImGui"`},
 		
-		[q{void}, q{PushID}, q{const(char)* str_id}, `C++, "ImGui"`],
-		[q{void}, q{PushID}, q{const(char)* str_id_begin, const(char)* str_id_end}, `C++, "ImGui"`],
-		[q{void}, q{PushID}, q{const(void)* ptr_id}, `C++, "ImGui"`],
-		[q{void}, q{PushID}, q{int int_id}, `C++, "ImGui"`],
-		[q{void}, q{PopID}, q{}, `C++, "ImGui"`],
-		[q{ImGuiID}, q{GetID}, q{const(char)* str_id}, `C++, "ImGui"`],
-		[q{ImGuiID}, q{GetID}, q{const(char)* str_id_begin, const(char)* str_id_end}, `C++, "ImGui"`],
-		[q{ImGuiID}, q{GetID}, q{const(void)* ptr_id}, `C++, "ImGui"`],
+		{q{void}, q{PushID}, q{const(char)* str_id}, ext: `C++, "ImGui"`},
+		{q{void}, q{PushID}, q{const(char)* str_id_begin, const(char)* str_id_end}, ext: `C++, "ImGui"`},
+		{q{void}, q{PushID}, q{const(void)* ptr_id}, ext: `C++, "ImGui"`},
+		{q{void}, q{PushID}, q{int int_id}, ext: `C++, "ImGui"`},
+		{q{void}, q{PopID}, q{}, ext: `C++, "ImGui"`},
+		{q{ImGuiID}, q{GetID}, q{const(char)* str_id}, ext: `C++, "ImGui"`},
+		{q{ImGuiID}, q{GetID}, q{const(char)* str_id_begin, const(char)* str_id_end}, ext: `C++, "ImGui"`},
+		{q{ImGuiID}, q{GetID}, q{const(void)* ptr_id}, ext: `C++, "ImGui"`},
 		
-		[q{void}, q{TextUnformatted}, q{const(char)* text, const(char)* text_end=null}, `C++, "ImGui"`],
-		[q{void}, q{Text}, q{const(char)* fmt, ...}, `C++, "ImGui"`],
-		[q{void}, q{TextV}, q{const(char)* fmt, va_list args}, `C++, "ImGui"`],
-		[q{void}, q{TextColored}, q{ref const ImVec4 col, const(char)* fmt, ...}, `C++, "ImGui"`],
-		[q{void}, q{TextColoredV}, q{ref const ImVec4 col, const(char)* fmt, va_list args}, `C++, "ImGui"`],
-		[q{void}, q{TextDisabled}, q{const(char)* fmt, ...}, `C++, "ImGui"`],
-		[q{void}, q{TextDisabledV}, q{const(char)* fmt, va_list args}, `C++, "ImGui"`],
-		[q{void}, q{TextWrapped}, q{const(char)* fmt, ...}, `C++, "ImGui"`],
-		[q{void}, q{TextWrappedV}, q{const(char)* fmt, va_list args}, `C++, "ImGui"`],
-		[q{void}, q{LabelText}, q{const(char)* label, const(char)* fmt, ...}, `C++, "ImGui"`],
-		[q{void}, q{LabelTextV}, q{const(char)* label, const(char)* fmt, va_list args}, `C++, "ImGui"`],
-		[q{void}, q{BulletText}, q{const(char)* fmt, ...}, `C++, "ImGui"`],
-		[q{void}, q{BulletTextV}, q{const(char)* fmt, va_list args}, `C++, "ImGui"`],
-		[q{void}, q{SeparatorText}, q{const(char)* label}, `C++, "ImGui"`],
+		{q{void}, q{TextUnformatted}, q{const(char)* text, const(char)* text_end=null}, ext: `C++, "ImGui"`},
+		{q{void}, q{Text}, q{const(char)* fmt, ...}, ext: `C++, "ImGui"`},
+		{q{void}, q{TextV}, q{const(char)* fmt, va_list args}, ext: `C++, "ImGui"`},
+		{q{void}, q{TextColored}, q{in ImVec4 col, const(char)* fmt, ...}, ext: `C++, "ImGui"`},
+		{q{void}, q{TextColoredV}, q{in ImVec4 col, const(char)* fmt, va_list args}, ext: `C++, "ImGui"`},
+		{q{void}, q{TextDisabled}, q{const(char)* fmt, ...}, ext: `C++, "ImGui"`},
+		{q{void}, q{TextDisabledV}, q{const(char)* fmt, va_list args}, ext: `C++, "ImGui"`},
+		{q{void}, q{TextWrapped}, q{const(char)* fmt, ...}, ext: `C++, "ImGui"`},
+		{q{void}, q{TextWrappedV}, q{const(char)* fmt, va_list args}, ext: `C++, "ImGui"`},
+		{q{void}, q{LabelText}, q{const(char)* label, const(char)* fmt, ...}, ext: `C++, "ImGui"`},
+		{q{void}, q{LabelTextV}, q{const(char)* label, const(char)* fmt, va_list args}, ext: `C++, "ImGui"`},
+		{q{void}, q{BulletText}, q{const(char)* fmt, ...}, ext: `C++, "ImGui"`},
+		{q{void}, q{BulletTextV}, q{const(char)* fmt, va_list args}, ext: `C++, "ImGui"`},
+		{q{void}, q{SeparatorText}, q{const(char)* label}, ext: `C++, "ImGui"`},
 		
-		[q{bool}, q{Button}, q{const(char)* label, ref const ImVec2 size=Vec2_0_0}, `C++, "ImGui"`],
-		[q{bool}, q{SmallButton}, q{const(char)* label}, `C++, "ImGui"`],
-		[q{bool}, q{InvisibleButton}, q{const(char)* str_id, ref const ImVec2 size, ImGuiButtonFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{ArrowButton}, q{const(char)* str_id, ImGuiDir_ dir}, `C++, "ImGui"`],
-		[q{bool}, q{Checkbox}, q{const(char)* label, bool* v}, `C++, "ImGui"`],
-		[q{bool}, q{CheckboxFlags}, q{const(char)* label, int* flags, int flags_value}, `C++, "ImGui"`],
-		[q{bool}, q{CheckboxFlags}, q{const(char)* label, uint* flags, uint flags_value}, `C++, "ImGui"`],
-		[q{bool}, q{RadioButton}, q{const(char)* label, bool active}, `C++, "ImGui"`],
-		[q{bool}, q{RadioButton}, q{const(char)* label, int* v, int v_button}, `C++, "ImGui"`],
-		[q{void}, q{ProgressBar}, q{float fraction, ref const ImVec2 size_arg=Vec2_negfltmin_0, const(char)* overlay=null}, `C++, "ImGui"`],
-		[q{void}, q{Bullet}, q{}, `C++, "ImGui"`],
+		{q{bool}, q{Button}, q{const(char)* label, in ImVec2 size=Vec2_0_0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{SmallButton}, q{const(char)* label}, ext: `C++, "ImGui"`},
+		{q{bool}, q{InvisibleButton}, q{const(char)* str_id, in ImVec2 size, ImGuiButtonFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{ArrowButton}, q{const(char)* str_id, ImGuiDir_ dir}, ext: `C++, "ImGui"`},
+		{q{bool}, q{Checkbox}, q{const(char)* label, bool* v}, ext: `C++, "ImGui"`},
+		{q{bool}, q{CheckboxFlags}, q{const(char)* label, int* flags, int flags_value}, ext: `C++, "ImGui"`},
+		{q{bool}, q{CheckboxFlags}, q{const(char)* label, uint* flags, uint flags_value}, ext: `C++, "ImGui"`},
+		{q{bool}, q{RadioButton}, q{const(char)* label, bool active}, ext: `C++, "ImGui"`},
+		{q{bool}, q{RadioButton}, q{const(char)* label, int* v, int v_button}, ext: `C++, "ImGui"`},
+		{q{void}, q{ProgressBar}, q{float fraction, in ImVec2 size_arg=Vec2_negfltmin_0, const(char)* overlay=null}, ext: `C++, "ImGui"`},
+		{q{void}, q{Bullet}, q{}, ext: `C++, "ImGui"`},
 		
-		[q{void}, q{Image}, q{ImTextureID user_texture_id, ref const ImVec2 size, ref const ImVec2 uv0=Vec2_0_0, ref const ImVec2 uv1=Vec2_1_1, ref const ImVec4 tint_col=Vec4_1_1_1_1, ref const ImVec4 border_col=Vec4_0_0_0_0}, `C++, "ImGui"`],
-		[q{bool}, q{ImageButton}, q{const(char)* str_id, ImTextureID user_texture_id, ref const ImVec2 size, ref const ImVec2 uv0=Vec2_0_0, ref const ImVec2 uv1=Vec2_1_1, ref const ImVec4 bg_col=Vec4_0_0_0_0, ref const ImVec4 tint_col=Vec4_1_1_1_1}, `C++, "ImGui"`],
+		{q{void}, q{Image}, q{ImTextureID user_texture_id, in ImVec2 size, in ImVec2 uv0=Vec2_0_0, in ImVec2 uv1=Vec2_1_1, in ImVec4 tint_col=Vec4_1_1_1_1, in ImVec4 border_col=Vec4_0_0_0_0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{ImageButton}, q{const(char)* str_id, ImTextureID user_texture_id, in ImVec2 size, in ImVec2 uv0=Vec2_0_0, in ImVec2 uv1=Vec2_1_1, in ImVec4 bg_col=Vec4_0_0_0_0, in ImVec4 tint_col=Vec4_1_1_1_1}, ext: `C++, "ImGui"`},
 		
-		[q{bool}, q{BeginCombo}, q{const(char)* label, const(char)* preview_value, ImGuiComboFlags_ flags=0}, `C++, "ImGui"`],
-		[q{void}, q{EndCombo}, q{}, `C++, "ImGui"`],
-		[q{bool}, q{Combo}, q{const(char)* label, int* current_item, const(char*)* items, int items_count, int popup_max_height_in_items=-1}, `C++, "ImGui"`],
-		[q{bool}, q{Combo}, q{const(char)* label, int* current_item, const(char)* items_separated_by_zeros, int popup_max_height_in_items=-1}, `C++, "ImGui"`],
-		[q{bool}, q{Combo}, q{const(char)* label, int* current_item, ItemsGetterFn items_getter, void* data, int items_count, int popup_max_height_in_items=-1}, `C++, "ImGui"`],
+		{q{bool}, q{BeginCombo}, q{const(char)* label, const(char)* preview_value, ImGuiComboFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{void}, q{EndCombo}, q{}, ext: `C++, "ImGui"`},
+		{q{bool}, q{Combo}, q{const(char)* label, int* current_item, const(char*)* items, int items_count, int popup_max_height_in_items=-1}, ext: `C++, "ImGui"`},
+		{q{bool}, q{Combo}, q{const(char)* label, int* current_item, const(char)* items_separated_by_zeros, int popup_max_height_in_items=-1}, ext: `C++, "ImGui"`},
+		{q{bool}, q{Combo}, q{const(char)* label, int* current_item, ItemsGetterFn items_getter, void* data, int items_count, int popup_max_height_in_items=-1}, ext: `C++, "ImGui"`},
 		
-		[q{bool}, q{DragFloat}, q{const(char)* label, float* v, float v_speed=1f, float v_min=0f, float v_max=0f, const(char)* format="%.3f", ImGuiSliderFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{DragFloat2}, q{const(char)* label, float* v, float v_speed=1f, float v_min=0f, float v_max=0f, const(char)* format="%.3f", ImGuiSliderFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{DragFloat3}, q{const(char)* label, float* v, float v_speed=1f, float v_min=0f, float v_max=0f, const(char)* format="%.3f", ImGuiSliderFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{DragFloat4}, q{const(char)* label, float* v, float v_speed=1f, float v_min=0f, float v_max=0f, const(char)* format="%.3f", ImGuiSliderFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{DragFloatRange2}, q{const(char)* label, float* v_current_min, float* v_current_max, float v_speed=1f, float v_min=0f, float v_max=0f, const(char)* format="%.3f", const(char)* format_max=null, ImGuiSliderFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{DragInt}, q{const(char)* label, int* v, float v_speed=1f, int v_min=0, int v_max=0, const(char)* format="%d", ImGuiSliderFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{DragInt2}, q{const(char)* label, int* v, float v_speed=1f, int v_min=0, int v_max=0, const(char)* format="%d", ImGuiSliderFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{DragInt3}, q{const(char)* label, int* v, float v_speed=1f, int v_min=0, int v_max=0, const(char)* format="%d", ImGuiSliderFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{DragInt4}, q{const(char)* label, int* v, float v_speed=1f, int v_min=0, int v_max=0, const(char)* format="%d", ImGuiSliderFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{DragIntRange2}, q{const(char)* label, int* v_current_min, int* v_current_max, float v_speed=1f, int v_min=0, int v_max=0, const(char)* format="%d", const(char)* format_max=null, ImGuiSliderFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{DragScalar}, q{const(char)* label, ImGuiDataType data_type, void* p_data, float v_speed=1f, const(void)* p_min=null, const(void)* p_max=null, const(char)* format=null, ImGuiSliderFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{DragScalarN}, q{const(char)* label, ImGuiDataType data_type, void* p_data, int components, float v_speed=1f, const(void)* p_min=null, const(void)* p_max=null, const(char)* format=null, ImGuiSliderFlags_ flags=0}, `C++, "ImGui"`],
+		{q{bool}, q{DragFloat}, q{const(char)* label, float* v, float v_speed=1f, float v_min=0f, float v_max=0f, const(char)* format="%.3f", ImGuiSliderFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{DragFloat2}, q{const(char)* label, float* v, float v_speed=1f, float v_min=0f, float v_max=0f, const(char)* format="%.3f", ImGuiSliderFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{DragFloat3}, q{const(char)* label, float* v, float v_speed=1f, float v_min=0f, float v_max=0f, const(char)* format="%.3f", ImGuiSliderFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{DragFloat4}, q{const(char)* label, float* v, float v_speed=1f, float v_min=0f, float v_max=0f, const(char)* format="%.3f", ImGuiSliderFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{DragFloatRange2}, q{const(char)* label, float* v_current_min, float* v_current_max, float v_speed=1f, float v_min=0f, float v_max=0f, const(char)* format="%.3f", const(char)* format_max=null, ImGuiSliderFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{DragInt}, q{const(char)* label, int* v, float v_speed=1f, int v_min=0, int v_max=0, const(char)* format="%d", ImGuiSliderFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{DragInt2}, q{const(char)* label, int* v, float v_speed=1f, int v_min=0, int v_max=0, const(char)* format="%d", ImGuiSliderFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{DragInt3}, q{const(char)* label, int* v, float v_speed=1f, int v_min=0, int v_max=0, const(char)* format="%d", ImGuiSliderFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{DragInt4}, q{const(char)* label, int* v, float v_speed=1f, int v_min=0, int v_max=0, const(char)* format="%d", ImGuiSliderFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{DragIntRange2}, q{const(char)* label, int* v_current_min, int* v_current_max, float v_speed=1f, int v_min=0, int v_max=0, const(char)* format="%d", const(char)* format_max=null, ImGuiSliderFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{DragScalar}, q{const(char)* label, ImGuiDataType_ data_type, void* p_data, float v_speed=1f, const(void)* p_min=null, const(void)* p_max=null, const(char)* format=null, ImGuiSliderFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{DragScalarN}, q{const(char)* label, ImGuiDataType_ data_type, void* p_data, int components, float v_speed=1f, const(void)* p_min=null, const(void)* p_max=null, const(char)* format=null, ImGuiSliderFlags_ flags=0}, ext: `C++, "ImGui"`},
 		
-		[q{bool}, q{SliderFloat}, q{const(char)* label, float* v, float v_min, float v_max, const(char)* format="%.3f", ImGuiSliderFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{SliderFloat2}, q{const(char)* label, float* v, float v_min, float v_max, const(char)* format="%.3f", ImGuiSliderFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{SliderFloat3}, q{const(char)* label, float* v, float v_min, float v_max, const(char)* format="%.3f", ImGuiSliderFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{SliderFloat4}, q{const(char)* label, float* v, float v_min, float v_max, const(char)* format="%.3f", ImGuiSliderFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{SliderAngle}, q{const(char)* label, float* v_rad, float v_degrees_min=-360f, float v_degrees_max=+360f, const(char)* format="%.0f deg", ImGuiSliderFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{SliderInt}, q{const(char)* label, int* v, int v_min, int v_max, const(char)* format="%d", ImGuiSliderFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{SliderInt2}, q{const(char)* label, int* v, int v_min, int v_max, const(char)* format="%d", ImGuiSliderFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{SliderInt3}, q{const(char)* label, int* v, int v_min, int v_max, const(char)* format="%d", ImGuiSliderFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{SliderInt4}, q{const(char)* label, int* v, int v_min, int v_max, const(char)* format="%d", ImGuiSliderFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{SliderScalar}, q{const(char)* label, ImGuiDataType_ data_type, void* p_data, const(void)* p_min, const(void)* p_max, const(char)* format=null, ImGuiSliderFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{SliderScalarN}, q{const(char)* label, ImGuiDataType_ data_type, void* p_data, int components, const(void)* p_min, const(void)* p_max, const(char)* format=null, ImGuiSliderFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{VSliderFloat}, q{const(char)* label, ref const ImVec2 size, float* v, float v_min, float v_max, const(char)* format="%.3f", ImGuiSliderFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{VSliderInt}, q{const(char)* label, ref const ImVec2 size, int* v, int v_min, int v_max, const(char)* format="%d", ImGuiSliderFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{VSliderScalar}, q{const(char)* label, ref const ImVec2 size, ImGuiDataType_ data_type, void* p_data, const(void)* p_min, const(void)* p_max, const(char)* format=null, ImGuiSliderFlags_ flags=0}, `C++, "ImGui"`],
+		{q{bool}, q{SliderFloat}, q{const(char)* label, float* v, float v_min, float v_max, const(char)* format="%.3f", ImGuiSliderFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{SliderFloat2}, q{const(char)* label, float* v, float v_min, float v_max, const(char)* format="%.3f", ImGuiSliderFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{SliderFloat3}, q{const(char)* label, float* v, float v_min, float v_max, const(char)* format="%.3f", ImGuiSliderFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{SliderFloat4}, q{const(char)* label, float* v, float v_min, float v_max, const(char)* format="%.3f", ImGuiSliderFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{SliderAngle}, q{const(char)* label, float* v_rad, float v_degrees_min=-360f, float v_degrees_max=+360f, const(char)* format="%.0f deg", ImGuiSliderFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{SliderInt}, q{const(char)* label, int* v, int v_min, int v_max, const(char)* format="%d", ImGuiSliderFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{SliderInt2}, q{const(char)* label, int* v, int v_min, int v_max, const(char)* format="%d", ImGuiSliderFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{SliderInt3}, q{const(char)* label, int* v, int v_min, int v_max, const(char)* format="%d", ImGuiSliderFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{SliderInt4}, q{const(char)* label, int* v, int v_min, int v_max, const(char)* format="%d", ImGuiSliderFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{SliderScalar}, q{const(char)* label, ImGuiDataType_ data_type, void* p_data, const(void)* p_min, const(void)* p_max, const(char)* format=null, ImGuiSliderFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{SliderScalarN}, q{const(char)* label, ImGuiDataType_ data_type, void* p_data, int components, const(void)* p_min, const(void)* p_max, const(char)* format=null, ImGuiSliderFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{VSliderFloat}, q{const(char)* label, in ImVec2 size, float* v, float v_min, float v_max, const(char)* format="%.3f", ImGuiSliderFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{VSliderInt}, q{const(char)* label, in ImVec2 size, int* v, int v_min, int v_max, const(char)* format="%d", ImGuiSliderFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{VSliderScalar}, q{const(char)* label, in ImVec2 size, ImGuiDataType_ data_type, void* p_data, const(void)* p_min, const(void)* p_max, const(char)* format=null, ImGuiSliderFlags_ flags=0}, ext: `C++, "ImGui"`},
 		
-		[q{bool}, q{InputText}, q{const(char)* label, char* buf, size_t buf_size, ImGuiInputTextFlags_ flags=0, ImGuiInputTextCallback callback=null, void* user_data=null}, `C++, "ImGui"`],
-		[q{bool}, q{InputTextMultiline}, q{const(char)* label, char* buf, size_t buf_size, ref const ImVec2 size=Vec2_0_0, ImGuiInputTextFlags_ flags=0, ImGuiInputTextCallback callback=null, void* user_data=null}, `C++, "ImGui"`],
-		[q{bool}, q{InputTextWithHint}, q{const(char)* label, const(char)* hint, char* buf, size_t buf_size, ImGuiInputTextFlags_ flags=0, ImGuiInputTextCallback callback=null, void* user_data=null}, `C++, "ImGui"`],
-		[q{bool}, q{InputFloat}, q{const(char)* label, float* v, float step=0f, float step_fast=0f, const(char)* format="%.3f", ImGuiInputTextFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{InputFloat2}, q{const(char)* label, float* v, const(char)* format="%.3f", ImGuiInputTextFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{InputFloat3}, q{const(char)* label, float* v, const(char)* format="%.3f", ImGuiInputTextFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{InputFloat4}, q{const(char)* label, float* v, const(char)* format="%.3f", ImGuiInputTextFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{InputInt}, q{const(char)* label, int* v, int step=1, int step_fast=100, ImGuiInputTextFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{InputInt2}, q{const(char)* label, int* v, ImGuiInputTextFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{InputInt3}, q{const(char)* label, int* v, ImGuiInputTextFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{InputInt4}, q{const(char)* label, int* v, ImGuiInputTextFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{InputDouble}, q{const(char)* label, double* v, double step=0.0, double step_fast=0.0, const(char)* format="%.6f", ImGuiInputTextFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{InputScalar}, q{const(char)* label, ImGuiDataType_ data_type, void* p_data, const(void)* p_step=null, const(void)* p_step_fast=null, const(char)* format=null, ImGuiInputTextFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{InputScalarN}, q{const(char)* label, ImGuiDataType_ data_type, void* p_data, int components, const(void)* p_step=null, const(void)* p_step_fast=null, const(char)* format=null, ImGuiInputTextFlags_ flags=0}, `C++, "ImGui"`],
+		{q{bool}, q{InputText}, q{const(char)* label, char* buf, size_t buf_size, ImGuiInputTextFlags_ flags=0, ImGuiInputTextCallback callback=null, void* user_data=null}, ext: `C++, "ImGui"`},
+		{q{bool}, q{InputTextMultiline}, q{const(char)* label, char* buf, size_t buf_size, in ImVec2 size=Vec2_0_0, ImGuiInputTextFlags_ flags=0, ImGuiInputTextCallback callback=null, void* user_data=null}, ext: `C++, "ImGui"`},
+		{q{bool}, q{InputTextWithHint}, q{const(char)* label, const(char)* hint, char* buf, size_t buf_size, ImGuiInputTextFlags_ flags=0, ImGuiInputTextCallback callback=null, void* user_data=null}, ext: `C++, "ImGui"`},
+		{q{bool}, q{InputFloat}, q{const(char)* label, float* v, float step=0f, float step_fast=0f, const(char)* format="%.3f", ImGuiInputTextFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{InputFloat2}, q{const(char)* label, float* v, const(char)* format="%.3f", ImGuiInputTextFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{InputFloat3}, q{const(char)* label, float* v, const(char)* format="%.3f", ImGuiInputTextFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{InputFloat4}, q{const(char)* label, float* v, const(char)* format="%.3f", ImGuiInputTextFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{InputInt}, q{const(char)* label, int* v, int step=1, int step_fast=100, ImGuiInputTextFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{InputInt2}, q{const(char)* label, int* v, ImGuiInputTextFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{InputInt3}, q{const(char)* label, int* v, ImGuiInputTextFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{InputInt4}, q{const(char)* label, int* v, ImGuiInputTextFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{InputDouble}, q{const(char)* label, double* v, double step=0.0, double step_fast=0.0, const(char)* format="%.6f", ImGuiInputTextFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{InputScalar}, q{const(char)* label, ImGuiDataType_ data_type, void* p_data, const(void)* p_step=null, const(void)* p_step_fast=null, const(char)* format=null, ImGuiInputTextFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{InputScalarN}, q{const(char)* label, ImGuiDataType_ data_type, void* p_data, int components, const(void)* p_step=null, const(void)* p_step_fast=null, const(char)* format=null, ImGuiInputTextFlags_ flags=0}, ext: `C++, "ImGui"`},
 		
-		[q{bool}, q{ColorEdit3}, q{const(char)* label, float* col, ImGuiColorEditFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{ColorEdit4}, q{const(char)* label, float* col, ImGuiInputTextFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{ColorPicker3}, q{const(char)* label, float* col, ImGuiInputTextFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{ColorPicker4}, q{const(char)* label, float* col, ImGuiInputTextFlags_ flags=0, const(float)* ref_col=null}, `C++, "ImGui"`],
-		[q{bool}, q{ColorButton}, q{const(char)* desc_id, ref const ImVec4 col, ImGuiInputTextFlags_ flags=0, ref const ImVec2 size=Vec2_0_0}, `C++, "ImGui"`],
-		[q{void}, q{SetColorEditOptions}, q{ImGuiColorEditFlags_ flags}, `C++, "ImGui"`],
+		{q{bool}, q{ColorEdit3}, q{const(char)* label, float* col, ImGuiColorEditFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{ColorEdit4}, q{const(char)* label, float* col, ImGuiInputTextFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{ColorPicker3}, q{const(char)* label, float* col, ImGuiInputTextFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{ColorPicker4}, q{const(char)* label, float* col, ImGuiInputTextFlags_ flags=0, const(float)* ref_col=null}, ext: `C++, "ImGui"`},
+		{q{bool}, q{ColorButton}, q{const(char)* desc_id, in ImVec4 col, ImGuiInputTextFlags_ flags=0, in ImVec2 size=Vec2_0_0}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetColorEditOptions}, q{ImGuiColorEditFlags_ flags}, ext: `C++, "ImGui"`},
 		
-		[q{bool}, q{TreeNode}, q{const(char)* label}, `C++, "ImGui"`],
-		[q{bool}, q{TreeNode}, q{const(char)* str_id, const(char)* fmt, ...}, `C++, "ImGui"`],
-		[q{bool}, q{TreeNode}, q{const(void)* ptr_id, const(char)* fmt, ...}, `C++, "ImGui"`],
-		[q{bool}, q{TreeNodeV}, q{const(char)* str_id, const(char)* fmt, va_list args}, `C++, "ImGui"`],
-		[q{bool}, q{TreeNodeV}, q{const(void)* ptr_id, const(char)* fmt, va_list args}, `C++, "ImGui"`],
-		[q{bool}, q{TreeNodeEx}, q{const(char)* label, ImGuiTreeNodeFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{TreeNodeEx}, q{const(char)* str_id, ImGuiTreeNodeFlags_ flags, const(char)* fmt, ...}, `C++, "ImGui"`],
-		[q{bool}, q{TreeNodeEx}, q{const(void)* ptr_id, ImGuiTreeNodeFlags_ flags, const(char)* fmt, ...}, `C++, "ImGui"`],
-		[q{bool}, q{TreeNodeExV}, q{const(char)* str_id, ImGuiTreeNodeFlags_ flags, const(char)* fmt, va_list args}, `C++, "ImGui"`],
-		[q{bool}, q{TreeNodeExV}, q{const(void)* ptr_id, ImGuiTreeNodeFlags_ flags, const(char)* fmt, va_list args}, `C++, "ImGui"`],
-		[q{void}, q{TreePush}, q{const(char)* str_id}, `C++, "ImGui"`],
-		[q{void}, q{TreePush}, q{const(void)* ptr_id}, `C++, "ImGui"`],
-		[q{void}, q{TreePop}, q{}, `C++, "ImGui"`],
-		[q{float}, q{GetTreeNodeToLabelSpacing}, q{}, `C++, "ImGui"`],
-		[q{bool}, q{CollapsingHeader}, q{const(char)* label, ImGuiTreeNodeFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{CollapsingHeader}, q{const(char)* label, bool* p_visible, ImGuiTreeNodeFlags_ flags=0}, `C++, "ImGui"`],
-		[q{void}, q{SetNextItemOpen}, q{bool is_open, ImGuiCond_ cond=0}, `C++, "ImGui"`],
-		[q{bool}, q{Selectable}, q{const(char)* label, bool selected=false, ImGuiSelectableFlags_ flags=0, ref const ImVec2 size=Vec2_0_0}, `C++, "ImGui"`],
-		[q{bool}, q{Selectable}, q{const(char)* label, bool* p_selected, ImGuiSelectableFlags_ flags=0, ref const ImVec2 size=Vec2_0_0}, `C++, "ImGui"`],
-		[q{bool}, q{BeginListBox}, q{const(char)* label, ref const ImVec2 size=Vec2_0_0}, `C++, "ImGui"`],
-		[q{void}, q{EndListBox}, q{}, `C++, "ImGui"`],
-		[q{bool}, q{ListBox}, q{const(char)* label, int* current_item, const(char*)* items, int items_count, int height_in_items=-1}, `C++, "ImGui"`],
-		[q{bool}, q{ListBox}, q{const(char)* label, int* current_item, ItemsGetterFn items_getter, void* data, int items_count, int height_in_items=-1}, `C++, "ImGui"`],
+		{q{bool}, q{TreeNode}, q{const(char)* label}, ext: `C++, "ImGui"`},
+		{q{bool}, q{TreeNode}, q{const(char)* str_id, const(char)* fmt, ...}, ext: `C++, "ImGui"`},
+		{q{bool}, q{TreeNode}, q{const(void)* ptr_id, const(char)* fmt, ...}, ext: `C++, "ImGui"`},
+		{q{bool}, q{TreeNodeV}, q{const(char)* str_id, const(char)* fmt, va_list args}, ext: `C++, "ImGui"`},
+		{q{bool}, q{TreeNodeV}, q{const(void)* ptr_id, const(char)* fmt, va_list args}, ext: `C++, "ImGui"`},
+		{q{bool}, q{TreeNodeEx}, q{const(char)* label, ImGuiTreeNodeFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{TreeNodeEx}, q{const(char)* str_id, ImGuiTreeNodeFlags_ flags, const(char)* fmt, ...}, ext: `C++, "ImGui"`},
+		{q{bool}, q{TreeNodeEx}, q{const(void)* ptr_id, ImGuiTreeNodeFlags_ flags, const(char)* fmt, ...}, ext: `C++, "ImGui"`},
+		{q{bool}, q{TreeNodeExV}, q{const(char)* str_id, ImGuiTreeNodeFlags_ flags, const(char)* fmt, va_list args}, ext: `C++, "ImGui"`},
+		{q{bool}, q{TreeNodeExV}, q{const(void)* ptr_id, ImGuiTreeNodeFlags_ flags, const(char)* fmt, va_list args}, ext: `C++, "ImGui"`},
+		{q{void}, q{TreePush}, q{const(char)* str_id}, ext: `C++, "ImGui"`},
+		{q{void}, q{TreePush}, q{const(void)* ptr_id}, ext: `C++, "ImGui"`},
+		{q{void}, q{TreePop}, q{}, ext: `C++, "ImGui"`},
+		{q{float}, q{GetTreeNodeToLabelSpacing}, q{}, ext: `C++, "ImGui"`},
+		{q{bool}, q{CollapsingHeader}, q{const(char)* label, ImGuiTreeNodeFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{CollapsingHeader}, q{const(char)* label, bool* p_visible, ImGuiTreeNodeFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetNextItemOpen}, q{bool is_open, ImGuiCond_ cond=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{Selectable}, q{const(char)* label, bool selected=false, ImGuiSelectableFlags_ flags=0, in ImVec2 size=Vec2_0_0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{Selectable}, q{const(char)* label, bool* p_selected, ImGuiSelectableFlags_ flags=0, in ImVec2 size=Vec2_0_0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{BeginListBox}, q{const(char)* label, in ImVec2 size=Vec2_0_0}, ext: `C++, "ImGui"`},
+		{q{void}, q{EndListBox}, q{}, ext: `C++, "ImGui"`},
+		{q{bool}, q{ListBox}, q{const(char)* label, int* current_item, const(char*)* items, int items_count, int height_in_items=-1}, ext: `C++, "ImGui"`},
+		{q{bool}, q{ListBox}, q{const(char)* label, int* current_item, ItemsGetterFn items_getter, void* data, int items_count, int height_in_items=-1}, ext: `C++, "ImGui"`},
 		
-		[q{void}, q{PlotLines}, q{const(char)* label, const(float)* values, int values_count, int values_offset=0, const(char)* overlay_text=null, float scale_min=float.max, float scale_max=float.max, ImVec2 graph_size=Vec2_0_0, int stride=float.sizeof}, `C++, "ImGui"`],
-		[q{void}, q{PlotLines}, q{const(char)* label, ValuesGetterFn values_getter, void* data, int values_count, int values_offset=0, const(char)* overlay_text=null, float scale_min=float.max, float scale_max=float.max, ImVec2 graph_size=Vec2_0_0}, `C++, "ImGui"`],
-		[q{void}, q{PlotHistogram}, q{const(char)* label, const(float)* values, int values_count, int values_offset=0, const(char)* overlay_text=null, float scale_min=float.max, float scale_max=float.max, ImVec2 graph_size=Vec2_0_0, int stride=float.sizeof}, `C++, "ImGui"`],
-		[q{void}, q{PlotHistogram}, q{const(char)* label, ValuesGetterFn values_getter, void* data, int values_count, int values_offset=0, const(char)* overlay_text=null, float scale_min=float.max, float scale_max=float.max, ImVec2 graph_size=Vec2_0_0}, `C++, "ImGui"`],
+		{q{void}, q{PlotLines}, q{const(char)* label, const(float)* values, int values_count, int values_offset=0, const(char)* overlay_text=null, float scale_min=float.max, float scale_max=float.max, ImVec2 graph_size=Vec2_0_0, int stride=float.sizeof}, ext: `C++, "ImGui"`},
+		{q{void}, q{PlotLines}, q{const(char)* label, ValuesGetterFn values_getter, void* data, int values_count, int values_offset=0, const(char)* overlay_text=null, float scale_min=float.max, float scale_max=float.max, ImVec2 graph_size=Vec2_0_0}, ext: `C++, "ImGui"`},
+		{q{void}, q{PlotHistogram}, q{const(char)* label, const(float)* values, int values_count, int values_offset=0, const(char)* overlay_text=null, float scale_min=float.max, float scale_max=float.max, ImVec2 graph_size=Vec2_0_0, int stride=float.sizeof}, ext: `C++, "ImGui"`},
+		{q{void}, q{PlotHistogram}, q{const(char)* label, ValuesGetterFn values_getter, void* data, int values_count, int values_offset=0, const(char)* overlay_text=null, float scale_min=float.max, float scale_max=float.max, ImVec2 graph_size=Vec2_0_0}, ext: `C++, "ImGui"`},
 		
-		[q{void}, q{Value}, q{const(char)* prefix, bool b}, `C++, "ImGui"`],
-		[q{void}, q{Value}, q{const(char)* prefix, int v}, `C++, "ImGui"`],
-		[q{void}, q{Value}, q{const(char)* prefix, uint v}, `C++, "ImGui"`],
-		[q{void}, q{Value}, q{const(char)* prefix, float v, const(char)* float_format=null}, `C++, "ImGui"`],
+		{q{void}, q{Value}, q{const(char)* prefix, bool b}, ext: `C++, "ImGui"`},
+		{q{void}, q{Value}, q{const(char)* prefix, int v}, ext: `C++, "ImGui"`},
+		{q{void}, q{Value}, q{const(char)* prefix, uint v}, ext: `C++, "ImGui"`},
+		{q{void}, q{Value}, q{const(char)* prefix, float v, const(char)* float_format=null}, ext: `C++, "ImGui"`},
 		
-		[q{bool}, q{BeginMenuBar}, q{}, `C++, "ImGui"`],
-		[q{void}, q{EndMenuBar}, q{}, `C++, "ImGui"`],
-		[q{bool}, q{BeginMainMenuBar}, q{}, `C++, "ImGui"`],
-		[q{void}, q{EndMainMenuBar}, q{}, `C++, "ImGui"`],
-		[q{bool}, q{BeginMenu}, q{const(char)* label, bool enabled=true}, `C++, "ImGui"`],
-		[q{void}, q{EndMenu}, q{}, `C++, "ImGui"`],
-		[q{bool}, q{MenuItem}, q{const(char)* label, const(char)* shortcut=null, bool selected=false, bool enabled=true}, `C++, "ImGui"`],
-		[q{bool}, q{MenuItem}, q{const(char)* label, const(char)* shortcut, bool* p_selected, bool enabled=true}, `C++, "ImGui"`],
-		[q{bool}, q{BeginTooltip}, q{}, `C++, "ImGui"`],
-		[q{void}, q{EndTooltip}, q{}, `C++, "ImGui"`],
-		[q{void}, q{SetTooltip}, q{const(char)* fmt, ...}, `C++, "ImGui"`],
-		[q{void}, q{SetTooltipV}, q{const(char)* fmt, va_list args}, `C++, "ImGui"`],
+		{q{bool}, q{BeginMenuBar}, q{}, ext: `C++, "ImGui"`},
+		{q{void}, q{EndMenuBar}, q{}, ext: `C++, "ImGui"`},
+		{q{bool}, q{BeginMainMenuBar}, q{}, ext: `C++, "ImGui"`},
+		{q{void}, q{EndMainMenuBar}, q{}, ext: `C++, "ImGui"`},
+		{q{bool}, q{BeginMenu}, q{const(char)* label, bool enabled=true}, ext: `C++, "ImGui"`},
+		{q{void}, q{EndMenu}, q{}, ext: `C++, "ImGui"`},
+		{q{bool}, q{MenuItem}, q{const(char)* label, const(char)* shortcut=null, bool selected=false, bool enabled=true}, ext: `C++, "ImGui"`},
+		{q{bool}, q{MenuItem}, q{const(char)* label, const(char)* shortcut, bool* p_selected, bool enabled=true}, ext: `C++, "ImGui"`},
+		{q{bool}, q{BeginTooltip}, q{}, ext: `C++, "ImGui"`},
+		{q{void}, q{EndTooltip}, q{}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetTooltip}, q{const(char)* fmt, ...}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetTooltipV}, q{const(char)* fmt, va_list args}, ext: `C++, "ImGui"`},
 		
-		[q{bool}, q{BeginPopup}, q{const(char)* str_id, ImGuiWindowFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{BeginPopupModal}, q{const(char)* name, bool* p_open=null, ImGuiWindowFlags_ flags=0}, `C++, "ImGui"`],
-		[q{void}, q{EndPopup}, q{}, `C++, "ImGui"`],
+		{q{bool}, q{BeginPopup}, q{const(char)* str_id, ImGuiWindowFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{BeginPopupModal}, q{const(char)* name, bool* p_open=null, ImGuiWindowFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{void}, q{EndPopup}, q{}, ext: `C++, "ImGui"`},
 		
-		[q{void}, q{OpenPopup}, q{const(char)* str_id, ImGuiPopupFlags_ popup_flags=0}, `C++, "ImGui"`],
-		[q{void}, q{OpenPopup}, q{ImGuiID id, ImGuiPopupFlags_ popup_flags=0}, `C++, "ImGui"`],
-		[q{void}, q{OpenPopupOnItemClick}, q{const(char)* str_id=null, ImGuiPopupFlags_ popup_flags=1}, `C++, "ImGui"`],
-		[q{void}, q{CloseCurrentPopup}, q{}, `C++, "ImGui"`],
+		{q{void}, q{OpenPopup}, q{const(char)* str_id, ImGuiPopupFlags_ popup_flags=0}, ext: `C++, "ImGui"`},
+		{q{void}, q{OpenPopup}, q{ImGuiID id, ImGuiPopupFlags_ popup_flags=0}, ext: `C++, "ImGui"`},
+		{q{void}, q{OpenPopupOnItemClick}, q{const(char)* str_id=null, ImGuiPopupFlags_ popup_flags=1}, ext: `C++, "ImGui"`},
+		{q{void}, q{CloseCurrentPopup}, q{}, ext: `C++, "ImGui"`},
 		
-		[q{bool}, q{BeginPopupContextItem}, q{const(char)* str_id=null, ImGuiPopupFlags_ popup_flags=1}, `C++, "ImGui"`],
-		[q{bool}, q{BeginPopupContextWindow}, q{const(char)* str_id=null, ImGuiPopupFlags_ popup_flags=1}, `C++, "ImGui"`],
-		[q{bool}, q{BeginPopupContextVoid}, q{const(char)* str_id=null, ImGuiPopupFlags_ popup_flags=1}, `C++, "ImGui"`],
-		[q{bool}, q{IsPopupOpen}, q{const(char)* str_id, ImGuiPopupFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{BeginTable}, q{const(char)* str_id, int column, ImGuiTableFlags_ flags=0, ref const ImVec2 outer_size=Vec2_0_0, float inner_width=0f}, `C++, "ImGui"`],
-		[q{void}, q{EndTable}, q{}, `C++, "ImGui"`],
-		[q{void}, q{TableNextRow}, q{ImGuiTableRowFlags_ row_flags=0, float min_row_height=0f}, `C++, "ImGui"`],
-		[q{bool}, q{TableNextColumn}, q{}, `C++, "ImGui"`],
-		[q{bool}, q{TableSetColumnIndex}, q{int column_n}, `C++, "ImGui"`],
+		{q{bool}, q{BeginPopupContextItem}, q{const(char)* str_id=null, ImGuiPopupFlags_ popup_flags=1}, ext: `C++, "ImGui"`},
+		{q{bool}, q{BeginPopupContextWindow}, q{const(char)* str_id=null, ImGuiPopupFlags_ popup_flags=1}, ext: `C++, "ImGui"`},
+		{q{bool}, q{BeginPopupContextVoid}, q{const(char)* str_id=null, ImGuiPopupFlags_ popup_flags=1}, ext: `C++, "ImGui"`},
+		{q{bool}, q{IsPopupOpen}, q{const(char)* str_id, ImGuiPopupFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{BeginTable}, q{const(char)* str_id, int column, ImGuiTableFlags_ flags=0, in ImVec2 outer_size=Vec2_0_0, float inner_width=0f}, ext: `C++, "ImGui"`},
+		{q{void}, q{EndTable}, q{}, ext: `C++, "ImGui"`},
+		{q{void}, q{TableNextRow}, q{ImGuiTableRowFlags_ row_flags=0, float min_row_height=0f}, ext: `C++, "ImGui"`},
+		{q{bool}, q{TableNextColumn}, q{}, ext: `C++, "ImGui"`},
+		{q{bool}, q{TableSetColumnIndex}, q{int column_n}, ext: `C++, "ImGui"`},
 		
-		[q{void}, q{TableSetupColumn}, q{const(char)* label, ImGuiTableColumnFlags_ flags=0, float init_width_or_weight=0f, ImGuiID user_id=0}, `C++, "ImGui"`],
-		[q{void}, q{TableSetupScrollFreeze}, q{int cols, int rows}, `C++, "ImGui"`],
-		[q{void}, q{TableHeadersRow}, q{}, `C++, "ImGui"`],
-		[q{void}, q{TableHeader}, q{const(char)* label}, `C++, "ImGui"`],
+		{q{void}, q{TableSetupColumn}, q{const(char)* label, ImGuiTableColumnFlags_ flags=0, float init_width_or_weight=0f, ImGuiID user_id=0}, ext: `C++, "ImGui"`},
+		{q{void}, q{TableSetupScrollFreeze}, q{int cols, int rows}, ext: `C++, "ImGui"`},
+		{q{void}, q{TableHeadersRow}, q{}, ext: `C++, "ImGui"`},
+		{q{void}, q{TableHeader}, q{const(char)* label}, ext: `C++, "ImGui"`},
 		
-		[q{ImGuiTableSortSpecs*}, q{TableGetSortSpecs}, q{}, `C++, "ImGui"`],
-		[q{int}, q{TableGetColumnCount}, q{}, `C++, "ImGui"`],
-		[q{int}, q{TableGetColumnIndex}, q{}, `C++, "ImGui"`],
-		[q{int}, q{TableGetRowIndex}, q{}, `C++, "ImGui"`],
-		[q{const(char)*}, q{TableGetColumnName}, q{int column_n=-1}, `C++, "ImGui"`],
-		[q{ImGuiTableColumnFlags}, q{TableGetColumnFlags}, q{int column_n=-1}, `C++, "ImGui"`],
-		[q{void}, q{TableSetColumnEnabled}, q{int column_n, bool v}, `C++, "ImGui"`],
-		[q{void}, q{TableSetBgColor}, q{ImGuiTableBgTarget_ target, uint color, int column_n=-1}, `C++, "ImGui"`],
-		[q{void}, q{Columns}, q{int count=1, const(char)* id=null, bool border=true}, `C++, "ImGui"`],
-		[q{void}, q{NextColumn}, q{}, `C++, "ImGui"`],
-		[q{int}, q{GetColumnIndex}, q{}, `C++, "ImGui"`],
-		[q{float}, q{GetColumnWidth}, q{int column_index=-1}, `C++, "ImGui"`],
-		[q{void}, q{SetColumnWidth}, q{int column_index, float width}, `C++, "ImGui"`],
-		[q{float}, q{GetColumnOffset}, q{int column_index=-1}, `C++, "ImGui"`],
-		[q{void}, q{SetColumnOffset}, q{int column_index, float offset_x}, `C++, "ImGui"`],
-		[q{int}, q{GetColumnsCount}, q{}, `C++, "ImGui"`],
+		{q{ImGuiTableSortSpecs*}, q{TableGetSortSpecs}, q{}, ext: `C++, "ImGui"`},
+		{q{int}, q{TableGetColumnCount}, q{}, ext: `C++, "ImGui"`},
+		{q{int}, q{TableGetColumnIndex}, q{}, ext: `C++, "ImGui"`},
+		{q{int}, q{TableGetRowIndex}, q{}, ext: `C++, "ImGui"`},
+		{q{const(char)*}, q{TableGetColumnName}, q{int column_n=-1}, ext: `C++, "ImGui"`},
+		{q{ImGuiTableColumnFlags}, q{TableGetColumnFlags}, q{int column_n=-1}, ext: `C++, "ImGui"`},
+		{q{void}, q{TableSetColumnEnabled}, q{int column_n, bool v}, ext: `C++, "ImGui"`},
+		{q{void}, q{TableSetBgColor}, q{ImGuiTableBgTarget_ target, uint color, int column_n=-1}, ext: `C++, "ImGui"`},
+		{q{void}, q{Columns}, q{int count=1, const(char)* id=null, bool border=true}, ext: `C++, "ImGui"`},
+		{q{void}, q{NextColumn}, q{}, ext: `C++, "ImGui"`},
+		{q{int}, q{GetColumnIndex}, q{}, ext: `C++, "ImGui"`},
+		{q{float}, q{GetColumnWidth}, q{int column_index=-1}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetColumnWidth}, q{int column_index, float width}, ext: `C++, "ImGui"`},
+		{q{float}, q{GetColumnOffset}, q{int column_index=-1}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetColumnOffset}, q{int column_index, float offset_x}, ext: `C++, "ImGui"`},
+		{q{int}, q{GetColumnsCount}, q{}, ext: `C++, "ImGui"`},
 		
-		[q{bool}, q{BeginTabBar}, q{const(char)* str_id, ImGuiTabBarFlags_ flags=0}, `C++, "ImGui"`],
-		[q{void}, q{EndTabBar}, q{}, `C++, "ImGui"`],
-		[q{bool}, q{BeginTabItem}, q{const(char)* label, bool* p_open=null, ImGuiTabItemFlags_ flags=0}, `C++, "ImGui"`],
-		[q{void}, q{EndTabItem}, q{}, `C++, "ImGui"`],
-		[q{bool}, q{TabItemButton}, q{const(char)* label, ImGuiTabItemFlags_ flags=0}, `C++, "ImGui"`],
-		[q{void}, q{SetTabItemClosed}, q{const(char)* tab_or_docked_window_label}, `C++, "ImGui"`],
+		{q{bool}, q{BeginTabBar}, q{const(char)* str_id, ImGuiTabBarFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{void}, q{EndTabBar}, q{}, ext: `C++, "ImGui"`},
+		{q{bool}, q{BeginTabItem}, q{const(char)* label, bool* p_open=null, ImGuiTabItemFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{void}, q{EndTabItem}, q{}, ext: `C++, "ImGui"`},
+		{q{bool}, q{TabItemButton}, q{const(char)* label, ImGuiTabItemFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetTabItemClosed}, q{const(char)* tab_or_docked_window_label}, ext: `C++, "ImGui"`},
 		
-		[q{void}, q{LogToTTY}, q{int auto_open_depth=-1}, `C++, "ImGui"`],
-		[q{void}, q{LogToFile}, q{int auto_open_depth=-1, const(char)* filename=null}, `C++, "ImGui"`],
-		[q{void}, q{LogToClipboard}, q{int auto_open_depth=-1}, `C++, "ImGui"`],
-		[q{void}, q{LogFinish}, q{}, `C++, "ImGui"`],
-		[q{void}, q{LogButtons}, q{}, `C++, "ImGui"`],
-		[q{void}, q{LogText}, q{const(char)* fmt, ...}, `C++, "ImGui"`],
-		[q{void}, q{LogTextV}, q{const(char)* fmt, va_list args}, `C++, "ImGui"`],
+		{q{void}, q{LogToTTY}, q{int auto_open_depth=-1}, ext: `C++, "ImGui"`},
+		{q{void}, q{LogToFile}, q{int auto_open_depth=-1, const(char)* filename=null}, ext: `C++, "ImGui"`},
+		{q{void}, q{LogToClipboard}, q{int auto_open_depth=-1}, ext: `C++, "ImGui"`},
+		{q{void}, q{LogFinish}, q{}, ext: `C++, "ImGui"`},
+		{q{void}, q{LogButtons}, q{}, ext: `C++, "ImGui"`},
+		{q{void}, q{LogText}, q{const(char)* fmt, ...}, ext: `C++, "ImGui"`},
+		{q{void}, q{LogTextV}, q{const(char)* fmt, va_list args}, ext: `C++, "ImGui"`},
 		
-		[q{bool}, q{BeginDragDropSource}, q{ImGuiDragDropFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{SetDragDropPayload}, q{const(char)* type, const(void)* data, size_t sz, ImGuiCond_ cond=0}, `C++, "ImGui"`],
-		[q{void}, q{EndDragDropSource}, q{}, `C++, "ImGui"`],
-		[q{bool}, q{BeginDragDropTarget}, q{}, `C++, "ImGui"`],
-		[q{const(ImGuiPayload)*}, q{AcceptDragDropPayload}, q{const(char)* type, ImGuiDragDropFlags_ flags=0}, `C++, "ImGui"`],
-		[q{void}, q{EndDragDropTarget}, q{}, `C++, "ImGui"`],
-		[q{const(ImGuiPayload)*}, q{GetDragDropPayload}, q{}, `C++, "ImGui"`],
+		{q{bool}, q{BeginDragDropSource}, q{ImGuiDragDropFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{SetDragDropPayload}, q{const(char)* type, const(void)* data, size_t sz, ImGuiCond_ cond=0}, ext: `C++, "ImGui"`},
+		{q{void}, q{EndDragDropSource}, q{}, ext: `C++, "ImGui"`},
+		{q{bool}, q{BeginDragDropTarget}, q{}, ext: `C++, "ImGui"`},
+		{q{const(ImGuiPayload)*}, q{AcceptDragDropPayload}, q{const(char)* type, ImGuiDragDropFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{void}, q{EndDragDropTarget}, q{}, ext: `C++, "ImGui"`},
+		{q{const(ImGuiPayload)*}, q{GetDragDropPayload}, q{}, ext: `C++, "ImGui"`},
 		
-		[q{void}, q{BeginDisabled}, q{bool disabled=true}, `C++, "ImGui"`],
-		[q{void}, q{EndDisabled}, q{}, `C++, "ImGui"`],
+		{q{void}, q{BeginDisabled}, q{bool disabled=true}, ext: `C++, "ImGui"`},
+		{q{void}, q{EndDisabled}, q{}, ext: `C++, "ImGui"`},
 		
-		[q{void}, q{PushClipRect}, q{ref const ImVec2 clip_rect_min, ref const ImVec2 clip_rect_max, bool intersect_with_current_clip_rect}, `C++, "ImGui"`],
-		[q{void}, q{PopClipRect}, q{}, `C++, "ImGui"`],
+		{q{void}, q{PushClipRect}, q{in ImVec2 clip_rect_min, in ImVec2 clip_rect_max, bool intersect_with_current_clip_rect}, ext: `C++, "ImGui"`},
+		{q{void}, q{PopClipRect}, q{}, ext: `C++, "ImGui"`},
 		
-		[q{void}, q{SetItemDefaultFocus}, q{}, `C++, "ImGui"`],
-		[q{void}, q{SetKeyboardFocusHere}, q{int offset=0}, `C++, "ImGui"`],
+		{q{void}, q{SetItemDefaultFocus}, q{}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetKeyboardFocusHere}, q{int offset=0}, ext: `C++, "ImGui"`},
 		
-		[q{bool}, q{IsItemHovered}, q{ImGuiHoveredFlags_ flags=0}, `C++, "ImGui"`],
-		[q{bool}, q{IsItemActive}, q{}, `C++, "ImGui"`],
-		[q{bool}, q{IsItemFocused}, q{}, `C++, "ImGui"`],
-		[q{bool}, q{IsItemClicked}, q{ImGuiMouseButton_ mouse_button=0}, `C++, "ImGui"`],
-		[q{bool}, q{IsItemVisible}, q{}, `C++, "ImGui"`],
-		[q{bool}, q{IsItemEdited}, q{}, `C++, "ImGui"`],
-		[q{bool}, q{IsItemActivated}, q{}, `C++, "ImGui"`],
-		[q{bool}, q{IsItemDeactivated}, q{}, `C++, "ImGui"`],
-		[q{bool}, q{IsItemDeactivatedAfterEdit}, q{}, `C++, "ImGui"`],
-		[q{bool}, q{IsItemToggledOpen}, q{}, `C++, "ImGui"`],
-		[q{bool}, q{IsAnyItemHovered}, q{}, `C++, "ImGui"`],
-		[q{bool}, q{IsAnyItemActive}, q{}, `C++, "ImGui"`],
-		[q{bool}, q{IsAnyItemFocused}, q{}, `C++, "ImGui"`],
-		[q{ImGuiID}, q{GetItemID}, q{}, `C++, "ImGui"`],
-		[q{ImVec2}, q{GetItemRectMin}, q{}, `C++, "ImGui"`],
-		[q{ImVec2}, q{GetItemRectMax}, q{}, `C++, "ImGui"`],
-		[q{ImVec2}, q{GetItemRectSize}, q{}, `C++, "ImGui"`],
-		[q{void}, q{SetItemAllowOverlap}, q{}, `C++, "ImGui"`],
+		{q{bool}, q{IsItemHovered}, q{ImGuiHoveredFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{IsItemActive}, q{}, ext: `C++, "ImGui"`},
+		{q{bool}, q{IsItemFocused}, q{}, ext: `C++, "ImGui"`},
+		{q{bool}, q{IsItemClicked}, q{ImGuiMouseButton_ mouse_button=0}, ext: `C++, "ImGui"`},
+		{q{bool}, q{IsItemVisible}, q{}, ext: `C++, "ImGui"`},
+		{q{bool}, q{IsItemEdited}, q{}, ext: `C++, "ImGui"`},
+		{q{bool}, q{IsItemActivated}, q{}, ext: `C++, "ImGui"`},
+		{q{bool}, q{IsItemDeactivated}, q{}, ext: `C++, "ImGui"`},
+		{q{bool}, q{IsItemDeactivatedAfterEdit}, q{}, ext: `C++, "ImGui"`},
+		{q{bool}, q{IsItemToggledOpen}, q{}, ext: `C++, "ImGui"`},
+		{q{bool}, q{IsAnyItemHovered}, q{}, ext: `C++, "ImGui"`},
+		{q{bool}, q{IsAnyItemActive}, q{}, ext: `C++, "ImGui"`},
+		{q{bool}, q{IsAnyItemFocused}, q{}, ext: `C++, "ImGui"`},
+		{q{ImGuiID}, q{GetItemID}, q{}, ext: `C++, "ImGui"`},
+		{q{ImVec2}, q{GetItemRectMin}, q{}, ext: `C++, "ImGui"`},
+		{q{ImVec2}, q{GetItemRectMax}, q{}, ext: `C++, "ImGui"`},
+		{q{ImVec2}, q{GetItemRectSize}, q{}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetItemAllowOverlap}, q{}, ext: `C++, "ImGui"`},
 		
-		[q{ImGuiViewport*}, q{GetMainViewport}, q{}, `C++, "ImGui"`],
+		{q{ImGuiViewport*}, q{GetMainViewport}, q{}, ext: `C++, "ImGui"`},
 		
-		[q{ImDrawList*}, q{GetBackgroundDrawList}, q{}, `C++, "ImGui"`],
-		[q{ImDrawList*}, q{GetForegroundDrawList}, q{}, `C++, "ImGui"`],
+		{q{ImDrawList*}, q{GetBackgroundDrawList}, q{}, ext: `C++, "ImGui"`},
+		{q{ImDrawList*}, q{GetForegroundDrawList}, q{}, ext: `C++, "ImGui"`},
 		
-		[q{bool}, q{IsRectVisible}, q{ref const ImVec2 size}, `C++, "ImGui"`],
-		[q{bool}, q{IsRectVisible}, q{ref const ImVec2 rect_min, ref const ImVec2 rect_max}, `C++, "ImGui"`],
-		[q{double}, q{GetTime}, q{}, `C++, "ImGui"`],
-		[q{int}, q{GetFrameCount}, q{}, `C++, "ImGui"`],
-		[q{ImDrawListSharedData*}, q{GetDrawListSharedData}, q{}, `C++, "ImGui"`],
-		[q{const(char)*}, q{GetStyleColorName}, q{ImGuiCol_ idx}, `C++, "ImGui"`],
-		[q{void}, q{SetStateStorage}, q{ImGuiStorage* storage}, `C++, "ImGui"`],
-		[q{ImGuiStorage*}, q{GetStateStorage}, q{}, `C++, "ImGui"`],
-		[q{bool}, q{BeginChildFrame}, q{ImGuiID id, ref const ImVec2 size, ImGuiWindowFlags_ flags=0}, `C++, "ImGui"`],
-		[q{void}, q{EndChildFrame}, q{}, `C++, "ImGui"`],
+		{q{bool}, q{IsRectVisible}, q{in ImVec2 size}, ext: `C++, "ImGui"`},
+		{q{bool}, q{IsRectVisible}, q{in ImVec2 rect_min, in ImVec2 rect_max}, ext: `C++, "ImGui"`},
+		{q{double}, q{GetTime}, q{}, ext: `C++, "ImGui"`},
+		{q{int}, q{GetFrameCount}, q{}, ext: `C++, "ImGui"`},
+		{q{ImDrawListSharedData*}, q{GetDrawListSharedData}, q{}, ext: `C++, "ImGui"`},
+		{q{const(char)*}, q{GetStyleColorName}, q{ImGuiCol_ idx}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetStateStorage}, q{ImGuiStorage* storage}, ext: `C++, "ImGui"`},
+		{q{ImGuiStorage*}, q{GetStateStorage}, q{}, ext: `C++, "ImGui"`},
+		{q{bool}, q{BeginChildFrame}, q{ImGuiID id, in ImVec2 size, ImGuiWindowFlags_ flags=0}, ext: `C++, "ImGui"`},
+		{q{void}, q{EndChildFrame}, q{}, ext: `C++, "ImGui"`},
 		
-		[q{ImVec2}, q{CalcTextSize}, q{const(char)* text, const(char)* text_end=null, bool hide_text_after_double_hash=false, float wrap_width=-1f}, `C++, "ImGui"`],
+		{q{ImVec2}, q{CalcTextSize}, q{const(char)* text, const(char)* text_end=null, bool hide_text_after_double_hash=false, float wrap_width=-1f}, ext: `C++, "ImGui"`},
 		
-		[q{ImVec4}, q{ColorConvertU32ToFloat4}, q{uint in_}, `C++, "ImGui"`],
-		[q{uint}, q{ColorConvertFloat4ToU32}, q{ref const ImVec4 inP}, `C++, "ImGui"`],
-		[q{void}, q{ColorConvertRGBtoHSV}, q{float r, float g, float b, ref float out_h, ref float out_s, ref float out_v}, `C++, "ImGui"`],
-		[q{void}, q{ColorConvertHSVtoRGB}, q{float h, float s, float v, ref float out_r, ref float out_g, ref float out_b}, `C++, "ImGui"`],
+		{q{ImVec4}, q{ColorConvertU32ToFloat4}, q{uint in_}, ext: `C++, "ImGui"`},
+		{q{uint}, q{ColorConvertFloat4ToU32}, q{in ImVec4 inP}, ext: `C++, "ImGui"`},
+		{q{void}, q{ColorConvertRGBtoHSV}, q{float r, float g, float b, ref float out_h, ref float out_s, ref float out_v}, ext: `C++, "ImGui"`},
+		{q{void}, q{ColorConvertHSVtoRGB}, q{float h, float s, float v, ref float out_r, ref float out_g, ref float out_b}, ext: `C++, "ImGui"`},
 		
-		[q{bool}, q{IsKeyDown}, q{ImGuiKey_ key}, `C++, "ImGui"`],
-		[q{bool}, q{IsKeyPressed}, q{ImGuiKey_ key, bool repeat=true}, `C++, "ImGui"`],
-		[q{bool}, q{IsKeyReleased}, q{ImGuiKey_ key}, `C++, "ImGui"`],
-		[q{int}, q{GetKeyPressedAmount}, q{ImGuiKey_ key, float repeat_delay, float rate}, `C++, "ImGui"`],
-		[q{const(char)*}, q{GetKeyName}, q{ImGuiKey_ key}, `C++, "ImGui"`],
-		[q{void}, q{SetNextFrameWantCaptureKeyboard}, q{bool want_capture_keyboard}, `C++, "ImGui"`],
+		{q{bool}, q{IsKeyDown}, q{ImGuiKey_ key}, ext: `C++, "ImGui"`},
+		{q{bool}, q{IsKeyPressed}, q{ImGuiKey_ key, bool repeat=true}, ext: `C++, "ImGui"`},
+		{q{bool}, q{IsKeyReleased}, q{ImGuiKey_ key}, ext: `C++, "ImGui"`},
+		{q{int}, q{GetKeyPressedAmount}, q{ImGuiKey_ key, float repeat_delay, float rate}, ext: `C++, "ImGui"`},
+		{q{const(char)*}, q{GetKeyName}, q{ImGuiKey_ key}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetNextFrameWantCaptureKeyboard}, q{bool want_capture_keyboard}, ext: `C++, "ImGui"`},
 		
-		[q{bool}, q{IsMouseDown}, q{ImGuiMouseButton_ button}, `C++, "ImGui"`],
-		[q{bool}, q{IsMouseClicked}, q{ImGuiMouseButton_ button, bool repeat=false}, `C++, "ImGui"`],
-		[q{bool}, q{IsMouseReleased}, q{ImGuiMouseButton_ button}, `C++, "ImGui"`],
-		[q{bool}, q{IsMouseDoubleClicked}, q{ImGuiMouseButton_ button}, `C++, "ImGui"`],
-		[q{int}, q{GetMouseClickedCount}, q{ImGuiMouseButton_ button}, `C++, "ImGui"`],
-		[q{bool}, q{IsMouseHoveringRect}, q{ref const ImVec2 r_min, ref const ImVec2 r_max, bool clip=true}, `C++, "ImGui"`],
-		[q{bool}, q{IsMousePosValid}, q{const(ImVec2)* mouse_pos=null}, `C++, "ImGui"`],
-		[q{bool}, q{IsAnyMouseDown}, q{}, `C++, "ImGui"`],
-		[q{ImVec2}, q{GetMousePos}, q{}, `C++, "ImGui"`],
-		[q{ImVec2}, q{GetMousePosOnOpeningCurrentPopup}, q{}, `C++, "ImGui"`],
-		[q{bool}, q{IsMouseDragging}, q{ImGuiMouseButton_ button, float lock_threshold=-1f}, `C++, "ImGui"`],
-		[q{ImVec2}, q{GetMouseDragDelta}, q{ImGuiMouseButton_ button=0, float lock_threshold=-1f}, `C++, "ImGui"`],
-		[q{void}, q{ResetMouseDragDelta}, q{ImGuiMouseButton_ button=0}, `C++, "ImGui"`],
-		[q{ImGuiMouseCursor}, q{GetMouseCursor}, q{}, `C++, "ImGui"`],
-		[q{void}, q{SetMouseCursor}, q{ImGuiMouseCursor cursor_type}, `C++, "ImGui"`],
-		[q{void}, q{SetNextFrameWantCaptureMouse}, q{bool want_capture_mouse}, `C++, "ImGui"`],
+		{q{bool}, q{IsMouseDown}, q{ImGuiMouseButton_ button}, ext: `C++, "ImGui"`},
+		{q{bool}, q{IsMouseClicked}, q{ImGuiMouseButton_ button, bool repeat=false}, ext: `C++, "ImGui"`},
+		{q{bool}, q{IsMouseReleased}, q{ImGuiMouseButton_ button}, ext: `C++, "ImGui"`},
+		{q{bool}, q{IsMouseDoubleClicked}, q{ImGuiMouseButton_ button}, ext: `C++, "ImGui"`},
+		{q{int}, q{GetMouseClickedCount}, q{ImGuiMouseButton_ button}, ext: `C++, "ImGui"`},
+		{q{bool}, q{IsMouseHoveringRect}, q{in ImVec2 r_min, in ImVec2 r_max, bool clip=true}, ext: `C++, "ImGui"`},
+		{q{bool}, q{IsMousePosValid}, q{const(ImVec2)* mouse_pos=null}, ext: `C++, "ImGui"`},
+		{q{bool}, q{IsAnyMouseDown}, q{}, ext: `C++, "ImGui"`},
+		{q{ImVec2}, q{GetMousePos}, q{}, ext: `C++, "ImGui"`},
+		{q{ImVec2}, q{GetMousePosOnOpeningCurrentPopup}, q{}, ext: `C++, "ImGui"`},
+		{q{bool}, q{IsMouseDragging}, q{ImGuiMouseButton_ button, float lock_threshold=-1f}, ext: `C++, "ImGui"`},
+		{q{ImVec2}, q{GetMouseDragDelta}, q{ImGuiMouseButton_ button=0, float lock_threshold=-1f}, ext: `C++, "ImGui"`},
+		{q{void}, q{ResetMouseDragDelta}, q{ImGuiMouseButton_ button=0}, ext: `C++, "ImGui"`},
+		{q{ImGuiMouseCursor}, q{GetMouseCursor}, q{}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetMouseCursor}, q{ImGuiMouseCursor cursor_type}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetNextFrameWantCaptureMouse}, q{bool want_capture_mouse}, ext: `C++, "ImGui"`},
 		
-		[q{const(char)*}, q{GetClipboardText}, q{}, `C++, "ImGui"`],
-		[q{void}, q{SetClipboardText}, q{const(char)* text}, `C++, "ImGui"`],
+		{q{const(char)*}, q{GetClipboardText}, q{}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetClipboardText}, q{const(char)* text}, ext: `C++, "ImGui"`},
 		
-		[q{void}, q{LoadIniSettingsFromDisk}, q{const(char)* ini_filename}, `C++, "ImGui"`],
-		[q{void}, q{LoadIniSettingsFromMemory}, q{const(char)* ini_data, size_t ini_size=0}, `C++, "ImGui"`],
-		[q{void}, q{SaveIniSettingsToDisk}, q{const(char)* ini_filename}, `C++, "ImGui"`],
-		[q{const(char)*}, q{SaveIniSettingsToMemory}, q{size_t* out_ini_size=null}, `C++, "ImGui"`],
+		{q{void}, q{LoadIniSettingsFromDisk}, q{const(char)* ini_filename}, ext: `C++, "ImGui"`},
+		{q{void}, q{LoadIniSettingsFromMemory}, q{const(char)* ini_data, size_t ini_size=0}, ext: `C++, "ImGui"`},
+		{q{void}, q{SaveIniSettingsToDisk}, q{const(char)* ini_filename}, ext: `C++, "ImGui"`},
+		{q{const(char)*}, q{SaveIniSettingsToMemory}, q{size_t* out_ini_size=null}, ext: `C++, "ImGui"`},
 		
-		[q{void}, q{DebugTextEncoding}, q{const(char)* text}, `C++, "ImGui"`],
-		[q{bool}, q{DebugCheckVersionAndDataLayout}, q{const(char)* version_str, size_t sz_io, size_t sz_style, size_t sz_vec2, size_t sz_vec4, size_t sz_drawvert, size_t sz_drawidx}, `C++, "ImGui"`],
-		[q{void}, q{SetAllocatorFunctions}, q{ImGuiMemAllocFunc alloc_func, ImGuiMemFreeFunc free_func, void* user_data=null}, `C++, "ImGui"`],
-		[q{void}, q{GetAllocatorFunctions}, q{ImGuiMemAllocFunc* p_alloc_func, ImGuiMemFreeFunc* p_free_func, void** p_user_data}, `C++, "ImGui"`],
-		[q{void*}, q{MemAlloc}, q{size_t size}, `C++, "ImGui"`],
-		[q{void}, q{MemFree}, q{void* ptr}, `C++, "ImGui"`],
-	]);
+		{q{void}, q{DebugTextEncoding}, q{const(char)* text}, ext: `C++, "ImGui"`},
+		{q{bool}, q{DebugCheckVersionAndDataLayout}, q{const(char)* version_str, size_t sz_io, size_t sz_style, size_t sz_vec2, size_t sz_vec4, size_t sz_drawvert, size_t sz_drawidx}, ext: `C++, "ImGui"`},
+		{q{void}, q{SetAllocatorFunctions}, q{ImGuiMemAllocFunc alloc_func, ImGuiMemFreeFunc free_func, void* user_data=null}, ext: `C++, "ImGui"`},
+		{q{void}, q{GetAllocatorFunctions}, q{ImGuiMemAllocFunc* p_alloc_func, ImGuiMemFreeFunc* p_free_func, void** p_user_data}, ext: `C++, "ImGui"`},
+		{q{void*}, q{MemAlloc}, q{size_t size}, ext: `C++, "ImGui"`},
+		{q{void}, q{MemFree}, q{void* ptr}, ext: `C++, "ImGui"`},
+	];
 	version(ImGui_DisableObsoleteFunctions){
 	}else{
-		ret ~= makeFnBinds([
-			[q{bool}, q{ImageButton}, q{ImTextureID user_texture_id, ref const ImVec2 size, ref const ImVec2 uv0=Vec2_0_0, ref const ImVec2 uv1=Vec2_1_1, int frame_padding=-1, ref const ImVec4 bg_col=Vec4_0_0_0_0, ref const ImVec4 tint_col=Vec4_1_1_1_1}, `C++, "ImGui"`],
+		FnBind[] add = [
+			{q{bool}, q{ImageButton}, q{ImTextureID user_texture_id, in ImVec2 size, in ImVec2 uv0=Vec2_0_0, in ImVec2 uv1=Vec2_1_1, int frame_padding=-1, in ImVec4 bg_col=Vec4_0_0_0_0, in ImVec4 tint_col=Vec4_1_1_1_1}, ext: `C++, "ImGui"`},
 			
-			[q{void}, q{CalcListClipping}, q{int items_count, float items_height, int* out_items_display_start, int* out_items_display_end}, `C++, "ImGui"`],
-		]);
+			{q{void}, q{CalcListClipping}, q{int items_count, float items_height, int* out_items_display_start, int* out_items_display_end}, ext: `C++, "ImGui"`},
+		];
+		ret ~= add;
 	}
 	return ret;
-}(), __MODULE__));
+}(), "ImGuiStyle, "));
 
-alias StyleColoursDark = StyleColorsDark;
-alias StyleColoursLight = StyleColorsLight;
-alias StyleColoursClassic = StyleColorsClassic;
-alias PushStyleColour = PushStyleColor;
-alias PopStyleColour = PopStyleColor;
-alias GetColourU32 = GetColorU32;
-alias GetStyleColourVec4 = GetStyleColorVec4;
-alias TextColoured = TextColored;
-alias TextColouredV = TextColoredV;
-alias ColourEdit3 = ColorEdit3;
-alias ColourEdit4 = ColorEdit4;
-alias ColourPicker3 = ColorPicker3;
-alias ColourPicker4 = ColorPicker4;
-alias ColourButton = ColorButton;
-alias SetColourEditOptions = SetColorEditOptions;
-alias TableSetBgColour = TableSetBgColor;
-alias GetStyleColourName = GetStyleColorName;
-alias ColourConvertU32ToFloat4 = ColorConvertU32ToFloat4;
-alias ColourConvertFloat4ToU32 = ColorConvertFloat4ToU32;
-alias ColourConvertRGBtoHSV = ColorConvertRGBtoHSV;
-alias ColourConvertHSVtoRGB = ColorConvertHSVtoRGB;
+//alias StyleColoursDark = StyleColorsDark;
+//alias StyleColoursLight = StyleColorsLight;
+//alias StyleColoursClassic = StyleColorsClassic;
+//alias PushStyleColour = PushStyleColor;
+//alias PopStyleColour = PopStyleColor;
+//alias GetColourU32 = GetColorU32;
+//alias GetStyleColourVec4 = GetStyleColorVec4;
+//alias TextColoured = TextColored;
+//alias TextColouredV = TextColoredV;
+//alias ColourEdit3 = ColorEdit3;
+//alias ColourEdit4 = ColorEdit4;
+//alias ColourPicker3 = ColorPicker3;
+//alias ColourPicker4 = ColorPicker4;
+//alias ColourButton = ColorButton;
+//alias SetColourEditOptions = SetColorEditOptions;
+//alias TableSetBgColour = TableSetBgColor;
+//alias GetStyleColourName = GetStyleColorName;
+//alias ColourConvertU32ToFloat4 = ColorConvertU32ToFloat4;
+//alias ColourConvertFloat4ToU32 = ColorConvertFloat4ToU32;
+//alias ColourConvertRGBtoHSV = ColorConvertRGBtoHSV;
+//alias ColourConvertHSVtoRGB = ColorConvertHSVtoRGB;
 
 pragma(inline,true) nothrow @nogc{
 	auto IM_ALLOC(size_t _SIZE){ return MemAlloc(_SIZE); }
-	auto IM_FREE(void* _PTR){ MemFree(_PTR); }
+	void IM_FREE(void* _PTR){ MemFree(_PTR); }
 	void IM_DELETE(T)(T* p){
 		static if(__traits(hasMember, T, "__dtor__")) p.__dtor__();
 		MemFree(cast(void*)p);

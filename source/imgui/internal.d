@@ -5,7 +5,7 @@
 +           http:
 +/
 module imgui.internal;
-
+/*
 version(ImGui_Internal):
 import bindbc.imgui.config;
 import bindbc.imgui.codegen;
@@ -937,8 +937,7 @@ pragma(inline, true) nothrow @nogc{
 }
 
 //mixin(joinFnBinds((){
-//	string[][] ret;
-//	ret ~= makeFnBinds([
+//	FnBind[] ret = [
 ImGuiID ImHashData(const(void)* data, size_t data_size, ImGuiID seed=0);
 ImGuiID ImHashStr(const(char)* data, size_t data_size=0, ImGuiID seed=0);
 
@@ -986,8 +985,9 @@ ImVec2 ImLineClosestPoint(const ImVec2 a, const ImVec2 b, const ImVec2 p);
 bool ImTriangleContainsPoint(const ImVec2 a, const ImVec2 b, const ImVec2 c, const ImVec2 p);
 ImVec2 ImTriangleClosestPoint(const ImVec2 a, const ImVec2 b, const ImVec2 c, const ImVec2 p);
 void ImTriangleBarycentricCoords(const ImVec2 a, const ImVec2 b, const ImVec2 c, const ImVec2 p, out float out_u, out float out_v, out float out_w);
-//	]);
+//	];
 //	return ret;
-//}(), __MODULE__));
+//}(), ""));
 
-alias ImAlphaBlendColours = ImAlphaBlendColors;
+//alias ImAlphaBlendColours = ImAlphaBlendColors;
+*/
