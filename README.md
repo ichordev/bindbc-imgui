@@ -8,13 +8,13 @@ Environment variable `$BIND_IMGUI_OBJDIR` has must point to a path with built ob
 ### Enums
 Dear ImGui enums in these bindings are reformatted like so:
 ```d
-void ImFn(ImGuiDir flags); //x
+void ImFn(ImGuiDir flags); //ImExample
 //becomes:
-void ImFn(ImGuiDir_ flags); //x_
+void ImFn(ImGuiDir_ flags); //ImExample_
 
-ImFn(ImFontAtlasFlags_NoMouseCursors); //x_y
+ImFn(ImFontAtlasFlags_NoMouseCursors); //ImExample_Item
 //becomes:
-ImFn(ImFontAtlasFlags.NoMouseCursors); //x.y
+ImFn(ImFontAtlasFlags.noMouseCursors); //ImExample.item
 ```
 
 ### Default constructors

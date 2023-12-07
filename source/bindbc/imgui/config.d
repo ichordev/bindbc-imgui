@@ -13,8 +13,6 @@ enum staticBinding = (){
 }();
 
 public import bindbc.common.versions;
+import bindbc.common.codegen;
 
-enum imguiVersion = (){
-	version(any)           return Version(1,89,6); //ImGui_1_89_6
-	else                   return Version(1,89,6);
-}();
+mixin(makeFnBindFns(staticBinding, Version(0,1,1)));

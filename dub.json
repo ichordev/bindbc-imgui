@@ -23,9 +23,18 @@
 		"$BIND_IMGUI_OBJDIR/imgui_tables.obj",
 		"$BIND_IMGUI_OBJDIR/imgui_widgets.obj"
 	],
-	"dflags-dmd": ["-extern-std=c++11", "-preview=in"],
-	"dflags-ldc": ["-extern-std=c++11", "-preview=in"],
-	"dflags-gdc": ["--extern-std=c++11", "--preview=in"],
+	"dflags-dmd": [
+		"-extern-std=c++11",
+		"-preview=in"
+	],
+	"dflags-ldc": [
+		"-extern-std=c++11",
+		"-preview=in"
+	],
+	"dflags-gdc": [
+		"--extern-std=c++11",
+		"--preview=in"
+	],
 	
 	"configurations": [
 		{
@@ -1437,6 +1446,1523 @@
 			"buildOptions": ["betterC"],
 			"versions": [
 				"BindImGui_Static",
+				"ImGui_Impl_SDL2",
+				"ImGui_Impl_Vulkan"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.obj"
+			],
+			"dependencies": {
+				"bindbc-sdl": "~>1.4.0",
+				"erupted": "~>2.1.0"
+			}
+		},
+		{
+			"name": "dynamic-docking",
+			"dependencies": {"bindbc-loader": "~>1.1.0"},
+			"versions": ["ImGui_Docking"]
+		},
+		{
+			"name": "dynamic-docking-GLFW",
+			"dependencies": {
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-glfw": "~>1.1.0"
+			},
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_GLFW"
+			],
+			"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_glfw.o"],
+			"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_glfw.obj"]
+		},
+		{
+			"name": "dynamic-docking-GLFW-Metal",
+			"dependencies": {
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-glfw": "~>1.1.0",
+				"d-metal-binding": "~>1.1.0"
+			},
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_GLFW",
+				"ImGui_Impl_Metal"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.obj"
+			]
+		},
+		{
+			"name": "dynamic-docking-GLFW-OpenGL2",
+			"dependencies": {
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-glfw": "~>1.1.0",
+				"bindbc-opengl": "~>1.1.0"
+			},
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_GLFW",
+				"ImGui_Impl_OpenGL2"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.obj"
+			]
+		},
+		{
+			"name": "dynamic-docking-GLFW-OpenGL3",
+			"dependencies": {
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-glfw": "~>1.1.0",
+				"bindbc-opengl": "~>1.1.0"
+			},
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_GLFW",
+				"ImGui_Impl_OpenGL3",
+				"GL_30"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.obj"
+			]
+		},
+		{
+			"name": "dynamic-docking-GLFW-SDLRenderer2",
+			"dependencies": {
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-glfw": "~>1.1.0",
+				"bindbc-sdl": "~>1.4.0"
+			},
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_GLFW",
+				"ImGui_Impl_SDLRenderer2"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.obj"
+			]
+		},
+		{
+			"name": "dynamic-docking-GLFW-Vulkan",
+			"dependencies": {
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-glfw": "~>1.1.0",
+				"erupted": "~>2.1.0"
+			},
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_GLFW",
+				"ImGui_Impl_Vulkan"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.obj"
+			]
+		},
+		{
+			"name": "dynamic-docking-macOS",
+			"dependencies": {"bindbc-loader": "~>1.1.0"},
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_macOS"
+			],
+			"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_osx.o"],
+			"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj"]
+		},
+		{
+			"name": "dynamic-docking-macOS-Metal",
+			"dependencies": {
+				"bindbc-loader": "~>1.1.0",
+				"d-metal-binding": "~>1.1.0"
+			},
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_macOS",
+				"ImGui_Impl_Metal"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.obj"
+			]
+		},
+		{
+			"name": "dynamic-docking-macOS-OpenGL2",
+			"dependencies": {
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-opengl": "~>1.1.0"
+			},
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_macOS",
+				"ImGui_Impl_OpenGL2"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.obj"
+			]
+		},
+		{
+			"name": "dynamic-docking-macOS-OpenGL3",
+			"dependencies": {
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-opengl": "~>1.1.0"
+			},
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_macOS",
+				"ImGui_Impl_OpenGL3",
+				"GL_30"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.obj"
+			]
+		},
+		{
+			"name": "dynamic-docking-macOS-SDLRenderer2",
+			"dependencies": {
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-sdl": "~>1.4.0"
+			},
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_macOS",
+				"ImGui_Impl_SDLRenderer2"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.obj"
+			]
+		},
+		{
+			"name": "dynamic-docking-macOS-Vulkan",
+			"dependencies": {
+				"bindbc-loader": "~>1.1.0",
+				"erupted": "~>2.1.0"
+			},
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_macOS",
+				"ImGui_Impl_Vulkan"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.obj"
+			]
+		},
+		{
+			"name": "dynamic-docking-SDL2",
+			"dependencies": {
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-sdl": "~>1.4.0"
+			},
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_SDL2"
+			],
+			"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o"],
+			"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj"]
+		},
+		{
+			"name": "dynamic-docking-SDL2-Metal",
+			"dependencies": {
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-sdl": "~>1.4.0",
+				"d-metal-binding": "~>1.1.0"
+			},
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_SDL2",
+				"ImGui_Impl_Metal"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.obj"
+			]
+		},
+		{
+			"name": "dynamic-docking-SDL2-OpenGL2",
+			"dependencies": {
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-sdl": "~>1.4.0",
+				"bindbc-opengl": "~>1.1.0"
+			},
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_SDL2",
+				"ImGui_Impl_OpenGL2"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.obj"
+			]
+		},
+		{
+			"name": "dynamic-docking-SDL2-OpenGL3",
+			"dependencies": {
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-sdl": "~>1.4.0",
+				"bindbc-opengl": "~>1.1.0"
+			},
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_SDL2",
+				"ImGui_Impl_OpenGL3",
+				"GL_30"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.obj"
+			]
+		},
+		{
+			"name": "dynamic-docking-SDL2-SDLRenderer2",
+			"dependencies": {
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-sdl": "~>1.4.0"
+			},
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_SDL2",
+				"ImGui_Impl_SDLRenderer2"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.obj"
+			]
+		},
+		{
+			"name": "dynamic-docking-SDL2-Vulkan",
+			"dependencies": {
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-sdl": "~>1.4.0",
+				"erupted": "~>2.1.0"
+			},
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_SDL2",
+				"ImGui_Impl_Vulkan"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.obj"
+			]
+		},
+		{
+			"name": "dynamicBC-docking",
+			"dependencies": {"bindbc-loader": "~>1.1.0"},
+			"subConfigurations": {
+				"bindbc-loader": "yesBC",
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": ["betterC"],
+			"versions": ["ImGui_Docking"]
+		},
+		{
+			"name": "dynamicBC-docking-GLFW",
+			"dependencies": {
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-glfw": "~>1.1.0"
+			},
+			"subConfigurations": {
+				"bindbc-loader": "yesBC",
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_GLFW"
+			],
+			"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_glfw.o"],
+			"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_glfw.obj"]
+		},
+		{
+			"name": "dynamicBC-docking-GLFW-Metal",
+			"dependencies": {
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-glfw": "~>1.1.0",
+				"d-metal-binding": "~>1.1.0"
+			},
+			"subConfigurations": {
+				"bindbc-loader": "yesBC",
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_GLFW",
+				"ImGui_Impl_Metal"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.obj"
+			]
+		},
+		{
+			"name": "dynamicBC-docking-GLFW-OpenGL2",
+			"dependencies": {
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-glfw": "~>1.1.0",
+				"bindbc-opengl": "~>1.1.0"
+			},
+			"subConfigurations": {
+				"bindbc-loader": "yesBC",
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_GLFW",
+				"ImGui_Impl_OpenGL2"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.obj"
+			]
+		},
+		{
+			"name": "dynamicBC-docking-GLFW-OpenGL3",
+			"dependencies": {
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-glfw": "~>1.1.0",
+				"bindbc-opengl": "~>1.1.0"
+			},
+			"subConfigurations": {
+				"bindbc-loader": "yesBC",
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_GLFW",
+				"ImGui_Impl_OpenGL3",
+				"GL_30"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.obj"
+			]
+		},
+		{
+			"name": "dynamicBC-docking-GLFW-SDLRenderer2",
+			"dependencies": {
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-glfw": "~>1.1.0",
+				"bindbc-sdl": "~>1.4.0"
+			},
+			"subConfigurations": {
+				"bindbc-loader": "yesBC",
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_GLFW",
+				"ImGui_Impl_SDLRenderer2"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.obj"
+			]
+		},
+		{
+			"name": "dynamicBC-docking-GLFW-Vulkan",
+			"dependencies": {
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-glfw": "~>1.1.0",
+				"erupted": "~>2.1.0"
+			},
+			"subConfigurations": {
+				"bindbc-loader": "yesBC",
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_GLFW",
+				"ImGui_Impl_Vulkan"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.obj"
+			]
+		},
+		{
+			"name": "dynamicBC-docking-macOS",
+			"dependencies": {"bindbc-loader": "~>1.1.0"},
+			"subConfigurations": {
+				"bindbc-loader": "yesBC",
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_macOS"
+			],
+			"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_osx.o"],
+			"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj"]
+		},
+		{
+			"name": "dynamicBC-docking-macOS-Metal",
+			"dependencies": {
+				"bindbc-loader": "~>1.1.0",
+				"d-metal-binding": "~>1.1.0"
+			},
+			"subConfigurations": {
+				"bindbc-loader": "yesBC",
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_macOS",
+				"ImGui_Impl_Metal"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.obj"
+			]
+		},
+		{
+			"name": "dynamicBC-docking-macOS-OpenGL2",
+			"dependencies": {
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-opengl": "~>1.1.0"
+			},
+			"subConfigurations": {
+				"bindbc-loader": "yesBC",
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_macOS",
+				"ImGui_Impl_OpenGL2"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.obj"
+			]
+		},
+		{
+			"name": "dynamicBC-docking-macOS-OpenGL3",
+			"dependencies": {
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-opengl": "~>1.1.0"
+			},
+			"subConfigurations": {
+				"bindbc-loader": "yesBC",
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_macOS",
+				"ImGui_Impl_OpenGL3",
+				"GL_30"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.obj"
+			]
+		},
+		{
+			"name": "dynamicBC-docking-macOS-SDLRenderer2",
+			"dependencies": {
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-sdl": "~>1.4.0"
+			},
+			"subConfigurations": {
+				"bindbc-loader": "yesBC",
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_macOS",
+				"ImGui_Impl_SDLRenderer2"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.obj"
+			]
+		},
+		{
+			"name": "dynamicBC-docking-macOS-Vulkan",
+			"dependencies": {
+				"bindbc-loader": "~>1.1.0",
+				"erupted": "~>2.1.0"
+			},
+			"subConfigurations": {
+				"bindbc-loader": "yesBC",
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_macOS",
+				"ImGui_Impl_Vulkan"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.obj"
+			]
+		},
+		{
+			"name": "dynamicBC-docking-SDL2",
+			"dependencies": {
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-sdl": "~>1.4.0"
+			},
+			"subConfigurations": {
+				"bindbc-loader": "yesBC",
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_SDL2"
+			],
+			"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o"],
+			"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj"]
+		},
+		{
+			"name": "dynamicBC-docking-SDL2-Metal",
+			"dependencies": {
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-sdl": "~>1.4.0",
+				"d-metal-binding": "~>1.1.0"
+			},
+			"subConfigurations": {
+				"bindbc-loader": "yesBC",
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_SDL2",
+				"ImGui_Impl_Metal"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.obj"
+			]
+		},
+		{
+			"name": "dynamicBC-docking-SDL2-OpenGL2",
+			"dependencies": {
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-sdl": "~>1.4.0",
+				"bindbc-opengl": "~>1.1.0"
+			},
+			"subConfigurations": {
+				"bindbc-loader": "yesBC",
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_SDL2",
+				"ImGui_Impl_OpenGL2"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.obj"
+			]
+		},
+		{
+			"name": "dynamicBC-docking-SDL2-OpenGL3",
+			"dependencies": {
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-sdl": "~>1.4.0",
+				"bindbc-opengl": "~>1.1.0"
+			},
+			"subConfigurations": {
+				"bindbc-loader": "yesBC",
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_SDL2",
+				"ImGui_Impl_OpenGL3",
+				"GL_30"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.obj"
+			]
+		},
+		{
+			"name": "dynamicBC-docking-SDL2-SDLRenderer2",
+			"dependencies": {
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-sdl": "~>1.4.0"
+			},
+			"subConfigurations": {
+				"bindbc-loader": "yesBC",
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_SDL2",
+				"ImGui_Impl_SDLRenderer2"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.obj"
+			]
+		},
+		{
+			"name": "dynamicBC-docking-SDL2-Vulkan",
+			"dependencies": {
+				"bindbc-loader": "~>1.1.0",
+				"bindbc-sdl": "~>1.4.0",
+				"erupted": "~>2.1.0"
+			},
+			"subConfigurations": {
+				"bindbc-loader": "yesBC",
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_SDL2",
+				"ImGui_Impl_Vulkan"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.obj"
+			]
+		},
+		{
+			"name": "static-docking",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking"
+			]
+		},
+		{
+			"name": "static-docking-GLFW",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
+				"ImGui_Impl_GLFW"
+			],
+			"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_glfw.o"],
+			"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_glfw.obj"],
+			"dependencies": {"bindbc-glfw": "~>1.1.0"}
+		},
+		{
+			"name": "static-docking-GLFW-Metal",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
+				"ImGui_Impl_GLFW",
+				"ImGui_Impl_Metal"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.obj"
+			],
+			"dependencies": {
+				"bindbc-glfw": "~>1.1.0",
+				"d-metal-binding": "~>1.1.0"
+			}
+		},
+		{
+			"name": "static-docking-GLFW-OpenGL2",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
+				"ImGui_Impl_GLFW",
+				"ImGui_Impl_OpenGL2"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.obj"
+			],
+			"dependencies": {
+				"bindbc-glfw": "~>1.1.0",
+				"bindbc-opengl": "~>1.1.0"
+			}
+		},
+		{
+			"name": "static-docking-GLFW-OpenGL3",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
+				"ImGui_Impl_GLFW",
+				"ImGui_Impl_OpenGL3",
+				"GL_30"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.obj"
+			],
+			"dependencies": {
+				"bindbc-glfw": "~>1.1.0",
+				"bindbc-opengl": "~>1.1.0"
+			}
+		},
+		{
+			"name": "static-docking-GLFW-SDLRenderer2",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
+				"ImGui_Impl_GLFW",
+				"ImGui_Impl_SDLRenderer2"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.obj"
+			],
+			"dependencies": {
+				"bindbc-glfw": "~>1.1.0",
+				"bindbc-sdl": "~>1.4.0"
+			}
+		},
+		{
+			"name": "static-docking-GLFW-Vulkan",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
+				"ImGui_Impl_GLFW",
+				"ImGui_Impl_Vulkan"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.obj"
+			],
+			"dependencies": {
+				"bindbc-glfw": "~>1.1.0",
+				"erupted": "~>2.1.0"
+			}
+		},
+		{
+			"name": "static-docking-macOS",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
+				"ImGui_Impl_macOS"
+			],
+			"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_osx.o"],
+			"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj"]
+		},
+		{
+			"name": "static-docking-macOS-Metal",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
+				"ImGui_Impl_macOS",
+				"ImGui_Impl_Metal"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.obj"
+			],
+			"dependencies": {"d-metal-binding": "~>1.1.0"}
+		},
+		{
+			"name": "static-docking-macOS-OpenGL2",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
+				"ImGui_Impl_macOS",
+				"ImGui_Impl_OpenGL2"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.obj"
+			],
+			"dependencies": {"bindbc-opengl": "~>1.1.0"}
+		},
+		{
+			"name": "static-docking-macOS-OpenGL3",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
+				"ImGui_Impl_macOS",
+				"ImGui_Impl_OpenGL3",
+				"GL_30"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.obj"
+			],
+			"dependencies": {"bindbc-opengl": "~>1.1.0"}
+		},
+		{
+			"name": "static-docking-macOS-SDLRenderer2",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
+				"ImGui_Impl_macOS",
+				"ImGui_Impl_SDLRenderer2"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.obj"
+			],
+			"dependencies": {"bindbc-sdl": "~>1.4.0"}
+		},
+		{
+			"name": "static-docking-macOS-Vulkan",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
+				"ImGui_Impl_macOS",
+				"ImGui_Impl_Vulkan"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.obj"
+			],
+			"dependencies": {"erupted": "~>2.1.0"}
+		},
+		{
+			"name": "static-docking-SDL2",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
+				"ImGui_Impl_SDL2"
+			],
+			"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o"],
+			"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj"],
+			"dependencies": {"bindbc-sdl": "~>1.4.0"}
+		},
+		{
+			"name": "static-docking-SDL2-Metal",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
+				"ImGui_Impl_SDL2",
+				"ImGui_Impl_Metal"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.obj"
+			],
+			"dependencies": {
+				"bindbc-sdl": "~>1.4.0",
+				"d-metal-binding": "~>1.1.0"
+			}
+		},
+		{
+			"name": "static-docking-SDL2-OpenGL2",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
+				"ImGui_Impl_SDL2",
+				"ImGui_Impl_OpenGL2"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.obj"
+			],
+			"dependencies": {
+				"bindbc-sdl": "~>1.4.0",
+				"bindbc-opengl": "~>1.1.0"
+			}
+		},
+		{
+			"name": "static-docking-SDL2-OpenGL3",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
+				"ImGui_Impl_SDL2",
+				"ImGui_Impl_OpenGL3",
+				"GL_30"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.obj"
+			],
+			"dependencies": {
+				"bindbc-sdl": "~>1.4.0",
+				"bindbc-opengl": "~>1.1.0"
+			}
+		},
+		{
+			"name": "static-docking-SDL2-SDLRenderer2",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
+				"ImGui_Impl_SDL2",
+				"ImGui_Impl_SDLRenderer2"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.obj"
+			],
+			"dependencies": {"bindbc-sdl": "~>1.4.0"}
+		},
+		{
+			"name": "static-docking-SDL2-Vulkan",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
+				"ImGui_Impl_SDL2",
+				"ImGui_Impl_Vulkan"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.obj"
+			],
+			"dependencies": {
+				"bindbc-sdl": "~>1.4.0",
+				"erupted": "~>2.1.0"
+			}
+		},
+		{
+			"name": "staticBC-docking",
+			"subConfigurations": {"bindbc-common": "yesBC"},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking"
+			]
+		},
+		{
+			"name": "staticBC-docking-GLFW",
+			"subConfigurations": {"bindbc-common": "yesBC"},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
+				"ImGui_Impl_GLFW"
+			],
+			"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_glfw.o"],
+			"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_glfw.obj"],
+			"dependencies": {"bindbc-glfw": "~>1.1.0"}
+		},
+		{
+			"name": "staticBC-docking-GLFW-Metal",
+			"subConfigurations": {"bindbc-common": "yesBC"},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
+				"ImGui_Impl_GLFW",
+				"ImGui_Impl_Metal"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.obj"
+			],
+			"dependencies": {
+				"bindbc-glfw": "~>1.1.0",
+				"d-metal-binding": "~>1.1.0"
+			}
+		},
+		{
+			"name": "staticBC-docking-GLFW-OpenGL2",
+			"subConfigurations": {"bindbc-common": "yesBC"},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
+				"ImGui_Impl_GLFW",
+				"ImGui_Impl_OpenGL2"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.obj"
+			],
+			"dependencies": {
+				"bindbc-glfw": "~>1.1.0",
+				"bindbc-opengl": "~>1.1.0"
+			}
+		},
+		{
+			"name": "staticBC-docking-GLFW-OpenGL3",
+			"subConfigurations": {"bindbc-common": "yesBC"},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
+				"ImGui_Impl_GLFW",
+				"ImGui_Impl_OpenGL3",
+				"GL_30"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.obj"
+			],
+			"dependencies": {
+				"bindbc-glfw": "~>1.1.0",
+				"bindbc-opengl": "~>1.1.0"
+			}
+		},
+		{
+			"name": "staticBC-docking-GLFW-SDLRenderer2",
+			"subConfigurations": {"bindbc-common": "yesBC"},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
+				"ImGui_Impl_GLFW",
+				"ImGui_Impl_SDLRenderer2"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.obj"
+			],
+			"dependencies": {
+				"bindbc-glfw": "~>1.1.0",
+				"bindbc-sdl": "~>1.4.0"
+			}
+		},
+		{
+			"name": "staticBC-docking-GLFW-Vulkan",
+			"subConfigurations": {"bindbc-common": "yesBC"},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
+				"ImGui_Impl_GLFW",
+				"ImGui_Impl_Vulkan"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_glfw.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.obj"
+			],
+			"dependencies": {
+				"bindbc-glfw": "~>1.1.0",
+				"erupted": "~>2.1.0"
+			}
+		},
+		{
+			"name": "staticBC-docking-macOS",
+			"subConfigurations": {"bindbc-common": "yesBC"},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
+				"ImGui_Impl_macOS"
+			],
+			"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_osx.o"],
+			"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj"]
+		},
+		{
+			"name": "staticBC-docking-macOS-Metal",
+			"subConfigurations": {"bindbc-common": "yesBC"},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
+				"ImGui_Impl_macOS",
+				"ImGui_Impl_Metal"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.obj"
+			],
+			"dependencies": {"d-metal-binding": "~>1.1.0"}
+		},
+		{
+			"name": "staticBC-docking-macOS-OpenGL2",
+			"subConfigurations": {"bindbc-common": "yesBC"},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
+				"ImGui_Impl_macOS",
+				"ImGui_Impl_OpenGL2"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.obj"
+			],
+			"dependencies": {"bindbc-opengl": "~>1.1.0"}
+		},
+		{
+			"name": "staticBC-docking-macOS-OpenGL3",
+			"subConfigurations": {"bindbc-common": "yesBC"},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
+				"ImGui_Impl_macOS",
+				"ImGui_Impl_OpenGL3",
+				"GL_30"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.obj"
+			],
+			"dependencies": {"bindbc-opengl": "~>1.1.0"}
+		},
+		{
+			"name": "staticBC-docking-macOS-SDLRenderer2",
+			"subConfigurations": {"bindbc-common": "yesBC"},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
+				"ImGui_Impl_macOS",
+				"ImGui_Impl_SDLRenderer2"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.obj"
+			],
+			"dependencies": {"bindbc-sdl": "~>1.4.0"}
+		},
+		{
+			"name": "staticBC-docking-macOS-Vulkan",
+			"subConfigurations": {"bindbc-common": "yesBC"},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
+				"ImGui_Impl_macOS",
+				"ImGui_Impl_Vulkan"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.obj"
+			],
+			"dependencies": {"erupted": "~>2.1.0"}
+		},
+		{
+			"name": "staticBC-docking-SDL2",
+			"subConfigurations": {"bindbc-common": "yesBC"},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
+				"ImGui_Impl_SDL2"
+			],
+			"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o"],
+			"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj"],
+			"dependencies": {"bindbc-sdl": "~>1.4.0"}
+		},
+		{
+			"name": "staticBC-docking-SDL2-Metal",
+			"subConfigurations": {"bindbc-common": "yesBC"},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
+				"ImGui_Impl_SDL2",
+				"ImGui_Impl_Metal"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_metal.obj"
+			],
+			"dependencies": {
+				"bindbc-sdl": "~>1.4.0",
+				"d-metal-binding": "~>1.1.0"
+			}
+		},
+		{
+			"name": "staticBC-docking-SDL2-OpenGL2",
+			"subConfigurations": {"bindbc-common": "yesBC"},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
+				"ImGui_Impl_SDL2",
+				"ImGui_Impl_OpenGL2"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.obj"
+			],
+			"dependencies": {
+				"bindbc-sdl": "~>1.4.0",
+				"bindbc-opengl": "~>1.1.0"
+			}
+		},
+		{
+			"name": "staticBC-docking-SDL2-OpenGL3",
+			"subConfigurations": {"bindbc-common": "yesBC"},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
+				"ImGui_Impl_SDL2",
+				"ImGui_Impl_OpenGL3",
+				"GL_30"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.obj"
+			],
+			"dependencies": {
+				"bindbc-sdl": "~>1.4.0",
+				"bindbc-opengl": "~>1.1.0"
+			}
+		},
+		{
+			"name": "staticBC-docking-SDL2-SDLRenderer2",
+			"subConfigurations": {"bindbc-common": "yesBC"},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
+				"ImGui_Impl_SDL2",
+				"ImGui_Impl_SDLRenderer2"
+			],
+			"sourceFiles-posix": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.o"
+			],
+			"sourceFiles-windows": [
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj",
+				"$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.obj"
+			],
+			"dependencies": {"bindbc-sdl": "~>1.4.0"}
+		},
+		{
+			"name": "staticBC-docking-SDL2-Vulkan",
+			"subConfigurations": {"bindbc-common": "yesBC"},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
 				"ImGui_Impl_SDL2",
 				"ImGui_Impl_Vulkan"
 			],

@@ -22,6 +22,27 @@ buildTypes = {
 		"buildOptions": ["betterC"],
 		"versions": ["BindImGui_Static"],
 	},
+	"dynamic-docking": {
+		"dependencies": {"bindbc-loader": "~>1.1.0"},
+		"versions": ["ImGui_Docking"],
+	},
+	"dynamicBC-docking": {
+		"dependencies": {"bindbc-loader": "~>1.1.0"},
+		"subConfigurations": {
+			"bindbc-loader": "yesBC",
+			"bindbc-common": "yesBC",
+		},
+		"buildOptions": ["betterC"],
+		"versions": ["ImGui_Docking"],
+	},
+	"static-docking": {
+		"versions": ["BindImGui_Static", "ImGui_Docking"],
+	},
+	"staticBC-docking": {
+		"subConfigurations": {"bindbc-common": "yesBC"},
+		"buildOptions": ["betterC"],
+		"versions": ["BindImGui_Static", "ImGui_Docking"],
+	},
 }
 implFrontends = {
 	#"Allegro5": {
@@ -55,6 +76,7 @@ implFrontends = {
 	# "SDL3": {
 	# 	"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdl3.o"],
 	# 	"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdl3.obj"],
+	# 	"dependencies": {"bindbc-sdl": "~>2.0.0"},
 	# 	"versions": ["ImGui_Impl_SDL3"],
 	# },
 	# "Win32": {
@@ -108,6 +130,12 @@ implRenderers = {
 		"dependencies": {"bindbc-sdl": "~>1.4.0"},
 		"versions": ["ImGui_Impl_SDLRenderer2"],
 	},
+	# "SDLRenderer3": {
+	# 	"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.o"],
+	# 	"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.obj"],
+	# 	"dependencies": {"bindbc-sdl": "~>2.0.0"},
+	# 	"versions": ["ImGui_Impl_SDLRenderer2"],
+	# },
 	"Vulkan": {
 		"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.o"],
 		"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.obj"],
@@ -156,7 +184,7 @@ out = json.dumps({
 	"authors": ["Aya Partridge"],
 	"license": "BSL-1.0",
 	
-	"dependencies": {"bindbc-common": "~>0.1.0"},
+	"dependencies": {"bindbc-common": "~>0.1.1"},
 	"targetType": "staticLibrary",
 	"targetPath": "lib",
 	"targetName": "BindBC_ImGui",
@@ -175,9 +203,9 @@ out = json.dumps({
 		"$BIND_IMGUI_OBJDIR/imgui_tables.obj",
 		"$BIND_IMGUI_OBJDIR/imgui_widgets.obj",
 	],
-	"dflags-dmd": ["-extern-std=c++11"],
-	"dflags-ldc": ["-extern-std=c++11"],
-	"dflags-gdc": ["--extern-std=c++11"],
+	"dflags-dmd": ["-extern-std=c++11", "-preview=in"],
+	"dflags-ldc": ["-extern-std=c++11", "-preview=in"],
+	"dflags-gdc": ["--extern-std=c++11", "--preview=in"],
 	
 	'configurations': configs
 }, indent='\t')
