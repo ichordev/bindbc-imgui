@@ -1,5 +1,5 @@
 /+
-+                Copyright 2023 Aya Partridge
++            Copyright 2023 – 2024 Aya Partridge
 + Distributed under the Boost Software License, Version 1.0.
 +     (See accompanying file LICENSE_1_0.txt or copy at
 +           http://www.boost.org/LICENSE_1_0.txt)
@@ -12,9 +12,12 @@ import bindbc.imgui.codegen;
 import core.vararg: va_list;
 import core.stdc.string: memcpy, memset, memmove, memcmp, strcmp;
 
-public import
-	imgui.impl,
-	imgui.internal;
+public import imgui.impl;
+version(ImGui_Internal){
+	public import imgui.internal;
+}else{
+	import imgui.internal;
+}
 
 enum IMGUI_VERSION        = "1.90.0";
 enum IMGUI_VERSION_NUM    = 19000;
@@ -785,13 +788,13 @@ extern(C++) struct ImVector(T){
 		return this;
 	}
 	~this(){
-		if(data) IM_FREE(data);
+		if(data) MemFree(data);
 	}
 	
 	void clear(){
 		if(data){
 			size = capacity = 0;
-			IM_FREE(data);
+			MemFree(data);
 			data = null;
 		}
 	}
@@ -856,18 +859,18 @@ extern(C++) struct ImVector(T){
 	}
 	void reserve(int newCapacity) pure{
 		if(newCapacity <= capacity) return;
-		T* newData = cast(T*)IM_ALLOC(cast(size_t)newCapacity * T.sizeof);
+		T* newData = cast(T*)MemAlloc(cast(size_t)newCapacity * T.sizeof);
 		if(data){
 			memcpy(newData, data, cast(size_t)size * T.sizeof);
-			IM_FREE(data);
+			MemFree(data);
 		}
 		data = newData;
 		capacity = newCapacity;
 	}
 	void reserveDiscard(int newCapacity) pure @safe{
 		if(newCapacity <= capacity) return;
-		if(data) IM_FREE(Data);
-		data = cast(T*)IM_ALLOC(cast(size_t)newCapacity * T.sizeof);
+		if(data) MemFree(Data);
+		data = cast(T*)MemAlloc(cast(size_t)newCapacity * T.sizeof);
 		capacity = newCapacity;
 	}
 	
@@ -1856,8 +1859,8 @@ extern(C++) struct ImFontAtlas{
 	}()));
 	
 	nothrow @nogc:
-	bool IsBuilt() const => fonts.size > 0 && texReady;
-	void SetTexID(ImTextureID id){ TexID = id; }
+	bool isBuilt() const => fonts.size > 0 && texReady;
+	void setTexID(ImTextureID id){ texID = id; }
 	ImFontAtlasCustomRect* GetCustomRectByIndex(int index) in(index >= 0) => &customRects[index];
 }
 
@@ -1939,11 +1942,12 @@ extern(C++) struct ImGuiViewport{
 	alias getWorkCentre = getWorkCenter;
 }
 
-extern(C++) struct ImGuiPlatformImeData{
+private extern(C++) struct ImGuiPlatformImeData{
 	bool wantVisible = false;
 	ImVec2 inputPos = ImVec2(0, 0);
 	float inputLineHeight = 0;
 }
+alias ImGuiPlatformIMEData = ImGuiPlatformImeData;
 
 version(ImGui_DisableObsoleteFunctions){
 }else{
@@ -2400,8 +2404,12 @@ mixin(joinFnBinds((){
 }(), "ImGuiStyle, ImGuiIO, ImGuiInputTextCallbackData, ImGuiTextFilter, ImGuiTextFilter.ImGuiTextRange, ImGuiTextBuffer, ImGuiStorage, ImGuiListClipper, ImDrawListSplitter, ImFontConfig, ImFontGlyphRangesBuilder, ImFontAtlas, ImFont"));
 
 pragma(inline,true) nothrow @nogc{
-	auto IM_ALLOC(size_t _SIZE){ return MemAlloc(_SIZE); }
-	void IM_FREE(void* _PTR){ MemFree(_PTR); }
+	T IM_NEW(T, A...)(A args){
+		auto ret = cast(T*)MemAlloc(T.sizeof);
+		import core.lifetime;
+		static if(__traits(hasMember, T, "__ctor__")) ret.__ctor__(forward!args);
+		return ret;
+	}
 	void IM_DELETE(T)(T* p){
 		static if(__traits(hasMember, T, "__dtor__")) p.__dtor__();
 		MemFree(cast(void*)p);
