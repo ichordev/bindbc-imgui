@@ -9,4 +9,5 @@ module bindbc.imgui.codegen;
 import bindbc.imgui.config;
 import bindbc.common;
 
-mixin(makeFnBindFns(staticBinding, Version(0,1,1)));
+mixin(makeFnBindFns(staticBinding, Version(1,0,0)));
+mixin(makeEnumBindFns(cStyleEnums, dStyleEnums));

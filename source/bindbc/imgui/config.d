@@ -6,13 +6,24 @@
 +/
 module bindbc.imgui.config;
 
+public import bindbc.common.types: va_list, wchar_t;
+
 enum staticBinding = (){
 	version(BindBC_Static)         return true;
 	else version(BindImGui_Static) return true;
 	else return false;
 }();
 
-public import bindbc.common.versions;
-import bindbc.common.codegen;
+enum cStyleEnums = (){
+	version(SDL_C_Enums_Only)         return true;
+	else version(BindBC_D_Enums_Only) return false;
+	else version(SDL_D_Enums_Only)    return false;
+	else return true;
+}();
 
-mixin(makeFnBindFns(staticBinding, Version(0,1,1)));
+enum dStyleEnums = (){
+	version(SDL_D_Enums_Only)         return true;
+	else version(BindBC_C_Enums_Only) return false;
+	else version(SDL_C_Enums_Only)    return false;
+	else return true;
+}();

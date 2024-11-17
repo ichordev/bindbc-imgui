@@ -130,15 +130,15 @@ version(ImGui_Impl_SDLRenderer2){
 		import bindbc.sdl: SDL_Renderer;
 	}
 	
-	bool ImGui_ImplSDLRenderer_Init(SDL_Renderer* renderer);
-	void ImGui_ImplSDLRenderer_Shutdown();
-	void ImGui_ImplSDLRenderer_NewFrame();
-	void ImGui_ImplSDLRenderer_RenderDrawData(ImDrawData* draw_data);
+	bool ImGui_ImplSDLRenderer2_Init(SDL_Renderer* renderer);
+	void ImGui_ImplSDLRenderer2_Shutdown();
+	void ImGui_ImplSDLRenderer2_NewFrame();
+	void ImGui_ImplSDLRenderer2_RenderDrawData(ImDrawData* drawData, SDL_Renderer* renderer);
 
-	bool ImGui_ImplSDLRenderer_CreateFontsTexture();
-	void ImGui_ImplSDLRenderer_DestroyFontsTexture();
-	bool ImGui_ImplSDLRenderer_CreateDeviceObjects();
-	void ImGui_ImplSDLRenderer_DestroyDeviceObjects();
+	bool ImGui_ImplSDLRenderer2_CreateFontsTexture();
+	void ImGui_ImplSDLRenderer2_DestroyFontsTexture();
+	bool ImGui_ImplSDLRenderer2_CreateDeviceObjects();
+	void ImGui_ImplSDLRenderer2_DestroyDeviceObjects();
 }
 
 version(ImGui_Impl_Vulkan){

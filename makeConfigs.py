@@ -4,10 +4,10 @@ import re
 
 buildTypes = {
 	"dynamic": {
-		"dependencies": {"bindbc-loader": "~>1.1.0"},
+		"dependencies": {"bindbc-loader": "~>1.1"},
 	},
 	"dynamicBC": {
-		"dependencies": {"bindbc-loader": "~>1.1.0"},
+		"dependencies": {"bindbc-loader": "~>1.1"},
 		"subConfigurations": {
 			"bindbc-loader": "yesBC",
 			"bindbc-common": "yesBC",
@@ -23,11 +23,11 @@ buildTypes = {
 		"versions": ["BindImGui_Static"],
 	},
 	"dynamic-docking": {
-		"dependencies": {"bindbc-loader": "~>1.1.0"},
+		"dependencies": {"bindbc-loader": "~>1.1"},
 		"versions": ["ImGui_Docking"],
 	},
 	"dynamicBC-docking": {
-		"dependencies": {"bindbc-loader": "~>1.1.0"},
+		"dependencies": {"bindbc-loader": "~>1.1"},
 		"subConfigurations": {
 			"bindbc-loader": "yesBC",
 			"bindbc-common": "yesBC",
@@ -59,7 +59,7 @@ implFrontends = {
 	"GLFW": {
 		"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_glfw.o"],
 		"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_glfw.obj"],
-		"dependencies": {"bindbc-glfw": "~>1.1.0"},
+		"dependencies": {"bindbc-glfw": "~>1.1"},
 		"versions": ["ImGui_Impl_GLFW"],
 	},
 	"macOS": {
@@ -70,15 +70,15 @@ implFrontends = {
 	"SDL2": {
 		"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o"],
 		"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj"],
-		"dependencies": {"bindbc-sdl": "~>1.4.0"},
+		"dependencies": {"bindbc-sdl": "~>1.5"},
 		"versions": ["ImGui_Impl_SDL2"],
 	},
-	# "SDL3": {
-	# 	"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdl3.o"],
-	# 	"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdl3.obj"],
-	# 	"dependencies": {"bindbc-sdl": "~>2.0.0"},
-	# 	"versions": ["ImGui_Impl_SDL3"],
-	# },
+	#"SDL3": {
+	#	"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdl3.o"],
+	#	"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdl3.obj"],
+	#	"dependencies": {"bindbc-sdl": "~>2.0"},
+	#	"versions": ["ImGui_Impl_SDL3"],
+	#},
 	# "Win32": {
 	# 	"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_win32.o"],
 	# 	"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_win32.obj"],
@@ -109,37 +109,37 @@ implRenderers = {
 	"Metal": {
 		"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_metal.o"],
 		"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_metal.obj"],
-		"dependencies": {"d-metal-binding": "~>1.1.0"},
+		"dependencies": {"d-metal-binding": "~>2.1"},
 		"versions": ["ImGui_Impl_Metal"],
 	},
 	"OpenGL2": {
 		"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.o"],
 		"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_opengl2.obj"],
-		"dependencies": {"bindbc-opengl": "~>1.1.0"},
+		"dependencies": {"bindbc-opengl": "~>1.1"},
 		"versions": ["ImGui_Impl_OpenGL2"],
 	},
 	"OpenGL3": {
 		"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.o"],
 		"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_opengl3.obj"],
-		"dependencies": {"bindbc-opengl": "~>1.1.0"},
+		"dependencies": {"bindbc-opengl": "~>1.1"},
 		"versions": ["ImGui_Impl_OpenGL3", "GL_30"],
 	},
 	"SDLRenderer2": {
 		"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.o"],
 		"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.obj"],
-		"dependencies": {"bindbc-sdl": "~>1.4.0"},
+		"dependencies": {"bindbc-sdl": "~>1.5"},
 		"versions": ["ImGui_Impl_SDLRenderer2"],
 	},
-	# "SDLRenderer3": {
-	# 	"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.o"],
-	# 	"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.obj"],
-	# 	"dependencies": {"bindbc-sdl": "~>2.0.0"},
-	# 	"versions": ["ImGui_Impl_SDLRenderer2"],
-	# },
+	#"SDLRenderer3": {
+	#	"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.o"],
+	#	"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.obj"],
+	#	"dependencies": {"bindbc-sdl": "~>2.0"},
+	#	"versions": ["ImGui_Impl_SDLRenderer2"],
+	#},
 	"Vulkan": {
 		"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.o"],
 		"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.obj"],
-		"dependencies": {"erupted": "~>2.1.0"},
+		"dependencies": {"erupted": "~>2.1"},
 		"versions": ["ImGui_Impl_Vulkan"],
 	},
 }
@@ -184,7 +184,7 @@ out = json.dumps({
 	"authors": ["Aya Partridge"],
 	"license": "BSL-1.0",
 	
-	"dependencies": {"bindbc-common": "~>0.1.1"},
+	"dependencies": {"bindbc-common": "~>1.0"},
 	"targetType": "staticLibrary",
 	"targetPath": "lib",
 	"targetName": "BindBC_ImGui",
@@ -213,6 +213,6 @@ out = json.dumps({
 #collapse single-item lists/dicts
 out = re.sub(r"(?<=[\[\{])\n(?P<tabs>\t+)\t(\"(\\\"|[^\"])*\"(: \"(\\\"|[^\"])*\")?)\n(?P=tabs)(?=[\]\}])", r"\g<2>", out)
 #add line breaks for separation
-out = re.sub(r"^\t\"(dependencies|sourceFiles-posix|configurations)\"", r"\t\n\g<0>", out, 3, re.MULTILINE)
+out = re.sub(r"^\t\"(dependencies|sourceFiles-posix|configurations)\"", r"\t\n\g<0>", out, count=3, flags=re.MULTILINE)
 
 print(out)
