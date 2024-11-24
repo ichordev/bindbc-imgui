@@ -2457,9 +2457,9 @@ mixin(joinFnBinds((){
 				{q{void}, q{RenderDragDropTargetRect}, q{ImRect bb, ImRect itemClipRect}, ext: `C++, "ImGui"`},
 				
 				{q{ImGuiTypingSelectRequest*}, q{GetTypingSelectRequest}, q{ImGuiTypingSelectFlags_ flags=ImGuiTypingSelectFlags.none}, ext: `C++, "ImGui"`},
-				{q{int}, q{TypingSelectFindMatch}, q{ImGuiTypingSelectRequest* req, int itemsCount, _3E968BE8A4B269A3_Fn getItemNameFunc, void* userData, int navItemIdx}, ext: `C++, "ImGui"`},
-				{q{int}, q{TypingSelectFindNextSingleCharMatch}, q{ImGuiTypingSelectRequest* req, int itemsCount, _3E968BE8A4B269A3_Fn getItemNameFunc, void* userData, int navItemIdx}, ext: `C++, "ImGui"`},
-				{q{int}, q{TypingSelectFindBestLeadingMatch}, q{ImGuiTypingSelectRequest* req, int itemsCount, _3E968BE8A4B269A3_Fn getItemNameFunc, void* userData}, ext: `C++, "ImGui"`},
+				{q{int}, q{TypingSelectFindMatch}, q{ImGuiTypingSelectRequest* req, int itemsCount, GetItemNameFuncFn getItemNameFunc, void* userData, int navItemIdx}, ext: `C++, "ImGui"`},
+				{q{int}, q{TypingSelectFindNextSingleCharMatch}, q{ImGuiTypingSelectRequest* req, int itemsCount, GetItemNameFuncFn getItemNameFunc, void* userData, int navItemIdx}, ext: `C++, "ImGui"`},
+				{q{int}, q{TypingSelectFindBestLeadingMatch}, q{ImGuiTypingSelectRequest* req, int itemsCount, GetItemNameFuncFn getItemNameFunc, void* userData}, ext: `C++, "ImGui"`},
 				
 				{q{bool}, q{BeginBoxSelect}, q{ImRect scopeRect, ImGuiWindow* window, ImGuiID boxSelectID, ImGuiMultiSelectFlags_ msFlags}, ext: `C++, "ImGui"`},
 				{q{void}, q{EndBoxSelect}, q{ImRect scopeRect, ImGuiMultiSelectFlags_ msFlags}, ext: `C++, "ImGui"`},
@@ -3433,7 +3433,7 @@ extern(C++) struct ImGuiInputTextCallbackData{
 			{q{void}, q{InsertChars}, q{int pos, const(char)* text, const(char)* textEnd=null}, ext: `C++`, aliases: [q{insertChars}]},
 			{q{void}, q{SelectAll}, q{}, ext: `C++`, aliases: [q{selectAll}]},
 			{q{void}, q{ClearSelection}, q{}, ext: `C++`, aliases: [q{clearSelection}]},
-			{q{bool}, q{HasSelection}, q{}, ext: `C++`, attr: q{const}, aliases: [q{hasSelection}]},
+			{q{bool}, q{HasSelection}, q{}, ext: `C++`, memAttr: q{const}, aliases: [q{hasSelection}]},
 		];
 		return ret;
 	}()));
@@ -3480,9 +3480,9 @@ extern(C++) struct ImGuiPayload{
 	extern(D) mixin(joinFnBinds((){
 		FnBind[] ret = [
 			{q{void}, q{Clear}, q{}, ext: `C++`, aliases: [q{clear}]},
-			{q{bool}, q{IsDataType}, q{const(char)* type}, ext: `C++`, attr: q{const}, aliases: [q{isDataType}]},
-			{q{bool}, q{IsPreview}, q{}, ext: `C++`, attr: q{const}, aliases: [q{isPreview}]},
-			{q{bool}, q{IsDelivery}, q{}, ext: `C++`, attr: q{const}, aliases: [q{isDelivery}]},
+			{q{bool}, q{IsDataType}, q{const(char)* type}, ext: `C++`, memAttr: q{const}, aliases: [q{isDataType}]},
+			{q{bool}, q{IsPreview}, q{}, ext: `C++`, memAttr: q{const}, aliases: [q{isPreview}]},
+			{q{bool}, q{IsDelivery}, q{}, ext: `C++`, memAttr: q{const}, aliases: [q{isDelivery}]},
 		];
 		return ret;
 	}()));
@@ -3505,8 +3505,8 @@ extern(C++) struct ImGuiTextFilter{
 		
 		extern(D) mixin(joinFnBinds((){
 			FnBind[] ret = [
-				{q{bool}, q{empty}, q{}, ext: `C++`, attr: q{const}},
-				{q{void}, q{split}, q{char separator, ImVector!(ImGuiTextRange)* out_}, ext: `C++`, attr: q{const}},
+				{q{bool}, q{empty}, q{}, ext: `C++`, memAttr: q{const}},
+				{q{void}, q{split}, q{char separator, ImVector!(ImGuiTextRange)* out_}, ext: `C++`, memAttr: q{const}},
 			];
 			return ret;
 		}()));
@@ -3519,10 +3519,10 @@ extern(C++) struct ImGuiTextFilter{
 	extern(D) mixin(joinFnBinds((){
 		FnBind[] ret = [
 			{q{bool}, q{Draw}, q{const(char)* label="Filter (inc,-exc)", float width=0f}, ext: `C++`, aliases: [q{draw}]},
-			{q{bool}, q{PassFilter}, q{const(char)* text, const(char)* textEnd=null}, ext: `C++`, attr: q{const}, aliases: [q{passFilter}]},
+			{q{bool}, q{PassFilter}, q{const(char)* text, const(char)* textEnd=null}, ext: `C++`, memAttr: q{const}, aliases: [q{passFilter}]},
 			{q{void}, q{Build}, q{}, ext: `C++`, aliases: [q{build}]},
 			{q{void}, q{Clear}, q{}, ext: `C++`, aliases: [q{clear}]},
-			{q{bool}, q{IsActive}, q{}, ext: `C++`, attr: q{const}, aliases: [q{isActive}]},
+			{q{bool}, q{IsActive}, q{}, ext: `C++`, memAttr: q{const}, aliases: [q{isActive}]},
 		];
 		return ret;
 	}()));
@@ -3537,13 +3537,13 @@ extern(C++) struct ImGuiTextBuffer{
 	
 	extern(D) mixin(joinFnBinds((){
 		FnBind[] ret = [
-			{q{const(char)*}, q{begin}, q{}, ext: `C++`, attr: q{const}},
-			{q{const(char)*}, q{end}, q{}, ext: `C++`, attr: q{const}},
-			{q{int}, q{size}, q{}, ext: `C++`, attr: q{const}},
-			{q{bool}, q{empty}, q{}, ext: `C++`, attr: q{const}},
+			{q{const(char)*}, q{begin}, q{}, ext: `C++`, memAttr: q{const}},
+			{q{const(char)*}, q{end}, q{}, ext: `C++`, memAttr: q{const}},
+			{q{int}, q{size}, q{}, ext: `C++`, memAttr: q{const}},
+			{q{bool}, q{empty}, q{}, ext: `C++`, memAttr: q{const}},
 			{q{void}, q{clear}, q{}, ext: `C++`},
 			{q{void}, q{reserve}, q{int capacity}, ext: `C++`},
-			{q{const(char)*}, q{c_str}, q{}, ext: `C++`, attr: q{const}, aliases: [q{cStr}]},
+			{q{const(char)*}, q{c_str}, q{}, ext: `C++`, memAttr: q{const}, aliases: [q{cStr}]},
 			{q{void}, q{append}, q{const(char)* str, const(char)* strEnd=null}, ext: `C++`},
 			{q{void}, q{appendf}, q{const(char)* fmt, ...}, ext: `C++`, aliases: [q{appendF}]},
 			{q{void}, q{appendfv}, q{const(char)* fmt, va_list args}, ext: `C++`, aliases: [q{appendFV}]},
@@ -3573,13 +3573,13 @@ extern(C++) struct ImGuiStorage{
 	extern(D) mixin(joinFnBinds((){
 		FnBind[] ret = [
 			{q{void}, q{Clear}, q{}, ext: `C++`, aliases: [q{clear}]},
-			{q{int}, q{GetInt}, q{ImGuiID key, int defaultVal=0}, ext: `C++`, attr: q{const}, aliases: [q{getInt}]},
+			{q{int}, q{GetInt}, q{ImGuiID key, int defaultVal=0}, ext: `C++`, memAttr: q{const}, aliases: [q{getInt}]},
 			{q{void}, q{SetInt}, q{ImGuiID key, int val}, ext: `C++`, aliases: [q{setInt}]},
-			{q{bool}, q{GetBool}, q{ImGuiID key, bool defaultVal=false}, ext: `C++`, attr: q{const}, aliases: [q{getBool}]},
+			{q{bool}, q{GetBool}, q{ImGuiID key, bool defaultVal=false}, ext: `C++`, memAttr: q{const}, aliases: [q{getBool}]},
 			{q{void}, q{SetBool}, q{ImGuiID key, bool val}, ext: `C++`, aliases: [q{setBool}]},
-			{q{float}, q{GetFloat}, q{ImGuiID key, float defaultVal=0f}, ext: `C++`, attr: q{const}, aliases: [q{getFloat}]},
+			{q{float}, q{GetFloat}, q{ImGuiID key, float defaultVal=0f}, ext: `C++`, memAttr: q{const}, aliases: [q{getFloat}]},
 			{q{void}, q{SetFloat}, q{ImGuiID key, float val}, ext: `C++`, aliases: [q{setFloat}]},
-			{q{void*}, q{GetVoidPtr}, q{ImGuiID key}, ext: `C++`, attr: q{const}, aliases: [q{getVoidPtr}]},
+			{q{void*}, q{GetVoidPtr}, q{ImGuiID key}, ext: `C++`, memAttr: q{const}, aliases: [q{getVoidPtr}]},
 			{q{void}, q{SetVoidPtr}, q{ImGuiID key, void* val}, ext: `C++`, aliases: [q{setVoidPtr}]},
 			{q{int*}, q{GetIntRef}, q{ImGuiID key, int defaultVal=0}, ext: `C++`, aliases: [q{getIntRef}]},
 			{q{bool*}, q{GetBoolRef}, q{ImGuiID key, bool defaultVal=false}, ext: `C++`, aliases: [q{getBoolRef}]},
@@ -3729,7 +3729,7 @@ extern(C++) struct ImGuiSelectionBasicStorage{
 	extern(D) mixin(joinFnBinds((){
 		FnBind[] ret = [
 			{q{void}, q{ApplyRequests}, q{ImGuiMultiSelectIO* msIO}, ext: `C++`, aliases: [q{applyRequests}]},
-			{q{bool}, q{Contains}, q{ImGuiID id}, ext: `C++`, attr: q{const}, aliases: [q{contains}]},
+			{q{bool}, q{Contains}, q{ImGuiID id}, ext: `C++`, memAttr: q{const}, aliases: [q{contains}]},
 			{q{void}, q{Clear}, q{}, ext: `C++`, aliases: [q{clear}]},
 			{q{void}, q{Swap}, q{ref ImGuiSelectionBasicStorage r}, ext: `C++`, aliases: [q{swap}]},
 			{q{void}, q{SetItemSelected}, q{ImGuiID id, bool selected}, ext: `C++`, aliases: [q{setItemSelected}]},
@@ -3778,7 +3778,7 @@ extern(C++) struct ImDrawCmd{
 	
 	extern(D) mixin(joinFnBinds((){
 		FnBind[] ret = [
-			{q{ImTextureID}, q{GetTexID}, q{}, ext: `C++`, attr: q{const}, aliases: [q{getTexID}]},
+			{q{ImTextureID}, q{GetTexID}, q{}, ext: `C++`, memAttr: q{const}, aliases: [q{getTexID}]},
 		];
 		return ret;
 	}()));
@@ -3919,7 +3919,7 @@ extern(C++) struct ImDrawList{
 			{q{void}, q{PathRect}, q{in ImVec2 rectMin, in ImVec2 rectMax, float rounding=0f, ImDrawFlags_ flags=0}, ext: `C++`, aliases: [q{pathRect}]},
 			{q{void}, q{AddCallback}, q{ImDrawCallback callback, void* userdata, size_t userdataSize=0}, ext: `C++`, aliases: [q{addCallback}]},
 			{q{void}, q{AddDrawCmd}, q{}, ext: `C++`, aliases: [q{addDrawCmd}]},
-			{q{ImDrawList*}, q{CloneOutput}, q{}, ext: `C++`, attr: q{const}, aliases: [q{cloneOutput}]},
+			{q{ImDrawList*}, q{CloneOutput}, q{}, ext: `C++`, memAttr: q{const}, aliases: [q{cloneOutput}]},
 			{q{void}, q{PrimReserve}, q{int idxCount, int vtxCount}, ext: `C++`, aliases: [q{primReserve}]},
 			{q{void}, q{PrimUnreserve}, q{int idxCount, int vtxCount}, ext: `C++`, aliases: [q{primUnReserve}]},
 			{q{void}, q{PrimRect}, q{in ImVec2 a, in ImVec2 b, uint col}, ext: `C++`, aliases: [q{primRect}]},
@@ -3933,7 +3933,7 @@ extern(C++) struct ImDrawList{
 			{q{void}, q{_OnChangedTextureID}, q{}, ext: `C++`, aliases: [q{onChangedTextureID}]},
 			{q{void}, q{_OnChangedVtxOffset}, q{}, ext: `C++`, aliases: [q{onChangedVtxOffset}]},
 			{q{void}, q{_SetTextureID}, q{ImTextureID textureID}, ext: `C++`, aliases: [q{setTextureID}]},
-			{q{int}, q{_CalcCircleAutoSegmentCount}, q{float radius}, ext: `C++`, attr: q{const}, aliases: [q{calcCircleAutoSegmentCount}]},
+			{q{int}, q{_CalcCircleAutoSegmentCount}, q{float radius}, ext: `C++`, memAttr: q{const}, aliases: [q{calcCircleAutoSegmentCount}]},
 			{q{void}, q{_PathArcToFastEx}, q{in ImVec2 centre, float radius, int aMinSample, int aMaxSample, int aStep}, ext: `C++`, aliases: [q{pathArcToFastEx}]},
 			{q{void}, q{_PathArcToN}, q{in ImVec2 centre, float radius, float aMin, float aMax, int numSegments}, ext: `C++`, aliases: [q{pathArcToN}]},
 		];
@@ -4123,7 +4123,7 @@ extern(C++) struct ImFontAtlasCustomRect{
 	
 	extern(D) mixin(joinFnBinds((){
 		FnBind[] ret = [
-			{q{bool}, q{IsPacked}, q{}, ext: `C++`, attr: q{const}, aliases: [q{isPacked}]},
+			{q{bool}, q{IsPacked}, q{}, ext: `C++`, memAttr: q{const}, aliases: [q{isPacked}]},
 		];
 		return ret;
 	}()));
@@ -4197,7 +4197,7 @@ extern(C++) struct ImFontAtlas{
 			{q{const(ImWChar)*}, q{GetGlyphRangesVietnamese}, q{}, ext: `C++`, aliases: [q{getGlyphRangesVietnamese}]},
 			{q{int}, q{AddCustomRectRegular}, q{int width, int height}, ext: `C++`, aliases: [q{addCustomRectRegular}]},
 			{q{int}, q{AddCustomRectFontGlyph}, q{ImFont* font, ImWChar id, int width, int height, float advanceX, in ImVec2 offset=ImVec2(0, 0)}, ext: `C++`, aliases: [q{addCustomRectFontGlyph}]},
-			{q{void}, q{CalcCustomRectUV}, q{const(ImFontAtlasCustomRect)* rect, ImVec2* outUVMin, ImVec2* outUVMax}, ext: `C++`, attr: q{const}, aliases: [q{calcCustomRectUV}]},
+			{q{void}, q{CalcCustomRectUV}, q{const(ImFontAtlasCustomRect)* rect, ImVec2* outUVMin, ImVec2* outUVMax}, ext: `C++`, memAttr: q{const}, aliases: [q{calcCustomRectUV}]},
 			{q{bool}, q{GetMouseCursorTexData}, q{ImGuiMouseCursor_ cursor, ImVec2* outOffset, ImVec2* outSize, ImVec2*/+ARRAY?+/ outUVBorder, ImVec2*/+ARRAY?+/ outUVFill}, ext: `C++`, aliases: [q{getMouseCursorTexData}]},
 		];
 		return ret;
@@ -4265,14 +4265,14 @@ extern(C++) struct ImFont{
 	
 	extern(D) mixin(joinFnBinds((){
 		FnBind[] ret = [
-			{q{const(ImFontGlyph)*}, q{FindGlyph}, q{ImWChar c}, ext: `C++`, attr: q{const}, aliases: [q{findGlyph}]},
-			{q{const(ImFontGlyph)*}, q{FindGlyphNoFallback}, q{ImWChar c}, ext: `C++`, attr: q{const}, aliases: [q{findGlyphNoFallback}]},
-			{q{bool}, q{IsLoaded}, q{}, ext: `C++`, attr: q{const}, aliases: [q{isLoaded}]},
-			{q{const(char)*}, q{GetDebugName}, q{}, ext: `C++`, attr: q{const}, aliases: [q{getDebugName}]},
-			{q{ImVec2}, q{CalcTextSizeA}, q{float size, float maxWidth, float wrapWidth, const(char)* textBegin, const(char)* textEnd=null, const(char)** remaining=null}, ext: `C++`, attr: q{const}, aliases: [q{calcTextSizeA}]},
-			{q{const(char)*}, q{CalcWordWrapPositionA}, q{float scale, const(char)* text, const(char)* textEnd, float wrapWidth}, ext: `C++`, attr: q{const}, aliases: [q{calcWordWrapPositionA}]},
-			{q{void}, q{RenderChar}, q{ImDrawList* drawList, float size, in ImVec2 pos, uint col, ImWChar c}, ext: `C++`, attr: q{const}, aliases: [q{renderChar}]},
-			{q{void}, q{RenderText}, q{ImDrawList* drawList, float size, in ImVec2 pos, uint col, in ImVec4 clipRect, const(char)* textBegin, const(char)* textEnd, float wrapWidth=0f, bool cpuFineClip=false}, ext: `C++`, attr: q{const}, aliases: [q{renderText}]},
+			{q{const(ImFontGlyph)*}, q{FindGlyph}, q{ImWChar c}, ext: `C++`, memAttr: q{const}, aliases: [q{findGlyph}]},
+			{q{const(ImFontGlyph)*}, q{FindGlyphNoFallback}, q{ImWChar c}, ext: `C++`, memAttr: q{const}, aliases: [q{findGlyphNoFallback}]},
+			{q{bool}, q{IsLoaded}, q{}, ext: `C++`, memAttr: q{const}, aliases: [q{isLoaded}]},
+			{q{const(char)*}, q{GetDebugName}, q{}, ext: `C++`, memAttr: q{const}, aliases: [q{getDebugName}]},
+			{q{ImVec2}, q{CalcTextSizeA}, q{float size, float maxWidth, float wrapWidth, const(char)* textBegin, const(char)* textEnd=null, const(char)** remaining=null}, ext: `C++`, memAttr: q{const}, aliases: [q{calcTextSizeA}]},
+			{q{const(char)*}, q{CalcWordWrapPositionA}, q{float scale, const(char)* text, const(char)* textEnd, float wrapWidth}, ext: `C++`, memAttr: q{const}, aliases: [q{calcWordWrapPositionA}]},
+			{q{void}, q{RenderChar}, q{ImDrawList* drawList, float size, in ImVec2 pos, uint col, ImWChar c}, ext: `C++`, memAttr: q{const}, aliases: [q{renderChar}]},
+			{q{void}, q{RenderText}, q{ImDrawList* drawList, float size, in ImVec2 pos, uint col, in ImVec4 clipRect, const(char)* textBegin, const(char)* textEnd, float wrapWidth=0f, bool cpuFineClip=false}, ext: `C++`, memAttr: q{const}, aliases: [q{renderText}]},
 			{q{void}, q{BuildLookupTable}, q{}, ext: `C++`, aliases: [q{buildLookupTable}]},
 			{q{void}, q{ClearOutputData}, q{}, ext: `C++`, aliases: [q{clearOutputData}]},
 			{q{void}, q{GrowIndex}, q{int newSize}, ext: `C++`, aliases: [q{growIndex}]},
@@ -4323,8 +4323,8 @@ extern(C++) struct ImGuiViewport{
 	
 	extern(D) mixin(joinFnBinds((){
 		FnBind[] ret = [
-			{q{ImVec2}, q{GetCenter}, q{}, ext: `C++`, attr: q{const}, aliases: [q{getCentre}, q{getCenter}, q{GetCentre}]},
-			{q{ImVec2}, q{GetWorkCenter}, q{}, ext: `C++`, attr: q{const}, aliases: [q{getWorkCentre}, q{getWorkCenter}, q{GetWorkCentre}]},
+			{q{ImVec2}, q{GetCenter}, q{}, ext: `C++`, memAttr: q{const}, aliases: [q{getCentre}, q{getCenter}, q{GetCentre}]},
+			{q{ImVec2}, q{GetWorkCenter}, q{}, ext: `C++`, memAttr: q{const}, aliases: [q{getWorkCentre}, q{getWorkCenter}, q{GetWorkCentre}]},
 		];
 		return ret;
 	}()));
@@ -4437,8 +4437,8 @@ extern(C++) struct ImRect{
 			{q{void}, q{ClipWith}, q{ImRect r}, ext: `C++`, aliases: [q{clipWith}]},
 			{q{void}, q{ClipWithFull}, q{ImRect r}, ext: `C++`, aliases: [q{clipWithFull}]},
 			{q{void}, q{Floor}, q{}, ext: `C++`, aliases: [q{floor}]},
-			{q{bool}, q{IsInverted}, q{}, ext: `C++`, attr: q{const}, aliases: [q{isInverted}]},
-			{q{ImVec4}, q{ToVec4}, q{}, ext: `C++`, attr: q{const}, aliases: [q{toVec4}]},
+			{q{bool}, q{IsInverted}, q{}, ext: `C++`, memAttr: q{const}, aliases: [q{isInverted}]},
+			{q{ImVec4}, q{ToVec4}, q{}, ext: `C++`, memAttr: q{const}, aliases: [q{toVec4}]},
 		];
 		return ret;
 	}()));
@@ -4477,7 +4477,7 @@ extern(C++) struct ImBitVector{
 		FnBind[] ret = [
 			{q{void}, q{Create}, q{int sz}, ext: `C++`, aliases: [q{create}]},
 			{q{void}, q{Clear}, q{}, ext: `C++`, aliases: [q{clear}]},
-			{q{bool}, q{TestBit}, q{int n}, ext: `C++`, attr: q{const}, aliases: [q{testBit}]},
+			{q{bool}, q{TestBit}, q{int n}, ext: `C++`, memAttr: q{const}, aliases: [q{testBit}]},
 			{q{void}, q{SetBit}, q{int n}, ext: `C++`, aliases: [q{setBit}]},
 			{q{void}, q{ClearBit}, q{int n}, ext: `C++`, aliases: [q{clearBit}]},
 		];
@@ -4576,7 +4576,7 @@ extern(C++) struct ImGuiDataVarInfo{
 	
 	extern(D) mixin(joinFnBinds((){
 		FnBind[] ret = [
-			{q{void*}, q{GetVarPtr}, q{void* parent}, ext: `C++`, attr: q{const}, aliases: [q{getVarPtr}]},
+			{q{void*}, q{GetVarPtr}, q{void* parent}, ext: `C++`, memAttr: q{const}, aliases: [q{getVarPtr}]},
 		];
 		return ret;
 	}()));
@@ -4889,11 +4889,11 @@ extern(C++) struct ImGuiInputTextState{
 			{q{void}, q{OnCharPressed}, q{uint c}, ext: `C++`, aliases: [q{onCharPressed}]},
 			{q{void}, q{CursorAnimReset}, q{}, ext: `C++`, aliases: [q{cursorAnimReset}]},
 			{q{void}, q{CursorClamp}, q{}, ext: `C++`, aliases: [q{cursorClamp}]},
-			{q{bool}, q{HasSelection}, q{}, ext: `C++`, attr: q{const}, aliases: [q{hasSelection}]},
+			{q{bool}, q{HasSelection}, q{}, ext: `C++`, memAttr: q{const}, aliases: [q{hasSelection}]},
 			{q{void}, q{ClearSelection}, q{}, ext: `C++`, aliases: [q{clearSelection}]},
-			{q{int}, q{GetCursorPos}, q{}, ext: `C++`, attr: q{const}, aliases: [q{getCursorPos}]},
-			{q{int}, q{GetSelectionStart}, q{}, ext: `C++`, attr: q{const}, aliases: [q{getSelectionStart}]},
-			{q{int}, q{GetSelectionEnd}, q{}, ext: `C++`, attr: q{const}, aliases: [q{getSelectionEnd}]},
+			{q{int}, q{GetCursorPos}, q{}, ext: `C++`, memAttr: q{const}, aliases: [q{getCursorPos}]},
+			{q{int}, q{GetSelectionStart}, q{}, ext: `C++`, memAttr: q{const}, aliases: [q{getSelectionStart}]},
+			{q{int}, q{GetSelectionEnd}, q{}, ext: `C++`, memAttr: q{const}, aliases: [q{getSelectionEnd}]},
 			{q{void}, q{SelectAll}, q{}, ext: `C++`, aliases: [q{selectAll}]},
 			{q{void}, q{ReloadUserBufAndSelectAll}, q{}, ext: `C++`, aliases: [q{reloadUserBufAndSelectAll}]},
 			{q{void}, q{ReloadUserBufAndKeepSelection}, q{}, ext: `C++`, aliases: [q{reloadUserBufAndKeepSelection}]},
@@ -5244,8 +5244,8 @@ extern(C++) struct ImGuiListClipperRange{
 	
 	extern(D) mixin(joinFnBinds((){
 		FnBind[] ret = [
-			{q{ImGuiListClipperRange}, q{FromIndices}, q{int min, int max}, ext: `C++`, pfix: q{static}, aliases: [q{fromIndices}]},
-			{q{ImGuiListClipperRange}, q{FromPositions}, q{float y1, float y2, int offMin, int offMax}, ext: `C++`, pfix: q{static}, aliases: [q{fromPositions}]},
+			{q{ImGuiListClipperRange}, q{FromIndices}, q{int min, int max}, ext: `C++`, isStatic: true, aliases: [q{fromIndices}]},
+			{q{ImGuiListClipperRange}, q{FromPositions}, q{float y1, float y2, int offMin, int offMax}, ext: `C++`, isStatic: true, aliases: [q{fromPositions}]},
 		];
 		return ret;
 	}()));
@@ -5528,12 +5528,12 @@ extern(C++) struct ImGuiViewportP{
 	
 	extern(D) mixin(joinFnBinds((){
 		FnBind[] ret = [
-			{q{ImVec2}, q{CalcWorkRectPos}, q{in ImVec2 insetMin}, ext: `C++`, attr: q{const}, aliases: [q{calcWorkRectPos}]},
-			{q{ImVec2}, q{CalcWorkRectSize}, q{in ImVec2 insetMin, in ImVec2 insetMax}, ext: `C++`, attr: q{const}, aliases: [q{calcWorkRectSize}]},
+			{q{ImVec2}, q{CalcWorkRectPos}, q{in ImVec2 insetMin}, ext: `C++`, memAttr: q{const}, aliases: [q{calcWorkRectPos}]},
+			{q{ImVec2}, q{CalcWorkRectSize}, q{in ImVec2 insetMin, in ImVec2 insetMax}, ext: `C++`, memAttr: q{const}, aliases: [q{calcWorkRectSize}]},
 			{q{void}, q{UpdateWorkRect}, q{}, ext: `C++`, aliases: [q{updateWorkRect}]},
-			{q{ImRect}, q{GetMainRect}, q{}, ext: `C++`, attr: q{const}, aliases: [q{getMainRect}]},
-			{q{ImRect}, q{GetWorkRect}, q{}, ext: `C++`, attr: q{const}, aliases: [q{getWorkRect}]},
-			{q{ImRect}, q{GetBuildWorkRect}, q{}, ext: `C++`, attr: q{const}, aliases: [q{getBuildWorkRect}]},
+			{q{ImRect}, q{GetMainRect}, q{}, ext: `C++`, memAttr: q{const}, aliases: [q{getMainRect}]},
+			{q{ImRect}, q{GetWorkRect}, q{}, ext: `C++`, memAttr: q{const}, aliases: [q{getWorkRect}]},
+			{q{ImRect}, q{GetBuildWorkRect}, q{}, ext: `C++`, memAttr: q{const}, aliases: [q{getBuildWorkRect}]},
 		];
 		return ret;
 	}()));
@@ -6606,10 +6606,10 @@ extern(C++) struct ImGuiWindow{
 			{q{ImGuiID}, q{GetID}, q{int n}, ext: `C++`, aliases: [q{getID}]},
 			{q{ImGuiID}, q{GetIDFromPos}, q{in ImVec2 pAbs}, ext: `C++`, aliases: [q{getIDFromPos}]},
 			{q{ImGuiID}, q{GetIDFromRectangle}, q{ImRect rAbs}, ext: `C++`, aliases: [q{getIDFromRectangle}]},
-			{q{ImRect}, q{Rect}, q{}, ext: `C++`, attr: q{const}, aliases: [q{rect}]},
-			{q{float}, q{CalcFontSize}, q{}, ext: `C++`, attr: q{const}, aliases: [q{calcFontSize}]},
-			{q{ImRect}, q{TitleBarRect}, q{}, ext: `C++`, attr: q{const}, aliases: [q{titleBarRect}]},
-			{q{ImRect}, q{MenuBarRect}, q{}, ext: `C++`, attr: q{const}, aliases: [q{menuBarRect}]},
+			{q{ImRect}, q{Rect}, q{}, ext: `C++`, memAttr: q{const}, aliases: [q{rect}]},
+			{q{float}, q{CalcFontSize}, q{}, ext: `C++`, memAttr: q{const}, aliases: [q{calcFontSize}]},
+			{q{ImRect}, q{TitleBarRect}, q{}, ext: `C++`, memAttr: q{const}, aliases: [q{titleBarRect}]},
+			{q{ImRect}, q{MenuBarRect}, q{}, ext: `C++`, memAttr: q{const}, aliases: [q{menuBarRect}]},
 		];
 		return ret;
 	}()));
@@ -7288,7 +7288,9 @@ extern(C++) struct ImFontBuilderIO{
 	alias FontBuilder_Build = fontBuilderBuild;
 }
 
-
+private extern(C++) nothrow{
+	alias GetItemNameFuncFn = const(char)* function(void*, int);
+}
 static if(!staticBinding):
 import bindbc.loader;
 
