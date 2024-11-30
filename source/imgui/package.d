@@ -2729,7 +2729,7 @@ mixin(joinFnBinds((){
 extern(C++) struct ImVec2{
 	float x = 0f, y = 0f;
 	
-	nothrow @nogc{
+	extern(D) nothrow @nogc{
 		float opIndex(size_t i) const pure @safe in(i >= 0 && i <= 1) =>
 			i == 0 ? x : y;
 		ImVec2 opUnary(string op)() const pure @safe =>
@@ -2752,7 +2752,7 @@ extern(C++) struct ImVec2{
 extern(C++) struct ImVec4{
 	float x = 0f, y = 0f, z = 0f, w = 0f;
 	
-	nothrow @nogc{
+	extern(D) nothrow @nogc{
 		ImVec4 opUnary(string op)() const pure @safe =>
 			mixin("ImVec4("~op~"x, "~op~"y, "~op~"z, "~op~"w)");
 		ImVec4 opBinary(string op)(float rhs) const pure @safe =>
@@ -2801,7 +2801,7 @@ extern(C++) struct ImVector(T){
 	alias Iterator = ValueType*;
 	alias ConstIterator = const(ValueType)*;
 	
-	nothrow @nogc{
+	extern(D) nothrow @nogc{
 		this(ImVector!T src){ opAssign(src); }
 		ref ImVector!T opAssign(ImVector!T src){
 			clear();
@@ -3604,7 +3604,7 @@ extern(C++) struct ImGuiListClipper{
 	double startSeekOffsetY = 0.0;
 	void* tempData;
 	
-	nothrow @nogc{
+	extern(D) nothrow @nogc{
 		void includeItemByIndex(int itemIndex){ includeItemsByIndex(itemIndex, itemIndex + 1); }
 		version(ImGui_DisableObsoleteFunctions){
 		}else{
@@ -3644,7 +3644,7 @@ extern(C++) struct ImGuiListClipper{
 extern(C++) struct ImColor{
 	ImVec4 value;
 	
-	nothrow @nogc{
+	extern(D) nothrow @nogc{
 		this(float r, float g, float b, float a=1f) pure @safe{
 			value = ImVec4(r,g,b,a);
 		}
@@ -3722,7 +3722,7 @@ extern(C++) struct ImGuiSelectionBasicStorage{
 	int selectionOrder;
 	ImGuiStorage storage;
 	
-	nothrow @nogc{
+	extern(D) nothrow @nogc{
 		ImGuiID getStorageIDFromIndex(int idx) => adapterIndexToStorageID(&this, idx);
 	}
 	
@@ -3823,7 +3823,7 @@ extern(C++) struct ImDrawListSplitter{
 	int count;
 	ImVector!(ImDrawChannel) channels;
 	
-	nothrow @nogc{
+	extern(D) nothrow @nogc{
 		void clear(){ current = 0; count = 1; }
 	}
 	
@@ -3863,7 +3863,7 @@ extern(C++) struct ImDrawList{
 	float fringeScale = 0f;
 	const(char)* ownerName;
 	
-	nothrow @nogc{
+	extern(D) nothrow @nogc{
 		ImVec2 getClipRectMin() const => ImVec2(clipRectStack.back().x, clipRectStack.back().y);
 		ImVec2 getClipRectMax() const => ImVec2(clipRectStack.back().z, clipRectStack.back().w);
 		void pathClear(){ path.size = 0; }
@@ -4085,7 +4085,7 @@ extern(C++) struct ImFontGlyph{
 extern(C++) struct ImFontGlyphRangesBuilder{
 	ImVector!(uint) usedChars;
 	
-	nothrow @nogc{
+	extern(D) nothrow @nogc{
 		void clear(){
 			enum int sizeInBytes = (IM_UNICODE_CODEPOINT_MAX + 1) / 8;
 			usedChars.resize(sizeInBytes / uint.sizeof);
@@ -4165,7 +4165,7 @@ extern(C++) struct ImFontAtlas{
 	int packIDMouseCursors;
 	int packIDLines;
 	
-	nothrow @nogc{
+	extern(D) nothrow @nogc{
 		bool isBuilt() const pure => fonts.size > 0 && texReady;
 		void setTexID(ImTextureID id) pure{ texID = id; }
 		ImFontAtlasCustomRect* getCustomRectByIndex(int index) pure in(index >= 0) => &customRects[index];
@@ -4259,7 +4259,7 @@ extern(C++) struct ImFont{
 	int metricsTotalSurface;
 	ubyte[(IM_UNICODE_CODEPOINT_MAX+1)/4096/8] used4KPagesMap;
 	
-	nothrow @nogc{
+	extern(D) nothrow @nogc{
 		float getCharAdvance(ImWChar c) const pure => (cast(int)c < indexAdvanceX.size) ? indexAdvanceX[cast(int)c] : fallbackAdvanceX;
 	}
 	
@@ -4409,7 +4409,7 @@ extern(C++) struct ImRect{
 	ImVec2 min;
 	ImVec2 max;
 	
-	nothrow @nogc{
+	extern(D) nothrow @nogc{
 		ImVec2 getCentre() const pure @safe => ImVec2((min.x + max.x) * 0.5f, (min.y + max.y) * 0.5f);
 		ImVec2 getSize() const pure @safe => ImVec2(max.x - min.x, max.y - min.y);
 		float getWidth() const pure @safe => max.x - min.x;
@@ -4491,7 +4491,7 @@ extern(C++) struct ImSpan(T){
 	T* data;
 	T* dataEnd;
 	
-	nothrow @nogc{
+	extern(D) nothrow @nogc{
 		this(T* data, int size){ this.data = data; this.dataEnd = data + size; }
 		this(T* data, T* dataEnd) pure @safe{ this.data = data; this.dataEnd = dataEnd; }
 		
@@ -4607,7 +4607,7 @@ extern(C++) struct ImChunkStream(T){
 	ImVector!byte buf;
 	private enum headerSize = 4;
 	
-	nothrow @nogc{
+	extern(D) nothrow @nogc{
 		void clear(){ buf.clear(); }
 		bool empty() const pure @safe => buf.size == 0;
 		int size() const pure @safe => buf.size;
@@ -4648,7 +4648,7 @@ extern(C++) struct ImPool(T){
 	ImPoolIdx freeIdx;
 	ImPoolIdx aliveCount;
 	
-	nothrow @nogc{
+	extern(D) nothrow @nogc{
 		~this(){ clear(); }
 		T* getByKey(ImGuiID key){
 			int idx = map.getInt(key, -1);
