@@ -1,7 +1,7 @@
 
 ## Quickstart guide
 
-Environment variable `$BIND_IMGUI_OBJDIR` has must point to a path with built object files for Dear ImGui and any Dear ImGui backends you use.
+WIP
 
 ## Binding-specific changes
 
