@@ -36,7 +36,7 @@ pragma(inline,true) extern(C++) bool IMGUI_CHECKVERSION() nothrow @nogc =>
 
 alias ImGuiID = uint;
 alias ImGuiKeyChord = int;
-alias ImTextureID = ulong;
+alias ImTextureID = c_ulonglong;
 alias ImDrawIdx = ushort;
 alias ImWChar32 = uint;
 alias ImWChar16 = ushort;
@@ -47,7 +47,7 @@ version(ImGui_WChar32){
 }else{
 	alias ImWChar = ImWChar16;
 }
-alias ImGuiSelectionUserData = long;
+alias ImGuiSelectionUserData = c_longlong;
 alias ImGuiInputTextCallback = extern(C++) int function(ImGuiInputTextCallbackData* data) nothrow @nogc;
 alias ImGuiSizeCallback = extern(C++) void function(ImGuiSizeCallbackData* data) nothrow @nogc;
 alias ImGuiMemAllocFunc = extern(C++) void* function(size_t sz, void* userData) nothrow @nogc;
@@ -2581,13 +2581,13 @@ mixin(joinFnBinds((){
 				{q{bool}, q{ImageButtonEx}, q{ImGuiID id, ImTextureID textureID, in ImVec2 imageSize, in ImVec2 uv0, in ImVec2 uv1, in ImVec4 bgCol, in ImVec4 tintCol, ImGuiButtonFlags_ flags=0}, ext: `C++, "ImGui"`},
 				{q{void}, q{SeparatorEx}, q{ImGuiSeparatorFlags_ flags, float thickness=1f}, ext: `C++, "ImGui"`},
 				{q{void}, q{SeparatorTextEx}, q{ImGuiID id, const(char)* label, const(char)* labelEnd, float extraWidth}, ext: `C++, "ImGui"`},
-				{q{bool}, q{CheckboxFlags}, q{const(char)* label, long* flags, long flagsValue}, ext: `C++, "ImGui"`},
-				{q{bool}, q{CheckboxFlags}, q{const(char)* label, ulong* flags, ulong flagsValue}, ext: `C++, "ImGui"`},
+				{q{bool}, q{CheckboxFlags}, q{const(char)* label, c_longlong* flags, c_longlong flagsValue}, ext: `C++, "ImGui"`},
+				{q{bool}, q{CheckboxFlags}, q{const(char)* label, c_ulonglong* flags, c_ulonglong flagsValue}, ext: `C++, "ImGui"`},
 				
 				{q{bool}, q{CloseButton}, q{ImGuiID id, in ImVec2 pos}, ext: `C++, "ImGui"`},
 				{q{bool}, q{CollapseButton}, q{ImGuiID id, in ImVec2 pos}, ext: `C++, "ImGui"`},
 				{q{void}, q{Scrollbar}, q{ImGuiAxis axis}, ext: `C++, "ImGui"`},
-				{q{bool}, q{ScrollbarEx}, q{ImRect bb, ImGuiID id, ImGuiAxis axis, long* pScrollV, long availV, long contentsV, ImDrawFlags_ flags}, ext: `C++, "ImGui"`},
+				{q{bool}, q{ScrollbarEx}, q{ImRect bb, ImGuiID id, ImGuiAxis axis, c_longlong* pScrollV, c_longlong availV, c_longlong contentsV, ImDrawFlags_ flags}, ext: `C++, "ImGui"`},
 				{q{ImRect}, q{GetWindowScrollbarRect}, q{ImGuiWindow* window, ImGuiAxis axis}, ext: `C++, "ImGui"`},
 				{q{ImGuiID}, q{GetWindowScrollbarID}, q{ImGuiWindow* window, ImGuiAxis axis}, ext: `C++, "ImGui"`},
 				{q{ImGuiID}, q{GetWindowResizeCornerID}, q{ImGuiWindow* window, int n}, ext: `C++, "ImGui"`},

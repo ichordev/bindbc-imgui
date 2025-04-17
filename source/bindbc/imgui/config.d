@@ -6,7 +6,7 @@
 +/
 module bindbc.imgui.config;
 
-public import bindbc.common.types: va_list, wchar_t;
+public import bindbc.common.types: c_longlong, c_ulonglong, va_list, wchar_t;
 
 enum staticBinding = (){
 	version(BindBC_Static)         return true;
