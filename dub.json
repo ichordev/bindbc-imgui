@@ -72,15 +72,15 @@
 			]
 		},
 		{
-			"name": "dynamic-GLFW-SDLRenderer2",
+			"name": "dynamic-GLFW-SDLRenderer3",
 			"dependencies": {
 				"bindbc-loader": "~>1.1",
 				"bindbc-glfw": "~>1.1",
-				"bindbc-sdl": "~>1.5"
+				"bindbc-sdl": "~>2.0"
 			},
 			"versions": [
 				"ImGui_Impl_GLFW",
-				"ImGui_Impl_SDLRenderer2"
+				"ImGui_Impl_SDLRenderer3"
 			]
 		},
 		{
@@ -135,14 +135,14 @@
 			]
 		},
 		{
-			"name": "dynamic-macOS-SDLRenderer2",
+			"name": "dynamic-macOS-SDLRenderer3",
 			"dependencies": {
 				"bindbc-loader": "~>1.1",
-				"bindbc-sdl": "~>1.5"
+				"bindbc-sdl": "~>2.0"
 			},
 			"versions": [
 				"ImGui_Impl_macOS",
-				"ImGui_Impl_SDLRenderer2"
+				"ImGui_Impl_SDLRenderer3"
 			]
 		},
 		{
@@ -157,70 +157,70 @@
 			]
 		},
 		{
-			"name": "dynamic-SDL2",
+			"name": "dynamic-SDL3",
 			"dependencies": {
 				"bindbc-loader": "~>1.1",
-				"bindbc-sdl": "~>1.5"
+				"bindbc-sdl": "~>2.0"
 			},
-			"versions": ["ImGui_Impl_SDL2"]
+			"versions": ["ImGui_Impl_SDL3"]
 		},
 		{
-			"name": "dynamic-SDL2-Metal",
+			"name": "dynamic-SDL3-Metal",
 			"dependencies": {
 				"bindbc-loader": "~>1.1",
-				"bindbc-sdl": "~>1.5",
+				"bindbc-sdl": "~>2.0",
 				"d-metal-binding": "~>2.1"
 			},
 			"versions": [
-				"ImGui_Impl_SDL2",
+				"ImGui_Impl_SDL3",
 				"ImGui_Impl_Metal"
 			]
 		},
 		{
-			"name": "dynamic-SDL2-OpenGL2",
+			"name": "dynamic-SDL3-OpenGL2",
 			"dependencies": {
 				"bindbc-loader": "~>1.1",
-				"bindbc-sdl": "~>1.5",
+				"bindbc-sdl": "~>2.0",
 				"bindbc-opengl": "~>1.1"
 			},
 			"versions": [
-				"ImGui_Impl_SDL2",
+				"ImGui_Impl_SDL3",
 				"ImGui_Impl_OpenGL2"
 			]
 		},
 		{
-			"name": "dynamic-SDL2-OpenGL3",
+			"name": "dynamic-SDL3-OpenGL3",
 			"dependencies": {
 				"bindbc-loader": "~>1.1",
-				"bindbc-sdl": "~>1.5",
+				"bindbc-sdl": "~>2.0",
 				"bindbc-opengl": "~>1.1"
 			},
 			"versions": [
-				"ImGui_Impl_SDL2",
+				"ImGui_Impl_SDL3",
 				"ImGui_Impl_OpenGL3",
 				"GL_30"
 			]
 		},
 		{
-			"name": "dynamic-SDL2-SDLRenderer2",
+			"name": "dynamic-SDL3-SDLRenderer3",
 			"dependencies": {
 				"bindbc-loader": "~>1.1",
-				"bindbc-sdl": "~>1.5"
+				"bindbc-sdl": "~>2.0"
 			},
 			"versions": [
-				"ImGui_Impl_SDL2",
-				"ImGui_Impl_SDLRenderer2"
+				"ImGui_Impl_SDL3",
+				"ImGui_Impl_SDLRenderer3"
 			]
 		},
 		{
-			"name": "dynamic-SDL2-Vulkan",
+			"name": "dynamic-SDL3-Vulkan",
 			"dependencies": {
 				"bindbc-loader": "~>1.1",
-				"bindbc-sdl": "~>1.5",
+				"bindbc-sdl": "~>2.0",
 				"erupted": "~>2.1"
 			},
 			"versions": [
-				"ImGui_Impl_SDL2",
+				"ImGui_Impl_SDL3",
 				"ImGui_Impl_Vulkan"
 			]
 		},
@@ -299,11 +299,11 @@
 			]
 		},
 		{
-			"name": "dynamicBC-GLFW-SDLRenderer2",
+			"name": "dynamicBC-GLFW-SDLRenderer3",
 			"dependencies": {
 				"bindbc-loader": "~>1.1",
 				"bindbc-glfw": "~>1.1",
-				"bindbc-sdl": "~>1.5"
+				"bindbc-sdl": "~>2.0"
 			},
 			"subConfigurations": {
 				"bindbc-loader": "yesBC",
@@ -312,7 +312,7 @@
 			"buildOptions": ["betterC"],
 			"versions": [
 				"ImGui_Impl_GLFW",
-				"ImGui_Impl_SDLRenderer2"
+				"ImGui_Impl_SDLRenderer3"
 			]
 		},
 		{
@@ -392,10 +392,10 @@
 			]
 		},
 		{
-			"name": "dynamicBC-macOS-SDLRenderer2",
+			"name": "dynamicBC-macOS-SDLRenderer3",
 			"dependencies": {
 				"bindbc-loader": "~>1.1",
-				"bindbc-sdl": "~>1.5"
+				"bindbc-sdl": "~>2.0"
 			},
 			"subConfigurations": {
 				"bindbc-loader": "yesBC",
@@ -404,7 +404,7 @@
 			"buildOptions": ["betterC"],
 			"versions": [
 				"ImGui_Impl_macOS",
-				"ImGui_Impl_SDLRenderer2"
+				"ImGui_Impl_SDLRenderer3"
 			]
 		},
 		{
@@ -424,23 +424,23 @@
 			]
 		},
 		{
-			"name": "dynamicBC-SDL2",
+			"name": "dynamicBC-SDL3",
 			"dependencies": {
 				"bindbc-loader": "~>1.1",
-				"bindbc-sdl": "~>1.5"
+				"bindbc-sdl": "~>2.0"
 			},
 			"subConfigurations": {
 				"bindbc-loader": "yesBC",
 				"bindbc-common": "yesBC"
 			},
 			"buildOptions": ["betterC"],
-			"versions": ["ImGui_Impl_SDL2"]
+			"versions": ["ImGui_Impl_SDL3"]
 		},
 		{
-			"name": "dynamicBC-SDL2-Metal",
+			"name": "dynamicBC-SDL3-Metal",
 			"dependencies": {
 				"bindbc-loader": "~>1.1",
-				"bindbc-sdl": "~>1.5",
+				"bindbc-sdl": "~>2.0",
 				"d-metal-binding": "~>2.1"
 			},
 			"subConfigurations": {
@@ -449,15 +449,15 @@
 			},
 			"buildOptions": ["betterC"],
 			"versions": [
-				"ImGui_Impl_SDL2",
+				"ImGui_Impl_SDL3",
 				"ImGui_Impl_Metal"
 			]
 		},
 		{
-			"name": "dynamicBC-SDL2-OpenGL2",
+			"name": "dynamicBC-SDL3-OpenGL2",
 			"dependencies": {
 				"bindbc-loader": "~>1.1",
-				"bindbc-sdl": "~>1.5",
+				"bindbc-sdl": "~>2.0",
 				"bindbc-opengl": "~>1.1"
 			},
 			"subConfigurations": {
@@ -466,15 +466,15 @@
 			},
 			"buildOptions": ["betterC"],
 			"versions": [
-				"ImGui_Impl_SDL2",
+				"ImGui_Impl_SDL3",
 				"ImGui_Impl_OpenGL2"
 			]
 		},
 		{
-			"name": "dynamicBC-SDL2-OpenGL3",
+			"name": "dynamicBC-SDL3-OpenGL3",
 			"dependencies": {
 				"bindbc-loader": "~>1.1",
-				"bindbc-sdl": "~>1.5",
+				"bindbc-sdl": "~>2.0",
 				"bindbc-opengl": "~>1.1"
 			},
 			"subConfigurations": {
@@ -483,16 +483,16 @@
 			},
 			"buildOptions": ["betterC"],
 			"versions": [
-				"ImGui_Impl_SDL2",
+				"ImGui_Impl_SDL3",
 				"ImGui_Impl_OpenGL3",
 				"GL_30"
 			]
 		},
 		{
-			"name": "dynamicBC-SDL2-SDLRenderer2",
+			"name": "dynamicBC-SDL3-SDLRenderer3",
 			"dependencies": {
 				"bindbc-loader": "~>1.1",
-				"bindbc-sdl": "~>1.5"
+				"bindbc-sdl": "~>2.0"
 			},
 			"subConfigurations": {
 				"bindbc-loader": "yesBC",
@@ -500,15 +500,15 @@
 			},
 			"buildOptions": ["betterC"],
 			"versions": [
-				"ImGui_Impl_SDL2",
-				"ImGui_Impl_SDLRenderer2"
+				"ImGui_Impl_SDL3",
+				"ImGui_Impl_SDLRenderer3"
 			]
 		},
 		{
-			"name": "dynamicBC-SDL2-Vulkan",
+			"name": "dynamicBC-SDL3-Vulkan",
 			"dependencies": {
 				"bindbc-loader": "~>1.1",
-				"bindbc-sdl": "~>1.5",
+				"bindbc-sdl": "~>2.0",
 				"erupted": "~>2.1"
 			},
 			"subConfigurations": {
@@ -517,7 +517,7 @@
 			},
 			"buildOptions": ["betterC"],
 			"versions": [
-				"ImGui_Impl_SDL2",
+				"ImGui_Impl_SDL3",
 				"ImGui_Impl_Vulkan"
 			]
 		},
@@ -571,15 +571,15 @@
 			}
 		},
 		{
-			"name": "static-GLFW-SDLRenderer2",
+			"name": "static-GLFW-SDLRenderer3",
 			"versions": [
 				"BindImGui_Static",
 				"ImGui_Impl_GLFW",
-				"ImGui_Impl_SDLRenderer2"
+				"ImGui_Impl_SDLRenderer3"
 			],
 			"dependencies": {
 				"bindbc-glfw": "~>1.1",
-				"bindbc-sdl": "~>1.5"
+				"bindbc-sdl": "~>2.0"
 			}
 		},
 		{
@@ -630,13 +630,13 @@
 			"dependencies": {"bindbc-opengl": "~>1.1"}
 		},
 		{
-			"name": "static-macOS-SDLRenderer2",
+			"name": "static-macOS-SDLRenderer3",
 			"versions": [
 				"BindImGui_Static",
 				"ImGui_Impl_macOS",
-				"ImGui_Impl_SDLRenderer2"
+				"ImGui_Impl_SDLRenderer3"
 			],
-			"dependencies": {"bindbc-sdl": "~>1.5"}
+			"dependencies": {"bindbc-sdl": "~>2.0"}
 		},
 		{
 			"name": "static-macOS-Vulkan",
@@ -648,68 +648,68 @@
 			"dependencies": {"erupted": "~>2.1"}
 		},
 		{
-			"name": "static-SDL2",
+			"name": "static-SDL3",
 			"versions": [
 				"BindImGui_Static",
-				"ImGui_Impl_SDL2"
+				"ImGui_Impl_SDL3"
 			],
-			"dependencies": {"bindbc-sdl": "~>1.5"}
+			"dependencies": {"bindbc-sdl": "~>2.0"}
 		},
 		{
-			"name": "static-SDL2-Metal",
+			"name": "static-SDL3-Metal",
 			"versions": [
 				"BindImGui_Static",
-				"ImGui_Impl_SDL2",
+				"ImGui_Impl_SDL3",
 				"ImGui_Impl_Metal"
 			],
 			"dependencies": {
-				"bindbc-sdl": "~>1.5",
+				"bindbc-sdl": "~>2.0",
 				"d-metal-binding": "~>2.1"
 			}
 		},
 		{
-			"name": "static-SDL2-OpenGL2",
+			"name": "static-SDL3-OpenGL2",
 			"versions": [
 				"BindImGui_Static",
-				"ImGui_Impl_SDL2",
+				"ImGui_Impl_SDL3",
 				"ImGui_Impl_OpenGL2"
 			],
 			"dependencies": {
-				"bindbc-sdl": "~>1.5",
+				"bindbc-sdl": "~>2.0",
 				"bindbc-opengl": "~>1.1"
 			}
 		},
 		{
-			"name": "static-SDL2-OpenGL3",
+			"name": "static-SDL3-OpenGL3",
 			"versions": [
 				"BindImGui_Static",
-				"ImGui_Impl_SDL2",
+				"ImGui_Impl_SDL3",
 				"ImGui_Impl_OpenGL3",
 				"GL_30"
 			],
 			"dependencies": {
-				"bindbc-sdl": "~>1.5",
+				"bindbc-sdl": "~>2.0",
 				"bindbc-opengl": "~>1.1"
 			}
 		},
 		{
-			"name": "static-SDL2-SDLRenderer2",
+			"name": "static-SDL3-SDLRenderer3",
 			"versions": [
 				"BindImGui_Static",
-				"ImGui_Impl_SDL2",
-				"ImGui_Impl_SDLRenderer2"
+				"ImGui_Impl_SDL3",
+				"ImGui_Impl_SDLRenderer3"
 			],
-			"dependencies": {"bindbc-sdl": "~>1.5"}
+			"dependencies": {"bindbc-sdl": "~>2.0"}
 		},
 		{
-			"name": "static-SDL2-Vulkan",
+			"name": "static-SDL3-Vulkan",
 			"versions": [
 				"BindImGui_Static",
-				"ImGui_Impl_SDL2",
+				"ImGui_Impl_SDL3",
 				"ImGui_Impl_Vulkan"
 			],
 			"dependencies": {
-				"bindbc-sdl": "~>1.5",
+				"bindbc-sdl": "~>2.0",
 				"erupted": "~>2.1"
 			}
 		},
@@ -773,17 +773,17 @@
 			}
 		},
 		{
-			"name": "staticBC-GLFW-SDLRenderer2",
+			"name": "staticBC-GLFW-SDLRenderer3",
 			"subConfigurations": {"bindbc-common": "yesBC"},
 			"buildOptions": ["betterC"],
 			"versions": [
 				"BindImGui_Static",
 				"ImGui_Impl_GLFW",
-				"ImGui_Impl_SDLRenderer2"
+				"ImGui_Impl_SDLRenderer3"
 			],
 			"dependencies": {
 				"bindbc-glfw": "~>1.1",
-				"bindbc-sdl": "~>1.5"
+				"bindbc-sdl": "~>2.0"
 			}
 		},
 		{
@@ -844,15 +844,15 @@
 			"dependencies": {"bindbc-opengl": "~>1.1"}
 		},
 		{
-			"name": "staticBC-macOS-SDLRenderer2",
+			"name": "staticBC-macOS-SDLRenderer3",
 			"subConfigurations": {"bindbc-common": "yesBC"},
 			"buildOptions": ["betterC"],
 			"versions": [
 				"BindImGui_Static",
 				"ImGui_Impl_macOS",
-				"ImGui_Impl_SDLRenderer2"
+				"ImGui_Impl_SDLRenderer3"
 			],
-			"dependencies": {"bindbc-sdl": "~>1.5"}
+			"dependencies": {"bindbc-sdl": "~>2.0"}
 		},
 		{
 			"name": "staticBC-macOS-Vulkan",
@@ -866,80 +866,80 @@
 			"dependencies": {"erupted": "~>2.1"}
 		},
 		{
-			"name": "staticBC-SDL2",
+			"name": "staticBC-SDL3",
 			"subConfigurations": {"bindbc-common": "yesBC"},
 			"buildOptions": ["betterC"],
 			"versions": [
 				"BindImGui_Static",
-				"ImGui_Impl_SDL2"
+				"ImGui_Impl_SDL3"
 			],
-			"dependencies": {"bindbc-sdl": "~>1.5"}
+			"dependencies": {"bindbc-sdl": "~>2.0"}
 		},
 		{
-			"name": "staticBC-SDL2-Metal",
+			"name": "staticBC-SDL3-Metal",
 			"subConfigurations": {"bindbc-common": "yesBC"},
 			"buildOptions": ["betterC"],
 			"versions": [
 				"BindImGui_Static",
-				"ImGui_Impl_SDL2",
+				"ImGui_Impl_SDL3",
 				"ImGui_Impl_Metal"
 			],
 			"dependencies": {
-				"bindbc-sdl": "~>1.5",
+				"bindbc-sdl": "~>2.0",
 				"d-metal-binding": "~>2.1"
 			}
 		},
 		{
-			"name": "staticBC-SDL2-OpenGL2",
+			"name": "staticBC-SDL3-OpenGL2",
 			"subConfigurations": {"bindbc-common": "yesBC"},
 			"buildOptions": ["betterC"],
 			"versions": [
 				"BindImGui_Static",
-				"ImGui_Impl_SDL2",
+				"ImGui_Impl_SDL3",
 				"ImGui_Impl_OpenGL2"
 			],
 			"dependencies": {
-				"bindbc-sdl": "~>1.5",
+				"bindbc-sdl": "~>2.0",
 				"bindbc-opengl": "~>1.1"
 			}
 		},
 		{
-			"name": "staticBC-SDL2-OpenGL3",
+			"name": "staticBC-SDL3-OpenGL3",
 			"subConfigurations": {"bindbc-common": "yesBC"},
 			"buildOptions": ["betterC"],
 			"versions": [
 				"BindImGui_Static",
-				"ImGui_Impl_SDL2",
+				"ImGui_Impl_SDL3",
 				"ImGui_Impl_OpenGL3",
 				"GL_30"
 			],
 			"dependencies": {
-				"bindbc-sdl": "~>1.5",
+				"bindbc-sdl": "~>2.0",
 				"bindbc-opengl": "~>1.1"
 			}
 		},
 		{
-			"name": "staticBC-SDL2-SDLRenderer2",
+			"name": "staticBC-SDL3-SDLRenderer3",
 			"subConfigurations": {"bindbc-common": "yesBC"},
 			"buildOptions": ["betterC"],
 			"versions": [
 				"BindImGui_Static",
-				"ImGui_Impl_SDL2",
-				"ImGui_Impl_SDLRenderer2"
+				"ImGui_Impl_SDL3",
+				"ImGui_Impl_SDLRenderer3"
 			],
-			"dependencies": {"bindbc-sdl": "~>1.5"}
+			"dependencies": {"bindbc-sdl": "~>2.0"}
 		},
 		{
-			"name": "staticBC-SDL2-Vulkan",
+			"name": "staticBC-SDL3-Vulkan",
 			"subConfigurations": {"bindbc-common": "yesBC"},
 			"buildOptions": ["betterC"],
 			"versions": [
 				"BindImGui_Static",
-				"ImGui_Impl_SDL2",
+				"ImGui_Impl_SDL3",
 				"ImGui_Impl_Vulkan"
 			],
 			"dependencies": {
-				"bindbc-sdl": "~>1.5",
+				"bindbc-sdl": "~>2.0",
 				"erupted": "~>2.1"
 			}
 		},
@@ -1000,16 +1000,16 @@
 			]
 		},
 		{
-			"name": "dynamic-docking-GLFW-SDLRenderer2",
+			"name": "dynamic-docking-GLFW-SDLRenderer3",
 			"dependencies": {
 				"bindbc-loader": "~>1.1",
 				"bindbc-glfw": "~>1.1",
-				"bindbc-sdl": "~>1.5"
+				"bindbc-sdl": "~>2.0"
 			},
 			"versions": [
 				"ImGui_Docking",
 				"ImGui_Impl_GLFW",
-				"ImGui_Impl_SDLRenderer2"
+				"ImGui_Impl_SDLRenderer3"
 			]
 		},
 		{
@@ -1071,15 +1071,15 @@
 			]
 		},
 		{
-			"name": "dynamic-docking-macOS-SDLRenderer2",
+			"name": "dynamic-docking-macOS-SDLRenderer3",
 			"dependencies": {
 				"bindbc-loader": "~>1.1",
-				"bindbc-sdl": "~>1.5"
+				"bindbc-sdl": "~>2.0"
 			},
 			"versions": [
 				"ImGui_Docking",
 				"ImGui_Impl_macOS",
-				"ImGui_Impl_SDLRenderer2"
+				"ImGui_Impl_SDLRenderer3"
 			]
 		},
 		{
@@ -1095,78 +1095,78 @@
 			]
 		},
 		{
-			"name": "dynamic-docking-SDL2",
+			"name": "dynamic-docking-SDL3",
 			"dependencies": {
 				"bindbc-loader": "~>1.1",
-				"bindbc-sdl": "~>1.5"
+				"bindbc-sdl": "~>2.0"
 			},
 			"versions": [
 				"ImGui_Docking",
-				"ImGui_Impl_SDL2"
+				"ImGui_Impl_SDL3"
 			]
 		},
 		{
-			"name": "dynamic-docking-SDL2-Metal",
+			"name": "dynamic-docking-SDL3-Metal",
 			"dependencies": {
 				"bindbc-loader": "~>1.1",
-				"bindbc-sdl": "~>1.5",
+				"bindbc-sdl": "~>2.0",
 				"d-metal-binding": "~>2.1"
 			},
 			"versions": [
 				"ImGui_Docking",
-				"ImGui_Impl_SDL2",
+				"ImGui_Impl_SDL3",
 				"ImGui_Impl_Metal"
 			]
 		},
 		{
-			"name": "dynamic-docking-SDL2-OpenGL2",
+			"name": "dynamic-docking-SDL3-OpenGL2",
 			"dependencies": {
 				"bindbc-loader": "~>1.1",
-				"bindbc-sdl": "~>1.5",
+				"bindbc-sdl": "~>2.0",
 				"bindbc-opengl": "~>1.1"
 			},
 			"versions": [
 				"ImGui_Docking",
-				"ImGui_Impl_SDL2",
+				"ImGui_Impl_SDL3",
 				"ImGui_Impl_OpenGL2"
 			]
 		},
 		{
-			"name": "dynamic-docking-SDL2-OpenGL3",
+			"name": "dynamic-docking-SDL3-OpenGL3",
 			"dependencies": {
 				"bindbc-loader": "~>1.1",
-				"bindbc-sdl": "~>1.5",
+				"bindbc-sdl": "~>2.0",
 				"bindbc-opengl": "~>1.1"
 			},
 			"versions": [
 				"ImGui_Docking",
-				"ImGui_Impl_SDL2",
+				"ImGui_Impl_SDL3",
 				"ImGui_Impl_OpenGL3",
 				"GL_30"
 			]
 		},
 		{
-			"name": "dynamic-docking-SDL2-SDLRenderer2",
+			"name": "dynamic-docking-SDL3-SDLRenderer3",
 			"dependencies": {
 				"bindbc-loader": "~>1.1",
-				"bindbc-sdl": "~>1.5"
+				"bindbc-sdl": "~>2.0"
 			},
 			"versions": [
 				"ImGui_Docking",
-				"ImGui_Impl_SDL2",
-				"ImGui_Impl_SDLRenderer2"
+				"ImGui_Impl_SDL3",
+				"ImGui_Impl_SDLRenderer3"
 			]
 		},
 		{
-			"name": "dynamic-docking-SDL2-Vulkan",
+			"name": "dynamic-docking-SDL3-Vulkan",
 			"dependencies": {
 				"bindbc-loader": "~>1.1",
-				"bindbc-sdl": "~>1.5",
+				"bindbc-sdl": "~>2.0",
 				"erupted": "~>2.1"
 			},
 			"versions": [
 				"ImGui_Docking",
-				"ImGui_Impl_SDL2",
+				"ImGui_Impl_SDL3",
 				"ImGui_Impl_Vulkan"
 			]
 		},
@@ -1252,11 +1252,11 @@
 			]
 		},
 		{
-			"name": "dynamicBC-docking-GLFW-SDLRenderer2",
+			"name": "dynamicBC-docking-GLFW-SDLRenderer3",
 			"dependencies": {
 				"bindbc-loader": "~>1.1",
 				"bindbc-glfw": "~>1.1",
-				"bindbc-sdl": "~>1.5"
+				"bindbc-sdl": "~>2.0"
 			},
 			"subConfigurations": {
 				"bindbc-loader": "yesBC",
@@ -1266,7 +1266,7 @@
 			"versions": [
 				"ImGui_Docking",
 				"ImGui_Impl_GLFW",
-				"ImGui_Impl_SDLRenderer2"
+				"ImGui_Impl_SDLRenderer3"
 			]
 		},
 		{
@@ -1353,10 +1353,10 @@
 			]
 		},
 		{
-			"name": "dynamicBC-docking-macOS-SDLRenderer2",
+			"name": "dynamicBC-docking-macOS-SDLRenderer3",
 			"dependencies": {
 				"bindbc-loader": "~>1.1",
-				"bindbc-sdl": "~>1.5"
+				"bindbc-sdl": "~>2.0"
 			},
 			"subConfigurations": {
 				"bindbc-loader": "yesBC",
@@ -1366,7 +1366,7 @@
 			"versions": [
 				"ImGui_Docking",
 				"ImGui_Impl_macOS",
-				"ImGui_Impl_SDLRenderer2"
+				"ImGui_Impl_SDLRenderer3"
 			]
 		},
 		{
@@ -1387,10 +1387,10 @@
 			]
 		},
 		{
-			"name": "dynamicBC-docking-SDL2",
+			"name": "dynamicBC-docking-SDL3",
 			"dependencies": {
 				"bindbc-loader": "~>1.1",
-				"bindbc-sdl": "~>1.5"
+				"bindbc-sdl": "~>2.0"
 			},
 			"subConfigurations": {
 				"bindbc-loader": "yesBC",
@@ -1399,14 +1399,14 @@
 			"buildOptions": ["betterC"],
 			"versions": [
 				"ImGui_Docking",
-				"ImGui_Impl_SDL2"
+				"ImGui_Impl_SDL3"
 			]
 		},
 		{
-			"name": "dynamicBC-docking-SDL2-Metal",
+			"name": "dynamicBC-docking-SDL3-Metal",
 			"dependencies": {
 				"bindbc-loader": "~>1.1",
-				"bindbc-sdl": "~>1.5",
+				"bindbc-sdl": "~>2.0",
 				"d-metal-binding": "~>2.1"
 			},
 			"subConfigurations": {
@@ -1416,15 +1416,15 @@
 			"buildOptions": ["betterC"],
 			"versions": [
 				"ImGui_Docking",
-				"ImGui_Impl_SDL2",
+				"ImGui_Impl_SDL3",
 				"ImGui_Impl_Metal"
 			]
 		},
 		{
-			"name": "dynamicBC-docking-SDL2-OpenGL2",
+			"name": "dynamicBC-docking-SDL3-OpenGL2",
 			"dependencies": {
 				"bindbc-loader": "~>1.1",
-				"bindbc-sdl": "~>1.5",
+				"bindbc-sdl": "~>2.0",
 				"bindbc-opengl": "~>1.1"
 			},
 			"subConfigurations": {
@@ -1434,15 +1434,15 @@
 			"buildOptions": ["betterC"],
 			"versions": [
 				"ImGui_Docking",
-				"ImGui_Impl_SDL2",
+				"ImGui_Impl_SDL3",
 				"ImGui_Impl_OpenGL2"
 			]
 		},
 		{
-			"name": "dynamicBC-docking-SDL2-OpenGL3",
+			"name": "dynamicBC-docking-SDL3-OpenGL3",
 			"dependencies": {
 				"bindbc-loader": "~>1.1",
-				"bindbc-sdl": "~>1.5",
+				"bindbc-sdl": "~>2.0",
 				"bindbc-opengl": "~>1.1"
 			},
 			"subConfigurations": {
@@ -1452,16 +1452,16 @@
 			"buildOptions": ["betterC"],
 			"versions": [
 				"ImGui_Docking",
-				"ImGui_Impl_SDL2",
+				"ImGui_Impl_SDL3",
 				"ImGui_Impl_OpenGL3",
 				"GL_30"
 			]
 		},
 		{
-			"name": "dynamicBC-docking-SDL2-SDLRenderer2",
+			"name": "dynamicBC-docking-SDL3-SDLRenderer3",
 			"dependencies": {
 				"bindbc-loader": "~>1.1",
-				"bindbc-sdl": "~>1.5"
+				"bindbc-sdl": "~>2.0"
 			},
 			"subConfigurations": {
 				"bindbc-loader": "yesBC",
@@ -1470,15 +1470,15 @@
 			"buildOptions": ["betterC"],
 			"versions": [
 				"ImGui_Docking",
-				"ImGui_Impl_SDL2",
-				"ImGui_Impl_SDLRenderer2"
+				"ImGui_Impl_SDL3",
+				"ImGui_Impl_SDLRenderer3"
 			]
 		},
 		{
-			"name": "dynamicBC-docking-SDL2-Vulkan",
+			"name": "dynamicBC-docking-SDL3-Vulkan",
 			"dependencies": {
 				"bindbc-loader": "~>1.1",
-				"bindbc-sdl": "~>1.5",
+				"bindbc-sdl": "~>2.0",
 				"erupted": "~>2.1"
 			},
 			"subConfigurations": {
@@ -1488,7 +1488,7 @@
 			"buildOptions": ["betterC"],
 			"versions": [
 				"ImGui_Docking",
-				"ImGui_Impl_SDL2",
+				"ImGui_Impl_SDL3",
 				"ImGui_Impl_Vulkan"
 			]
 		},
@@ -1549,16 +1549,16 @@
 			}
 		},
 		{
-			"name": "static-docking-GLFW-SDLRenderer2",
+			"name": "static-docking-GLFW-SDLRenderer3",
 			"versions": [
 				"BindImGui_Static",
 				"ImGui_Docking",
 				"ImGui_Impl_GLFW",
-				"ImGui_Impl_SDLRenderer2"
+				"ImGui_Impl_SDLRenderer3"
 			],
 			"dependencies": {
 				"bindbc-glfw": "~>1.1",
-				"bindbc-sdl": "~>1.5"
+				"bindbc-sdl": "~>2.0"
 			}
 		},
 		{
@@ -1614,14 +1614,14 @@
 			"dependencies": {"bindbc-opengl": "~>1.1"}
 		},
 		{
-			"name": "static-docking-macOS-SDLRenderer2",
+			"name": "static-docking-macOS-SDLRenderer3",
 			"versions": [
 				"BindImGui_Static",
 				"ImGui_Docking",
 				"ImGui_Impl_macOS",
-				"ImGui_Impl_SDLRenderer2"
+				"ImGui_Impl_SDLRenderer3"
 			],
-			"dependencies": {"bindbc-sdl": "~>1.5"}
+			"dependencies": {"bindbc-sdl": "~>2.0"}
 		},
 		{
 			"name": "static-docking-macOS-Vulkan",
@@ -1634,74 +1634,74 @@
 			"dependencies": {"erupted": "~>2.1"}
 		},
 		{
-			"name": "static-docking-SDL2",
+			"name": "static-docking-SDL3",
 			"versions": [
 				"BindImGui_Static",
 				"ImGui_Docking",
-				"ImGui_Impl_SDL2"
+				"ImGui_Impl_SDL3"
 			],
-			"dependencies": {"bindbc-sdl": "~>1.5"}
+			"dependencies": {"bindbc-sdl": "~>2.0"}
 		},
 		{
-			"name": "static-docking-SDL2-Metal",
+			"name": "static-docking-SDL3-Metal",
 			"versions": [
 				"BindImGui_Static",
 				"ImGui_Docking",
-				"ImGui_Impl_SDL2",
+				"ImGui_Impl_SDL3",
 				"ImGui_Impl_Metal"
 			],
 			"dependencies": {
-				"bindbc-sdl": "~>1.5",
+				"bindbc-sdl": "~>2.0",
 				"d-metal-binding": "~>2.1"
 			}
 		},
 		{
-			"name": "static-docking-SDL2-OpenGL2",
+			"name": "static-docking-SDL3-OpenGL2",
 			"versions": [
 				"BindImGui_Static",
 				"ImGui_Docking",
-				"ImGui_Impl_SDL2",
+				"ImGui_Impl_SDL3",
 				"ImGui_Impl_OpenGL2"
 			],
 			"dependencies": {
-				"bindbc-sdl": "~>1.5",
+				"bindbc-sdl": "~>2.0",
 				"bindbc-opengl": "~>1.1"
 			}
 		},
 		{
-			"name": "static-docking-SDL2-OpenGL3",
+			"name": "static-docking-SDL3-OpenGL3",
 			"versions": [
 				"BindImGui_Static",
 				"ImGui_Docking",
-				"ImGui_Impl_SDL2",
+				"ImGui_Impl_SDL3",
 				"ImGui_Impl_OpenGL3",
 				"GL_30"
 			],
 			"dependencies": {
-				"bindbc-sdl": "~>1.5",
+				"bindbc-sdl": "~>2.0",
 				"bindbc-opengl": "~>1.1"
 			}
 		},
 		{
-			"name": "static-docking-SDL2-SDLRenderer2",
+			"name": "static-docking-SDL3-SDLRenderer3",
 			"versions": [
 				"BindImGui_Static",
 				"ImGui_Docking",
-				"ImGui_Impl_SDL2",
-				"ImGui_Impl_SDLRenderer2"
+				"ImGui_Impl_SDL3",
+				"ImGui_Impl_SDLRenderer3"
 			],
-			"dependencies": {"bindbc-sdl": "~>1.5"}
+			"dependencies": {"bindbc-sdl": "~>2.0"}
 		},
 		{
-			"name": "static-docking-SDL2-Vulkan",
+			"name": "static-docking-SDL3-Vulkan",
 			"versions": [
 				"BindImGui_Static",
 				"ImGui_Docking",
-				"ImGui_Impl_SDL2",
+				"ImGui_Impl_SDL3",
 				"ImGui_Impl_Vulkan"
 			],
 			"dependencies": {
-				"bindbc-sdl": "~>1.5",
+				"bindbc-sdl": "~>2.0",
 				"erupted": "~>2.1"
 			}
 		},
@@ -1772,18 +1772,18 @@
 			}
 		},
 		{
-			"name": "staticBC-docking-GLFW-SDLRenderer2",
+			"name": "staticBC-docking-GLFW-SDLRenderer3",
 			"subConfigurations": {"bindbc-common": "yesBC"},
 			"buildOptions": ["betterC"],
 			"versions": [
 				"BindImGui_Static",
 				"ImGui_Docking",
 				"ImGui_Impl_GLFW",
-				"ImGui_Impl_SDLRenderer2"
+				"ImGui_Impl_SDLRenderer3"
 			],
 			"dependencies": {
 				"bindbc-glfw": "~>1.1",
-				"bindbc-sdl": "~>1.5"
+				"bindbc-sdl": "~>2.0"
 			}
 		},
 		{
@@ -1849,16 +1849,16 @@
 			"dependencies": {"bindbc-opengl": "~>1.1"}
 		},
 		{
-			"name": "staticBC-docking-macOS-SDLRenderer2",
+			"name": "staticBC-docking-macOS-SDLRenderer3",
 			"subConfigurations": {"bindbc-common": "yesBC"},
 			"buildOptions": ["betterC"],
 			"versions": [
 				"BindImGui_Static",
 				"ImGui_Docking",
 				"ImGui_Impl_macOS",
-				"ImGui_Impl_SDLRenderer2"
+				"ImGui_Impl_SDLRenderer3"
 			],
-			"dependencies": {"bindbc-sdl": "~>1.5"}
+			"dependencies": {"bindbc-sdl": "~>2.0"}
 		},
 		{
 			"name": "staticBC-docking-macOS-Vulkan",
@@ -1873,86 +1873,86 @@
 			"dependencies": {"erupted": "~>2.1"}
 		},
 		{
-			"name": "staticBC-docking-SDL2",
+			"name": "staticBC-docking-SDL3",
 			"subConfigurations": {"bindbc-common": "yesBC"},
 			"buildOptions": ["betterC"],
 			"versions": [
 				"BindImGui_Static",
 				"ImGui_Docking",
-				"ImGui_Impl_SDL2"
+				"ImGui_Impl_SDL3"
 			],
-			"dependencies": {"bindbc-sdl": "~>1.5"}
+			"dependencies": {"bindbc-sdl": "~>2.0"}
 		},
 		{
-			"name": "staticBC-docking-SDL2-Metal",
+			"name": "staticBC-docking-SDL3-Metal",
 			"subConfigurations": {"bindbc-common": "yesBC"},
 			"buildOptions": ["betterC"],
 			"versions": [
 				"BindImGui_Static",
 				"ImGui_Docking",
-				"ImGui_Impl_SDL2",
+				"ImGui_Impl_SDL3",
 				"ImGui_Impl_Metal"
 			],
 			"dependencies": {
-				"bindbc-sdl": "~>1.5",
+				"bindbc-sdl": "~>2.0",
 				"d-metal-binding": "~>2.1"
 			}
 		},
 		{
-			"name": "staticBC-docking-SDL2-OpenGL2",
+			"name": "staticBC-docking-SDL3-OpenGL2",
 			"subConfigurations": {"bindbc-common": "yesBC"},
 			"buildOptions": ["betterC"],
 			"versions": [
 				"BindImGui_Static",
 				"ImGui_Docking",
-				"ImGui_Impl_SDL2",
+				"ImGui_Impl_SDL3",
 				"ImGui_Impl_OpenGL2"
 			],
 			"dependencies": {
-				"bindbc-sdl": "~>1.5",
+				"bindbc-sdl": "~>2.0",
 				"bindbc-opengl": "~>1.1"
 			}
 		},
 		{
-			"name": "staticBC-docking-SDL2-OpenGL3",
+			"name": "staticBC-docking-SDL3-OpenGL3",
 			"subConfigurations": {"bindbc-common": "yesBC"},
 			"buildOptions": ["betterC"],
 			"versions": [
 				"BindImGui_Static",
 				"ImGui_Docking",
-				"ImGui_Impl_SDL2",
+				"ImGui_Impl_SDL3",
 				"ImGui_Impl_OpenGL3",
 				"GL_30"
 			],
 			"dependencies": {
-				"bindbc-sdl": "~>1.5",
+				"bindbc-sdl": "~>2.0",
 				"bindbc-opengl": "~>1.1"
 			}
 		},
 		{
-			"name": "staticBC-docking-SDL2-SDLRenderer2",
+			"name": "staticBC-docking-SDL3-SDLRenderer3",
 			"subConfigurations": {"bindbc-common": "yesBC"},
 			"buildOptions": ["betterC"],
 			"versions": [
 				"BindImGui_Static",
 				"ImGui_Docking",
-				"ImGui_Impl_SDL2",
-				"ImGui_Impl_SDLRenderer2"
+				"ImGui_Impl_SDL3",
+				"ImGui_Impl_SDLRenderer3"
 			],
-			"dependencies": {"bindbc-sdl": "~>1.5"}
+			"dependencies": {"bindbc-sdl": "~>2.0"}
 		},
 		{
-			"name": "staticBC-docking-SDL2-Vulkan",
+			"name": "staticBC-docking-SDL3-Vulkan",
 			"subConfigurations": {"bindbc-common": "yesBC"},
 			"buildOptions": ["betterC"],
 			"versions": [
 				"BindImGui_Static",
 				"ImGui_Docking",
-				"ImGui_Impl_SDL2",
+				"ImGui_Impl_SDL3",
 				"ImGui_Impl_Vulkan"
 			],
 			"dependencies": {
-				"bindbc-sdl": "~>1.5",
+				"bindbc-sdl": "~>2.0",
 				"erupted": "~>2.1"
 			}
 		}

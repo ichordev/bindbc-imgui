@@ -1,5 +1,5 @@
 /+
-+            Copyright 2023 – 2024 Aya Partridge
++            Copyright 2023 – 2025 Aya Partridge
 + Distributed under the Boost Software License, Version 1.0.
 +     (See accompanying file LICENSE_1_0.txt or copy at
 +           http://www.boost.org/LICENSE_1_0.txt)
@@ -36,8 +36,6 @@ pragma(inline,true) extern(C++) bool IMGUI_CHECKVERSION() nothrow @nogc =>
 
 alias ImGuiID = uint;
 alias ImGuiKeyChord = int;
-alias ImTextureID = c_ulonglong;
-alias ImDrawIdx = ushort;
 alias ImWChar32 = uint;
 alias ImWChar16 = ushort;
 version(ImGui_WChar32){
@@ -52,10 +50,12 @@ alias ImGuiInputTextCallback = extern(C++) int function(ImGuiInputTextCallbackDa
 alias ImGuiSizeCallback = extern(C++) void function(ImGuiSizeCallbackData* data) nothrow @nogc;
 alias ImGuiMemAllocFunc = extern(C++) void* function(size_t sz, void* userData) nothrow @nogc;
 alias ImGuiMemFreeFunc = extern(C++) void function(void* ptr, void* userData) nothrow @nogc;
+alias ImTextureID = c_ulonglong;
+alias ImDrawIdx = ushort;
 alias ImDrawCallback = extern(C++) void function(const(ImDrawList)* parentList, const(ImDrawCmd)* cmd) nothrow @nogc;
 
-enum IMGUI_VERSION = "1.91.4";
-enum IMGUI_VERSION_NUM = 19140;
+enum IMGUI_VERSION = "1.91.9b";
+enum IMGUI_VERSION_NUM = 19191;
 
 alias ImGuiWindowFlags_ = int;
 mixin(makeEnumBind(q{ImGuiWindowFlags}, q{ImGuiWindowFlags_}, members: (){
@@ -93,8 +93,8 @@ mixin(makeEnumBind(q{ImGuiWindowFlags}, q{ImGuiWindowFlags_}, members: (){
 	version(ImGui_DisableObsoleteFunctions){
 	}else{{
 		EnumMember[] add = [
+			{{q{navFlattened},            q{ImGuiWindowFlags_NavFlattened}},               q{1<<29}},
 			{{q{alwaysUseWindowPadding},  q{ImGuiWindowFlags_AlwaysUseWindowPadding}},     q{1<<30}},
-			{{q{navFlattened},            q{ImGuiWindowFlags_NavFlattened}},               q{1<<31}},
 		];
 		ret ~= add;
 	}}
@@ -177,12 +177,14 @@ mixin(makeEnumBind(q{ImGuiInputTextFlags}, q{ImGuiInputTextFlags_}, members: (){
 		{{q{noHorizontalScroll},    q{ImGuiInputTextFlags_NoHorizontalScroll}},    q{1<<15}},
 		{{q{noUndoRedo},            q{ImGuiInputTextFlags_NoUndoRedo}},            q{1<<16}},
 		
-		{{q{callbackCompletion},    q{ImGuiInputTextFlags_CallbackCompletion}},    q{1<<17}},
-		{{q{callbackHistory},       q{ImGuiInputTextFlags_CallbackHistory}},       q{1<<18}},
-		{{q{callbackAlways},        q{ImGuiInputTextFlags_CallbackAlways}},        q{1<<19}},
-		{{q{callbackCharFilter},    q{ImGuiInputTextFlags_CallbackCharFilter}},    q{1<<20}},
-		{{q{callbackResize},        q{ImGuiInputTextFlags_CallbackResize}},        q{1<<21}},
-		{{q{callbackEdit},          q{ImGuiInputTextFlags_CallbackEdit}},          q{1<<22}},
+		{{q{elideLeft},             q{ImGuiInputTextFlags_ElideLeft}},             q{1<<17}},
+		
+		{{q{callbackCompletion},    q{ImGuiInputTextFlags_CallbackCompletion}},    q{1<<18}},
+		{{q{callbackHistory},       q{ImGuiInputTextFlags_CallbackHistory}},       q{1<<19}},
+		{{q{callbackAlways},        q{ImGuiInputTextFlags_CallbackAlways}},        q{1<<20}},
+		{{q{callbackCharFilter},    q{ImGuiInputTextFlags_CallbackCharFilter}},    q{1<<21}},
+		{{q{callbackResize},        q{ImGuiInputTextFlags_CallbackResize}},        q{1<<22}},
+		{{q{callbackEdit},          q{ImGuiInputTextFlags_CallbackEdit}},          q{1<<23}},
 		
 		//private:
 		{{q{multiline},             q{ImGuiInputTextFlags_Multiline}},             q{1<<26}},
@@ -208,10 +210,11 @@ mixin(makeEnumBind(q{ImGuiTreeNodeFlags}, q{ImGuiTreeNodeFlags_}, members: (){
 		{{q{framePadding},                q{ImGuiTreeNodeFlags_FramePadding}},                q{1<<10}},
 		{{q{spanAvailWidth},              q{ImGuiTreeNodeFlags_SpanAvailWidth}},              q{1<<11}},
 		{{q{spanFullWidth},               q{ImGuiTreeNodeFlags_SpanFullWidth}},               q{1<<12}},
-		{{q{spanTextWidth},               q{ImGuiTreeNodeFlags_SpanTextWidth}},               q{1<<13}},
+		{{q{spanLabelWidth},              q{ImGuiTreeNodeFlags_SpanLabelWidth}},              q{1<<13}},
 		{{q{spanAllColumns},              q{ImGuiTreeNodeFlags_SpanAllColumns}},              q{1<<14}},
-		{{q{navLeftJumpsBackHere},        q{ImGuiTreeNodeFlags_NavLeftJumpsBackHere}},        q{1<<15}},
+		{{q{labelSpanAllColumns},         q{ImGuiTreeNodeFlags_LabelSpanAllColumns}},         q{1<<15}},
 		
+		{{q{navLeftJumpsBackHere},        q{ImGuiTreeNodeFlags_NavLeftJumpsBackHere}},        q{1<<17}},
 		{{q{collapsingHeader},            q{ImGuiTreeNodeFlags_CollapsingHeader}},            q{framed | noTreePushOnOpen | noAutoOpenOnLog}},
 		
 		//private:
@@ -223,6 +226,7 @@ mixin(makeEnumBind(q{ImGuiTreeNodeFlags}, q{ImGuiTreeNodeFlags_}, members: (){
 	}else{{
 		EnumMember[] add = [
 			{{q{allowItemOverlap},        q{ImGuiTreeNodeFlags_AllowItemOverlap}},            q{allowOverlap}},
+			{{q{spanTextWidth},           q{ImGuiTreeNodeFlags_SpanTextWidth}},               q{spanLabelWidth}},
 		];
 		ret ~= add;
 	}}
@@ -340,6 +344,7 @@ mixin(makeEnumBind(q{ImGuiTabItemFlags}, q{ImGuiTabItemFlags_}, members: (){
 		{{q{sectionMask},                   q{ImGuiTabItemFlags_SectionMask_}},                  q{leading | trailing}},
 		{{q{noCloseButton},                 q{ImGuiTabItemFlags_NoCloseButton}},                 q{1<<20}},
 		{{q{button},                        q{ImGuiTabItemFlags_Button}},                        q{1<<21}},
+		{{q{invisible},                     q{ImGuiTabItemFlags_Invisible}},                     q{1<<22}},
 	];
 	return ret;
 }()));
@@ -438,11 +443,11 @@ mixin(makeEnumBind(q{ImGuiDataType}, q{ImGuiDataType_}, members: (){
 		{{q{float_},   q{ImGuiDataType_Float}}},
 		{{q{double_},  q{ImGuiDataType_Double}}},
 		{{q{bool_},    q{ImGuiDataType_Bool}}},
+		{{q{string},   q{ImGuiDataType_String}}},
 		{{q{count},    q{ImGuiDataType_COUNT}}},
 		
 		//private:
-		{{q{string},   q{ImGuiDataType_String}},  q{count+1}},
-		{{q{pointer},  q{ImGuiDataType_Pointer}}},
+		{{q{pointer},  q{ImGuiDataType_Pointer}},  q{count}},
 		{{q{id},       q{ImGuiDataType_ID}}},
 	];
 	return ret;
@@ -470,8 +475,10 @@ mixin(makeEnumBind(q{ImGuiSortDirection}, q{ubyte}, members: (){
 
 mixin(makeEnumBind(q{ImGuiKey}, q{int}, members: (){
 	EnumMember[] ret = [
-		{{q{none},                 q{ImGuiKey_None}},  q{0}},
-		{{q{tab},                  q{ImGuiKey_Tab}},   q{512}},
+		{{q{none},                 q{ImGuiKey_None}},            q{0}},
+		{{q{namedKeyBegin},        q{ImGuiKey_NamedKey_BEGIN}},  q{512}},
+		
+		{{q{tab},                  q{ImGuiKey_Tab}},             q{512}},
 		{{q{leftArrow},            q{ImGuiKey_LeftArrow}}},
 		{{q{rightArrow},           q{ImGuiKey_RightArrow}}},
 		{{q{upArrow},              q{ImGuiKey_UpArrow}}},
@@ -590,6 +597,7 @@ mixin(makeEnumBind(q{ImGuiKey}, q{int}, members: (){
 		{{q{keypadEqual},          q{ImGuiKey_KeypadEqual}}},
 		{{q{appBack},              q{ImGuiKey_AppBack}}},
 		{{q{appForward},           q{ImGuiKey_AppForward}}},
+		{{q{oem102},               q{ImGuiKey_Oem102}}},
 		
 		{{q{gamepadStart},         q{ImGuiKey_GamepadStart}}},
 		{{q{gamepadBack},          q{ImGuiKey_GamepadBack}}},
@@ -628,37 +636,27 @@ mixin(makeEnumBind(q{ImGuiKey}, q{int}, members: (){
 		{{q{reservedForModShift},  q{ImGuiKey_ReservedForModShift}}},
 		{{q{reservedForModAlt},    q{ImGuiKey_ReservedForModAlt}}},
 		{{q{reservedForModSuper},  q{ImGuiKey_ReservedForModSuper}}},
-		{{q{count},                q{ImGuiKey_COUNT}}},
+		{{q{namedKeyEnd},          q{ImGuiKey_NamedKey_END}}},
 		
-		{{q{namedKeyBegin},        q{ImGuiKey_NamedKey_BEGIN}},   q{512}},
-		{{q{namedKeyEnd},          q{ImGuiKey_NamedKey_END}},     q{count}},
-		{{q{namedKeyCount},        q{ImGuiKey_NamedKey_COUNT}},   q{namedKeyEnd-namedKeyBegin}},
+		{{q{namedKeyCount},        q{ImGuiKey_NamedKey_COUNT}},  q{namedKeyEnd-namedKeyBegin}},
 	];
-	version(ImGui_DisableObsoleteKeyIO){{
-		EnumMember[] add = [
-			{{q{keysDataSize},     q{ImGuiKey_KeysData_SIZE}},    q{namedKeyCount}},
-			{{q{keysDataOffset},   q{ImGuiKey_KeysData_OFFSET}},  q{namedKeyBegin}},
-		];
-		ret ~= add;
-	}}
-	version(ImGui_DisableObsoleteKeyIO){
+	version(ImGui_DisableObsoleteFunctions){
 	}else{{
 		EnumMember[] add = [
-			{{q{keysDataSize},     q{ImGuiKey_KeysData_SIZE}},    q{count}},
-			{{q{keysDataOffset},   q{ImGuiKey_KeysData_OFFSET}},  q{0}},
+			{{q{count},            q{ImGuiKey_COUNT}},           q{namedKeyEnd}},
 		];
 		ret ~= add;
 	}}
 	return ret;
 }()));
-mixin(makeEnumBind(q{ImGuiMod}, q{int}, members: (){
+mixin(makeEnumBind(q{ImGuiMod}, q{ImGuiKey}, members: (){
 	EnumMember[] ret = [
-		{{q{none},    q{ImGuiMod_None}},   q{0}},
-		{{q{ctrl},    q{ImGuiMod_Ctrl}},   q{1<<12}},
-		{{q{shift},   q{ImGuiMod_Shift}},  q{1<<13}},
-		{{q{alt},     q{ImGuiMod_Alt}},    q{1<<14}},
-		{{q{super_},  q{ImGuiMod_Super}},  q{1<<15}},
-		{{q{mask},    q{ImGuiMod_Mask_}},  q{0xF000}},
+		{{q{none},    q{ImGuiMod_None}},   q{cast(ImGuiKey)0}},
+		{{q{ctrl},    q{ImGuiMod_Ctrl}},   q{cast(ImGuiKey)1<<12}},
+		{{q{shift},   q{ImGuiMod_Shift}},  q{cast(ImGuiKey)1<<13}},
+		{{q{alt},     q{ImGuiMod_Alt}},    q{cast(ImGuiKey)1<<14}},
+		{{q{super_},  q{ImGuiMod_Super}},  q{cast(ImGuiKey)1<<15}},
+		{{q{mask},    q{ImGuiMod_Mask_}},  q{cast(ImGuiKey)0xF000}},
 	];
 	return ret;
 }()));
@@ -713,34 +711,6 @@ mixin(makeEnumBind(q{ImGuiInputFlags}, q{ImGuiInputFlags_}, members: (){
 	];
 	return ret;
 }()));
-mixin(makeEnumBind(q{ImGuiNavInput}, members: (){
-	EnumMember[] ret;
-	version(ImGui_DisableObsoleteKeyIO){
-	}else{{
-		EnumMember[] add = [
-			{{q{activate},     q{ImGuiNavInput_Activate}}},
-			{{q{cancel},       q{ImGuiNavInput_Cancel}}},
-			{{q{input},        q{ImGuiNavInput_Input}}},
-			{{q{menu},         q{ImGuiNavInput_Menu}}},
-			{{q{dpadLeft},     q{ImGuiNavInput_DpadLeft}}},
-			{{q{dpadRight},    q{ImGuiNavInput_DpadRight}}},
-			{{q{dpadUp},       q{ImGuiNavInput_DpadUp}}},
-			{{q{dpadDown},     q{ImGuiNavInput_DpadDown}}},
-			{{q{lStickLeft},   q{ImGuiNavInput_LStickLeft}}},
-			{{q{lStickRight},  q{ImGuiNavInput_LStickRight}}},
-			{{q{lStickUp},     q{ImGuiNavInput_LStickUp}}},
-			{{q{lStickDown},   q{ImGuiNavInput_LStickDown}}},
-			{{q{focusPrev},    q{ImGuiNavInput_FocusPrev}}},
-			{{q{focusNext},    q{ImGuiNavInput_FocusNext}}},
-			{{q{tweakSlow},    q{ImGuiNavInput_TweakSlow}}},
-			{{q{tweakFast},    q{ImGuiNavInput_TweakFast}}},
-			{{q{count},        q{ImGuiNavInput_COUNT}}},
-		];
-		ret ~= add;
-	}}
-	return ret;
-}()));
-
 alias ImGuiConfigFlags_ = int;
 mixin(makeEnumBind(q{ImGuiConfigFlags}, q{ImGuiConfigFlags_}, members: (){
 	EnumMember[] ret = [
@@ -876,6 +846,7 @@ mixin(makeEnumBind(q{ImGuiStyleVar}, q{ImGuiStyleVar_}, members: (){
 		{{q{scrollbarRounding},            q{ImGuiStyleVar_ScrollbarRounding}}},
 		{{q{grabMinSize},                  q{ImGuiStyleVar_GrabMinSize}}},
 		{{q{grabRounding},                 q{ImGuiStyleVar_GrabRounding}}},
+		{{q{imageBorderSize},              q{ImGuiStyleVar_ImageBorderSize}}},
 		{{q{tabRounding},                  q{ImGuiStyleVar_TabRounding}}},
 		{{q{tabBorderSize},                q{ImGuiStyleVar_TabBorderSize}}},
 		{{q{tabBarBorderSize},             q{ImGuiStyleVar_TabBarBorderSize}}},
@@ -940,9 +911,11 @@ mixin(makeEnumBind(q{ImGuiColorEditFlags}, q{ImGuiColourEditFlags_}, aliases: [q
 		{{q{noDragDrop},        q{ImGuiColourEditFlags_NoDragDrop}},        q{1<<9}, aliases: [{c: q{ImGuiColorEditFlags_NoDragDrop}}]},
 		{{q{noBorder},          q{ImGuiColourEditFlags_NoBorder}},          q{1<<10}, aliases: [{c: q{ImGuiColorEditFlags_NoBorder}}]},
 		
+		{{q{alphaOpaque},       q{ImGuiColourEditFlags_AlphaOpaque}},       q{1<<11}, aliases: [{c: q{ImGuiColorEditFlags_AlphaOpaque}}]},
+		{{q{alphaNoBg},         q{ImGuiColourEditFlags_AlphaNoBg}},         q{1<<12}, aliases: [{c: q{ImGuiColorEditFlags_AlphaNoBg}}]},
+		{{q{alphaPreviewHalf},  q{ImGuiColourEditFlags_AlphaPreviewHalf}},  q{1<<13}, aliases: [{c: q{ImGuiColorEditFlags_AlphaPreviewHalf}}]},
+		
 		{{q{alphaBar},          q{ImGuiColourEditFlags_AlphaBar}},          q{1<<16}, aliases: [{c: q{ImGuiColorEditFlags_AlphaBar}}]},
-		{{q{alphaPreview},      q{ImGuiColourEditFlags_AlphaPreview}},      q{1<<17}, aliases: [{c: q{ImGuiColorEditFlags_AlphaPreview}}]},
-		{{q{alphaPreviewHalf},  q{ImGuiColourEditFlags_AlphaPreviewHalf}},  q{1<<18}, aliases: [{c: q{ImGuiColorEditFlags_AlphaPreviewHalf}}]},
 		{{q{hdr},               q{ImGuiColourEditFlags_HDR}},               q{1<<19}, aliases: [{c: q{ImGuiColorEditFlags_HDR}}]},
 		{{q{displayRGB},        q{ImGuiColourEditFlags_DisplayRGB}},        q{1<<20}, aliases: [{c: q{ImGuiColorEditFlags_DisplayRGB}}]},
 		{{q{displayHSV},        q{ImGuiColourEditFlags_DisplayHSV}},        q{1<<21}, aliases: [{c: q{ImGuiColorEditFlags_DisplayHSV}}]},
@@ -956,11 +929,19 @@ mixin(makeEnumBind(q{ImGuiColorEditFlags}, q{ImGuiColourEditFlags_}, aliases: [q
 		
 		{{q{defaultOptions},    q{ImGuiColourEditFlags_DefaultOptions_}},   q{uint8 | displayRGB | inputRGB | pickerHueBar}, aliases: [{c: q{ImGuiColorEditFlags_DefaultOptions_}}]},
 		
+		{{q{alphaMask},         q{ImGuiColourEditFlags_AlphaMask_}},        q{noAlpha | alphaOpaque | alphaNoBg | alphaPreviewHalf}, aliases: [{c: q{ImGuiColorEditFlags_AlphaMask_}}]},
 		{{q{displayMask},       q{ImGuiColourEditFlags_DisplayMask_}},      q{displayRGB | displayHSV | displayHex}, aliases: [{c: q{ImGuiColorEditFlags_DisplayMask_}}]},
 		{{q{dataTypeMask},      q{ImGuiColourEditFlags_DataTypeMask_}},     q{uint8 | float_}, aliases: [{c: q{ImGuiColorEditFlags_DataTypeMask_}}]},
 		{{q{pickerMask},        q{ImGuiColourEditFlags_PickerMask_}},       q{pickerHueWheel | pickerHueBar}, aliases: [{c: q{ImGuiColorEditFlags_PickerMask_}}]},
 		{{q{inputMask},         q{ImGuiColourEditFlags_InputMask_}},        q{inputRGB | inputHSV}, aliases: [{c: q{ImGuiColorEditFlags_InputMask_}}]},
 	];
+	version(ImGui_DisableObsoleteFunctions){
+	}else{{
+		EnumMember[] add = [
+			{{q{alphaPreview},  q{ImGuiColourEditFlags_AlphaPreview}},      q{0}, aliases: [{c: q{ImGuiColorEditFlags_AlphaPreview}}]},
+		];
+		ret ~= add;
+	}}
 	return ret;
 }()));
 
@@ -974,6 +955,7 @@ mixin(makeEnumBind(q{ImGuiSliderFlags}, q{ImGuiSliderFlags_}, members: (){
 		{{q{wrapAround},       q{ImGuiSliderFlags_WrapAround}},       q{1<<8}},
 		{{q{clampOnInput},     q{ImGuiSliderFlags_ClampOnInput}},     q{1<<9}},
 		{{q{clampZeroRange},   q{ImGuiSliderFlags_ClampZeroRange}},   q{1<<10}},
+		{{q{noSpeedTweaks},    q{ImGuiSliderFlags_NoSpeedTweaks}},    q{1<<11}},
 		{{q{alwaysClamp},      q{ImGuiSliderFlags_AlwaysClamp}},      q{clampOnInput | clampZeroRange}},
 		{{q{invalidMask},      q{ImGuiSliderFlags_InvalidMask_}},     q{0x7000000F}},
 		
@@ -1006,6 +988,8 @@ mixin(makeEnumBind(q{ImGuiMouseCursor}, q{ImGuiMouseCursor_}, members: (){
 		{{q{resizeNESW},  q{ImGuiMouseCursor_ResizeNESW}}},
 		{{q{resizeNWSE},  q{ImGuiMouseCursor_ResizeNWSE}}},
 		{{q{hand},        q{ImGuiMouseCursor_Hand}}},
+		{{q{wait},        q{ImGuiMouseCursor_Wait}}},
+		{{q{progress},    q{ImGuiMouseCursor_Progress}}},
 		{{q{notAllowed},  q{ImGuiMouseCursor_NotAllowed}}},
 		{{q{count},       q{ImGuiMouseCursor_COUNT}}},
 	];
@@ -1228,7 +1212,7 @@ mixin(makeEnumBind(q{ImGuiSelectionRequestType}, members: (){
 	return ret;
 }()));
 
-enum IM_DRAWLIST_TEX_LINES_WIDTH_MAX = 63;
+enum IM_DRAWLIST_TEX_LINES_WIDTH_MAX = 32;
 
 alias ImDrawFlags_ = int;
 mixin(makeEnumBind(q{ImDrawFlags}, q{ImDrawFlags_}, members: (){
@@ -1394,13 +1378,16 @@ mixin(makeEnumBind(q{ImGuiLayoutType}, q{ImGuiLayoutType_}, members: (){
 	return ret;
 }()));
 
-mixin(makeEnumBind(q{ImGuiLogType}, members: (){
+alias ImGuiLogFlags_ = int;
+mixin(makeEnumBind(q{ImGuiLogFlags}, q{ImGuiLogFlags_}, members: (){
 	EnumMember[] ret = [
-		{{q{none},       q{ImGuiLogType_None}},  q{0}},
-		{{q{tty},        q{ImGuiLogType_TTY}}},
-		{{q{file},       q{ImGuiLogType_File}}},
-		{{q{buffer},     q{ImGuiLogType_Buffer}}},
-		{{q{clipboard},  q{ImGuiLogType_Clipboard}}},
+		{{q{none},             q{ImGuiLogFlags_None}},             q{0}},
+		
+		{{q{outputTTY},        q{ImGuiLogFlags_OutputTTY}},        q{1<<0}},
+		{{q{outputFile},       q{ImGuiLogFlags_OutputFile}},       q{1<<1}},
+		{{q{outputBuffer},     q{ImGuiLogFlags_OutputBuffer}},     q{1<<2}},
+		{{q{outputClipboard},  q{ImGuiLogFlags_OutputClipboard}},  q{1<<3}},
+		{{q{outputMask},       q{ImGuiLogFlags_OutputMask_}},      q{outputTTY | outputFile | outputBuffer | outputClipboard}},
 	];
 	return ret;
 }()));
@@ -1451,8 +1438,9 @@ mixin(makeEnumBind(q{ImGuiNextWindowDataFlags}, q{ImGuiNextWindowDataFlags_}, me
 		{{q{hasFocus},           q{ImGuiNextWindowDataFlags_HasFocus}},           q{1<<5}},
 		{{q{hasBgAlpha},         q{ImGuiNextWindowDataFlags_HasBgAlpha}},         q{1<<6}},
 		{{q{hasScroll},          q{ImGuiNextWindowDataFlags_HasScroll}},          q{1<<7}},
-		{{q{hasChildFlags},      q{ImGuiNextWindowDataFlags_HasChildFlags}},      q{1<<8}},
-		{{q{hasRefreshPolicy},   q{ImGuiNextWindowDataFlags_HasRefreshPolicy}},   q{1<<9}},
+		{{q{hasWindowFlags},     q{ImGuiNextWindowDataFlags_HasWindowFlags}},     q{1<<8}},
+		{{q{hasChildFlags},      q{ImGuiNextWindowDataFlags_HasChildFlags}},      q{1<<9}},
+		{{q{hasRefreshPolicy},   q{ImGuiNextWindowDataFlags_HasRefreshPolicy}},   q{1<<10}},
 	];
 	return ret;
 }()));
@@ -1637,11 +1625,12 @@ mixin(makeEnumBind(q{ImGuiDebugLogFlags}, q{ImGuiDebugLogFlags_}, members: (){
 		{{q{eventClipper},        q{ImGuiDebugLogFlags_EventClipper}},        q{1<<5}},
 		{{q{eventSelection},      q{ImGuiDebugLogFlags_EventSelection}},      q{1<<6}},
 		{{q{eventIO},             q{ImGuiDebugLogFlags_EventIO}},             q{1<<7}},
-		{{q{eventInputRouting},   q{ImGuiDebugLogFlags_EventInputRouting}},   q{1<<8}},
-		{{q{eventDocking},        q{ImGuiDebugLogFlags_EventDocking}},        q{1<<9}},
-		{{q{eventViewport},       q{ImGuiDebugLogFlags_EventViewport}},       q{1<<10}},
+		{{q{eventFont},           q{ImGuiDebugLogFlags_EventFont}},           q{1<<8}},
+		{{q{eventInputRouting},   q{ImGuiDebugLogFlags_EventInputRouting}},   q{1<<9}},
+		{{q{eventDocking},        q{ImGuiDebugLogFlags_EventDocking}},        q{1<<10}},
+		{{q{eventViewport},       q{ImGuiDebugLogFlags_EventViewport}},       q{1<<11}},
 		
-		{{q{eventMask},           q{ImGuiDebugLogFlags_EventMask_}},          q{eventError | eventActiveID | eventFocus | eventPopup | eventNav | eventClipper | eventSelection | eventIO | eventInputRouting | eventDocking | eventViewport}},
+		{{q{eventMask},           q{ImGuiDebugLogFlags_EventMask_}},          q{eventError | eventActiveID | eventFocus | eventPopup | eventNav | eventClipper | eventSelection | eventIO | eventFont | eventInputRouting | eventDocking | eventViewport}},
 		{{q{outputToTTY},         q{ImGuiDebugLogFlags_OutputToTTY}},         q{1<<20}},
 		{{q{outputToTestEngine},  q{ImGuiDebugLogFlags_OutputToTestEngine}},  q{1<<21}},
 	];
@@ -1834,7 +1823,8 @@ mixin(joinFnBinds((){
 		{q{bool}, q{TextLink}, q{const(char)* label}, ext: `C++, "ImGui"`},
 		{q{void}, q{TextLinkOpenURL}, q{const(char)* label, const(char)* url=null}, ext: `C++, "ImGui"`},
 		
-		{q{void}, q{Image}, q{ImTextureID userTextureID, in ImVec2 imageSize, in ImVec2 uv0=ImVec2(0, 0), in ImVec2 uv1=ImVec2(1, 1), in ImVec4 tintCol=ImVec4(1, 1, 1, 1), in ImVec4 borderCol=ImVec4(0, 0, 0, 0)}, ext: `C++, "ImGui"`},
+		{q{void}, q{Image}, q{ImTextureID userTextureID, in ImVec2 imageSize, in ImVec2 uv0=ImVec2(0, 0), in ImVec2 uv1=ImVec2(1, 1)}, ext: `C++, "ImGui"`},
+		{q{void}, q{ImageWithBg}, q{ImTextureID userTextureID, in ImVec2 imageSize, in ImVec2 uv0=ImVec2(0, 0), in ImVec2 uv1=ImVec2(1, 1), in ImVec4 bgCol=ImVec4(0, 0, 0, 0), in ImVec4 tintCol=ImVec4(1, 1, 1, 1)}, ext: `C++, "ImGui"`},
 		{q{bool}, q{ImageButton}, q{const(char)* strID, ImTextureID userTextureID, in ImVec2 imageSize, in ImVec2 uv0=ImVec2(0, 0), in ImVec2 uv1=ImVec2(1, 1), in ImVec4 bgCol=ImVec4(0, 0, 0, 0), in ImVec4 tintCol=ImVec4(1, 1, 1, 1)}, ext: `C++, "ImGui"`},
 		
 		{q{bool}, q{BeginCombo}, q{const(char)* label, const(char)* previewValue, ImGuiComboFlags_ flags=0}, ext: `C++, "ImGui"`},
@@ -2086,6 +2076,7 @@ mixin(joinFnBinds((){
 		{q{bool}, q{IsMouseClicked}, q{ImGuiMouseButton_ button, bool repeat=false}, ext: `C++, "ImGui"`},
 		{q{bool}, q{IsMouseReleased}, q{ImGuiMouseButton_ button}, ext: `C++, "ImGui"`},
 		{q{bool}, q{IsMouseDoubleClicked}, q{ImGuiMouseButton_ button}, ext: `C++, "ImGui"`},
+		{q{bool}, q{IsMouseReleasedWithDelay}, q{ImGuiMouseButton_ button, float delay}, ext: `C++, "ImGui"`},
 		{q{int}, q{GetMouseClickedCount}, q{ImGuiMouseButton_ button}, ext: `C++, "ImGui"`},
 		{q{bool}, q{IsMouseHoveringRect}, q{in ImVec2 rMin, in ImVec2 rMax, bool clip=true}, ext: `C++, "ImGui"`},
 		{q{bool}, q{IsMousePosValid}, q{const(ImVec2)* mousePos=null}, ext: `C++, "ImGui"`},
@@ -2119,9 +2110,15 @@ mixin(joinFnBinds((){
 		{q{void}, q{GetAllocatorFunctions}, q{ImGuiMemAllocFunc* pAllocFunc, ImGuiMemFreeFunc* pFreeFunc, void** pUserData}, ext: `C++, "ImGui"`},
 		{q{void*}, q{MemAlloc}, q{size_t size}, ext: `C++, "ImGui"`},
 		{q{void}, q{MemFree}, q{void* ptr}, ext: `C++, "ImGui"`},
-		{q{void}, q{ImVector_Construct}, q{void* vector}, ext: `C++`, aliases: [q{ImVectorConstruct}]},
-		{q{void}, q{ImVector_Destruct}, q{void* vector}, ext: `C++`, aliases: [q{ImVectorDestruct}]},
 	];
+	version(ImGui_DisableObsoleteFunctions){
+	}else{{
+		FnBind[] add = [
+			{q{void}, q{Image}, q{ImTextureID userTextureID, in ImVec2 imageSize, in ImVec2 uv0, in ImVec2 uv1, in ImVec4 tintCol, in ImVec4 borderCol}, ext: `C++, "ImGui"`},
+		];
+		ret ~= add;
+	}}
+	
 	version(ImGui_DisableObsoleteFunctions){
 	}else{{
 		FnBind[] add = [
@@ -2163,14 +2160,6 @@ mixin(joinFnBinds((){
 	}else{{
 		FnBind[] add = [
 			{q{void}, q{SetItemAllowOverlap}, q{}, ext: `C++, "ImGui"`},
-		];
-		ret ~= add;
-	}}
-	
-	version(ImGui_DisableObsoleteFunctions){
-	}else{{
-		FnBind[] add = [
-			{q{ImGuiKey}, q{GetKeyIndex}, q{ImGuiKey key}, ext: `C++, "ImGui"`},
 		];
 		ret ~= add;
 	}}
@@ -2236,6 +2225,8 @@ mixin(joinFnBinds((){
 				
 				{q{ImGuiStoragePair*}, q{ImLowerBound}, q{ImGuiStoragePair* inBegin, ImGuiStoragePair* inEnd, ImGuiID key}, ext: `C++`},
 				
+				{q{ImGuiIO*}, q{GetIO}, q{ImGuiContext* ctx}, ext: `C++, "ImGui"`},
+				{q{ImGuiPlatformIO*}, q{GetPlatformIO}, q{ImGuiContext* ctx}, ext: `C++, "ImGui"`},
 				{q{ImGuiWindow*}, q{GetCurrentWindowRead}, q{}, ext: `C++, "ImGui"`},
 				{q{ImGuiWindow*}, q{GetCurrentWindow}, q{}, ext: `C++, "ImGui"`},
 				{q{ImGuiWindow*}, q{FindWindowByID}, q{ImGuiID id}, ext: `C++, "ImGui"`},
@@ -2271,6 +2262,7 @@ mixin(joinFnBinds((){
 				
 				{q{void}, q{SetCurrentFont}, q{ImFont* font}, ext: `C++, "ImGui"`},
 				{q{ImFont*}, q{GetDefaultFont}, q{}, ext: `C++, "ImGui"`},
+				{q{void}, q{PushPasswordFont}, q{}, ext: `C++, "ImGui"`},
 				{q{ImDrawList*}, q{GetForegroundDrawList}, q{ImGuiWindow* window}, ext: `C++, "ImGui"`},
 				{q{ImDrawList*}, q{GetBackgroundDrawList}, q{ImGuiViewport* viewport}, ext: `C++, "ImGui"`},
 				{q{ImDrawList*}, q{GetForegroundDrawList}, q{ImGuiViewport* viewport}, ext: `C++, "ImGui"`},
@@ -2290,6 +2282,7 @@ mixin(joinFnBinds((){
 				{q{void}, q{RemoveContextHook}, q{ImGuiContext* context, ImGuiID hookToRemove}, ext: `C++, "ImGui"`},
 				{q{void}, q{CallContextHooks}, q{ImGuiContext* context, ImGuiContextHookType type}, ext: `C++, "ImGui"`},
 				
+				{q{void}, q{ScaleWindowsInViewport}, q{ImGuiViewportP* viewport, float scale}, ext: `C++, "ImGui"`},
 				{q{void}, q{SetWindowViewport}, q{ImGuiWindow* window, ImGuiViewportP* viewport}, ext: `C++, "ImGui"`},
 				
 				{q{void}, q{MarkIniSettingsDirty}, q{}, ext: `C++, "ImGui"`},
@@ -2339,17 +2332,17 @@ mixin(joinFnBinds((){
 				{q{bool}, q{ItemHoverable}, q{ImRect bb, ImGuiID id, ImGuiItemFlags_ itemFlags}, ext: `C++, "ImGui"`},
 				{q{bool}, q{IsWindowContentHoverable}, q{ImGuiWindow* window, ImGuiHoveredFlags_ flags=0}, ext: `C++, "ImGui"`},
 				{q{bool}, q{IsClippedEx}, q{ImRect bb, ImGuiID id}, ext: `C++, "ImGui"`},
-				{q{void}, q{SetLastItemData}, q{ImGuiID itemID, ImGuiItemFlags_ inFlags, ImGuiItemStatusFlags_ statusFlags, ImRect itemRect}, ext: `C++, "ImGui"`},
+				{q{void}, q{SetLastItemData}, q{ImGuiID itemID, ImGuiItemFlags_ itemFlags, ImGuiItemStatusFlags_ statusFlags, ImRect itemRect}, ext: `C++, "ImGui"`},
 				{q{ImVec2}, q{CalcItemSize}, q{ImVec2 size, float defaultW, float defaultH}, ext: `C++, "ImGui"`},
 				{q{float}, q{CalcWrapWidthForPos}, q{in ImVec2 pos, float wrapPosX}, ext: `C++, "ImGui"`},
 				{q{void}, q{PushMultiItemsWidths}, q{int components, float widthFull}, ext: `C++, "ImGui"`},
 				{q{void}, q{ShrinkWidths}, q{ImGuiShrinkWidthItem* items, int count, float widthExcess}, ext: `C++, "ImGui"`},
 				
-				{q{const(ImGuiDataVarInfo)*}, q{GetStyleVarInfo}, q{ImGuiStyleVar_ idx}, ext: `C++, "ImGui"`},
+				{q{const(ImGuiStyleVarInfo)*}, q{GetStyleVarInfo}, q{ImGuiStyleVar_ idx}, ext: `C++, "ImGui"`},
 				{q{void}, q{BeginDisabledOverrideReenable}, q{}, ext: `C++, "ImGui"`, aliases: [q{BeginDisabledOverrideReEnable}]},
 				{q{void}, q{EndDisabledOverrideReenable}, q{}, ext: `C++, "ImGui"`, aliases: [q{EndDisabledOverrideReEnable}]},
 				
-				{q{void}, q{LogBegin}, q{ImGuiLogType type, int autoOpenDepth}, ext: `C++, "ImGui"`},
+				{q{void}, q{LogBegin}, q{ImGuiLogFlags_ flags, int autoOpenDepth}, ext: `C++, "ImGui"`},
 				{q{void}, q{LogToBuffer}, q{int autoOpenDepth=-1}, ext: `C++, "ImGui"`},
 				{q{void}, q{LogRenderedText}, q{const(ImVec2)* refPos, const(char)* text, const(char)* textEnd=null}, ext: `C++, "ImGui"`},
 				{q{void}, q{LogSetNextTextDecoration}, q{const(char)* prefix, const(char)* suffix}, ext: `C++, "ImGui"`},
@@ -2357,6 +2350,7 @@ mixin(joinFnBinds((){
 				{q{bool}, q{BeginChildEx}, q{const(char)* name, ImGuiID id, in ImVec2 sizeArg, ImGuiChildFlags_ childFlags, ImGuiWindowFlags_ windowFlags}, ext: `C++, "ImGui"`},
 				
 				{q{bool}, q{BeginPopupEx}, q{ImGuiID id, ImGuiWindowFlags_ extraWindowFlags}, ext: `C++, "ImGui"`},
+				{q{bool}, q{BeginPopupMenuEx}, q{ImGuiID id, const(char)* label, ImGuiWindowFlags_ extraWindowFlags}, ext: `C++, "ImGui"`},
 				{q{void}, q{OpenPopupEx}, q{ImGuiID id, ImGuiPopupFlags_ popupFlags=ImGuiPopupFlags.none}, ext: `C++, "ImGui"`},
 				{q{void}, q{ClosePopupToLevel}, q{int remaining, bool restoreFocusToWindowUnderPopup}, ext: `C++, "ImGui"`},
 				{q{void}, q{ClosePopupsOverWindow}, q{ImGuiWindow* refWindow, bool restoreFocusToWindowUnderPopup}, ext: `C++, "ImGui"`},
@@ -2550,6 +2544,7 @@ mixin(joinFnBinds((){
 				{q{void}, q{TabBarQueueReorderFromMousePos}, q{ImGuiTabBar* tabBar, ImGuiTabItem* tab, ImVec2 mousePos}, ext: `C++, "ImGui"`},
 				{q{bool}, q{TabBarProcessReorder}, q{ImGuiTabBar* tabBar}, ext: `C++, "ImGui"`},
 				{q{bool}, q{TabItemEx}, q{ImGuiTabBar* tabBar, const(char)* label, bool* pOpen, ImGuiTabItemFlags_ flags, ImGuiWindow* dockedWindow}, ext: `C++, "ImGui"`},
+				{q{void}, q{TabItemSpacing}, q{const(char)* strID, ImGuiTabItemFlags_ flags, float width}, ext: `C++, "ImGui"`},
 				{q{ImVec2}, q{TabItemCalcSize}, q{const(char)* label, bool hasCloseButtonOrUnsavedMarker}, ext: `C++, "ImGui"`},
 				{q{ImVec2}, q{TabItemCalcSize}, q{ImGuiWindow* window}, ext: `C++, "ImGui"`},
 				{q{void}, q{TabItemBackground}, q{ImDrawList* drawList, ImRect bb, ImGuiTabItemFlags_ flags, uint col}, ext: `C++, "ImGui"`},
@@ -2578,7 +2573,7 @@ mixin(joinFnBinds((){
 				{q{void}, q{TextEx}, q{const(char)* text, const(char)* textEnd=null, ImGuiTextFlags_ flags=0}, ext: `C++, "ImGui"`},
 				{q{bool}, q{ButtonEx}, q{const(char)* label, in ImVec2 sizeArg=ImVec2(0, 0), ImGuiButtonFlags_ flags=0}, ext: `C++, "ImGui"`},
 				{q{bool}, q{ArrowButtonEx}, q{const(char)* strID, ImGuiDir dir, ImVec2 sizeArg, ImGuiButtonFlags_ flags=0}, ext: `C++, "ImGui"`},
-				{q{bool}, q{ImageButtonEx}, q{ImGuiID id, ImTextureID textureID, in ImVec2 imageSize, in ImVec2 uv0, in ImVec2 uv1, in ImVec4 bgCol, in ImVec4 tintCol, ImGuiButtonFlags_ flags=0}, ext: `C++, "ImGui"`},
+				{q{bool}, q{ImageButtonEx}, q{ImGuiID id, ImTextureID userTextureID, in ImVec2 imageSize, in ImVec2 uv0, in ImVec2 uv1, in ImVec4 bgCol, in ImVec4 tintCol, ImGuiButtonFlags_ flags=0}, ext: `C++, "ImGui"`},
 				{q{void}, q{SeparatorEx}, q{ImGuiSeparatorFlags_ flags, float thickness=1f}, ext: `C++, "ImGui"`},
 				{q{void}, q{SeparatorTextEx}, q{ImGuiID id, const(char)* label, const(char)* labelEnd, float extraWidth}, ext: `C++, "ImGui"`},
 				{q{bool}, q{CheckboxFlags}, q{const(char)* label, c_longlong* flags, c_longlong flagsValue}, ext: `C++, "ImGui"`},
@@ -2587,7 +2582,7 @@ mixin(joinFnBinds((){
 				{q{bool}, q{CloseButton}, q{ImGuiID id, in ImVec2 pos}, ext: `C++, "ImGui"`},
 				{q{bool}, q{CollapseButton}, q{ImGuiID id, in ImVec2 pos}, ext: `C++, "ImGui"`},
 				{q{void}, q{Scrollbar}, q{ImGuiAxis axis}, ext: `C++, "ImGui"`},
-				{q{bool}, q{ScrollbarEx}, q{ImRect bb, ImGuiID id, ImGuiAxis axis, c_longlong* pScrollV, c_longlong availV, c_longlong contentsV, ImDrawFlags_ flags}, ext: `C++, "ImGui"`},
+				{q{bool}, q{ScrollbarEx}, q{ImRect bb, ImGuiID id, ImGuiAxis axis, c_longlong* pScrollV, c_longlong availV, c_longlong contentsV, ImDrawFlags_ drawRoundingFlags=0}, ext: `C++, "ImGui"`},
 				{q{ImRect}, q{GetWindowScrollbarRect}, q{ImGuiWindow* window, ImGuiAxis axis}, ext: `C++, "ImGui"`},
 				{q{ImGuiID}, q{GetWindowScrollbarID}, q{ImGuiWindow* window, ImGuiAxis axis}, ext: `C++, "ImGui"`},
 				{q{ImGuiID}, q{GetWindowResizeCornerID}, q{ImGuiWindow* window, int n}, ext: `C++, "ImGui"`},
@@ -2619,6 +2614,7 @@ mixin(joinFnBinds((){
 				{q{bool}, q{TempInputIsActive}, q{ImGuiID id}, ext: `C++, "ImGui"`},
 				
 				{q{void}, q{SetNextItemRefVal}, q{ImGuiDataType_ dataType, void* pData}, ext: `C++, "ImGui"`},
+				{q{bool}, q{IsItemActiveAsInputText}, q{}, ext: `C++, "ImGui"`},
 				
 				{q{void}, q{ColorTooltip}, q{const(char)* text, const(float)* col, ImGuiColourEditFlags_ flags}, ext: `C++, "ImGui"`, aliases: [q{ColourTooltip}]},
 				{q{void}, q{ColorEditOptionsPopup}, q{const(float)* col, ImGuiColourEditFlags_ flags}, ext: `C++, "ImGui"`, aliases: [q{ColourEditOptionsPopup}]},
@@ -2678,15 +2674,18 @@ mixin(joinFnBinds((){
 				
 				{q{const(ImFontBuilderIO)*}, q{ImFontAtlasGetBuilderForStbTruetype}, q{}, ext: `C++`},
 				
-				{q{void}, q{ImFontAtlasUpdateConfigDataPointers}, q{ImFontAtlas* atlas}, ext: `C++`},
+				{q{void}, q{ImFontAtlasUpdateSourcesPointers}, q{ImFontAtlas* atlas}, ext: `C++`},
 				{q{void}, q{ImFontAtlasBuildInit}, q{ImFontAtlas* atlas}, ext: `C++`},
-				{q{void}, q{ImFontAtlasBuildSetupFont}, q{ImFontAtlas* atlas, ImFont* font, ImFontConfig* fontConfig, float ascent, float descent}, ext: `C++`, aliases: [q{ImFontAtlasBuildSetUpFont}]},
+				{q{void}, q{ImFontAtlasBuildSetupFont}, q{ImFontAtlas* atlas, ImFont* font, ImFontConfig* src, float ascent, float descent}, ext: `C++`, aliases: [q{ImFontAtlasBuildSetUpFont}]},
 				{q{void}, q{ImFontAtlasBuildPackCustomRects}, q{ImFontAtlas* atlas, void* stbrpContextOpaque}, ext: `C++`},
 				{q{void}, q{ImFontAtlasBuildFinish}, q{ImFontAtlas* atlas}, ext: `C++`},
 				{q{void}, q{ImFontAtlasBuildRender8bppRectFromString}, q{ImFontAtlas* atlas, int x, int y, int w, int h, const(char)* inStr, char inMarkerChar, ubyte inMarkerPixelValue}, ext: `C++`, aliases: [q{ImFontAtlasBuildRender8BPPRectFromString}]},
 				{q{void}, q{ImFontAtlasBuildRender32bppRectFromString}, q{ImFontAtlas* atlas, int x, int y, int w, int h, const(char)* inStr, char inMarkerChar, uint inMarkerPixelValue}, ext: `C++`, aliases: [q{ImFontAtlasBuildRender32BPPRectFromString}]},
 				{q{void}, q{ImFontAtlasBuildMultiplyCalcLookupTable}, q{ubyte*/+ARRAY?+/ outTable, float inMultiplyFactor}, ext: `C++`},
 				{q{void}, q{ImFontAtlasBuildMultiplyRectAlpha8}, q{const(ubyte)*/+ARRAY?+/ table, ubyte* pixels, int x, int y, int w, int h, int stride}, ext: `C++`},
+				{q{void}, q{ImFontAtlasBuildGetOversampleFactors}, q{const(ImFontConfig)* src, int* outOversampleH, int* outOversampleV}, ext: `C++`},
+				
+				{q{bool}, q{ImFontAtlasGetMouseCursorTexData}, q{ImFontAtlas* atlas, ImGuiMouseCursor_ cursorType, ImVec2* outOffset, ImVec2* outSize, ImVec2*/+ARRAY?+/ outUVBorder, ImVec2*/+ARRAY?+/ outUVFill}, ext: `C++`},
 			];
 			ret ~= add;
 		}
@@ -2724,7 +2723,7 @@ mixin(joinFnBinds((){
 		}}
 	}
 	return ret;
-}(), "ImGuiStyle, ImGuiIO, ImGuiInputTextCallbackData, ImGuiPayload, ImGuiTextFilter.ImGuiTextRange, ImGuiTextFilter, ImGuiTextBuffer, ImGuiStorage, ImGuiListClipper, ImGuiSelectionBasicStorage, ImGuiSelectionExternalStorage, ImDrawCmd, ImDrawListSplitter, ImDrawList, ImDrawData, ImFontGlyphRangesBuilder, ImFontAtlasCustomRect, ImFontAtlas, ImFont, ImGuiViewport, ImRect, ImBitVector, ImDrawListSharedData, ImGuiDataVarInfo, ImGuiTextIndex, ImGuiMenuColumns, ImGuiInputTextDeactivatedState, ImGuiInputTextState, ImGuiNextWindowData, ImGuiNextItemData, ImGuiKeyRoutingTable, ImGuiListClipperRange, ImGuiListClipperData, ImGuiNavItemData, ImGuiTypingSelectState, ImGuiMultiSelectTempData, ImGuiViewportP, ImGuiWindowSettings, ImGuiWindow, ImGuiTableSettings"));
+}(), "ImGuiStyle, ImGuiIO, ImGuiInputTextCallbackData, ImGuiPayload, ImGuiTextFilter.ImGuiTextRange, ImGuiTextFilter, ImGuiTextBuffer, ImGuiStorage, ImGuiListClipper, ImGuiSelectionBasicStorage, ImGuiSelectionExternalStorage, ImDrawCmd, ImDrawListSplitter, ImDrawList, ImDrawData, ImFontGlyphRangesBuilder, ImFontAtlasCustomRect, ImFontAtlas, ImFont, ImGuiViewport, ImRect, ImBitVector, ImDrawListSharedData, ImGuiStyleVarInfo, ImGuiTextIndex, ImGuiMenuColumns, ImGuiInputTextDeactivatedState, ImGuiInputTextState, ImGuiNextWindowData, ImGuiNextItemData, ImGuiKeyRoutingTable, ImGuiListClipperRange, ImGuiListClipperData, ImGuiNavItemData, ImGuiTypingSelectState, ImGuiMultiSelectTempData, ImGuiViewportP, ImGuiWindowSettings, ImGuiWindow, ImGuiTableSettings"));
 
 extern(C++) struct ImVec2{
 	float x = 0f, y = 0f;
@@ -3004,6 +3003,7 @@ extern(C++) struct ImGuiStyle{
 	ImVec2 windowPadding;
 	float windowRounding = 0f;
 	float windowBorderSize = 0f;
+	float windowBorderHoverPadding = 0f;
 	ImVec2 windowMinSize;
 	ImVec2 windowTitleAlign;
 	ImGuiDir windowMenuButtonPosition;
@@ -3025,9 +3025,11 @@ extern(C++) struct ImGuiStyle{
 	float grabMinSize = 0f;
 	float grabRounding = 0f;
 	float logSliderDeadzone = 0f;
+	float imageBorderSize = 0f;
 	float tabRounding = 0f;
 	float tabBorderSize = 0f;
-	float tabMinWidthForCloseButton = 0f;
+	float tabCloseButtonMinWidthSelected = 0f;
+	float tabCloseButtonMinWidthUnselected = 0f;
 	float tabBarBorderSize = 0f;
 	float tabBarOverlineSize = 0f;
 	float tableAngledHeadersAngle = 0f;
@@ -3046,6 +3048,7 @@ extern(C++) struct ImGuiStyle{
 	bool antiAliasedFill;
 	float curveTessellationTol = 0f;
 	float circleTessellationMaxError = 0f;
+	
 	ImVec4[ImGuiCol.count] colours;
 	
 	float hoverStationaryDelay = 0f;
@@ -3066,6 +3069,7 @@ extern(C++) struct ImGuiStyle{
 	alias WindowPadding = windowPadding;
 	alias WindowRounding = windowRounding;
 	alias WindowBorderSize = windowBorderSize;
+	alias WindowBorderHoverPadding = windowBorderHoverPadding;
 	alias WindowMinSize = windowMinSize;
 	alias WindowTitleAlign = windowTitleAlign;
 	alias WindowMenuButtonPosition = windowMenuButtonPosition;
@@ -3087,9 +3091,11 @@ extern(C++) struct ImGuiStyle{
 	alias GrabMinSize = grabMinSize;
 	alias GrabRounding = grabRounding;
 	alias LogSliderDeadzone = logSliderDeadzone;
+	alias ImageBorderSize = imageBorderSize;
 	alias TabRounding = tabRounding;
 	alias TabBorderSize = tabBorderSize;
-	alias TabMinWidthForCloseButton = tabMinWidthForCloseButton;
+	alias TabCloseButtonMinWidthSelected = tabCloseButtonMinWidthSelected;
+	alias TabCloseButtonMinWidthUnselected = tabCloseButtonMinWidthUnselected;
 	alias TabBarBorderSize = tabBarBorderSize;
 	alias TabBarOverlineSize = tabBarOverlineSize;
 	alias TableAngledHeadersAngle = tableAngledHeadersAngle;
@@ -3110,6 +3116,7 @@ extern(C++) struct ImGuiStyle{
 	alias AntiAliasedFill = antiAliasedFill;
 	alias CurveTessellationTol = curveTessellationTol;
 	alias CircleTessellationMaxError = circleTessellationMaxError;
+	
 	alias Colours = colours;
 	alias Colors = colours;
 	alias colors = colours;
@@ -3165,6 +3172,7 @@ extern(C++) struct ImGuiIO{
 	bool configDragClickToInputText;
 	bool configWindowsResizeFromEdges = true;
 	bool configWindowsMoveFromTitleBarOnly;
+	bool configWindowsCopyContentsWithCtrlC;
 	bool configScrollbarScrollByPage;
 	float configMemoryCompactTimer = 60f;
 	
@@ -3182,6 +3190,7 @@ extern(C++) struct ImGuiIO{
 	bool configDebugIsDebuggerPresent;
 	
 	bool configDebugHighlightIDConflicts;
+	bool configDebugHighlightIDConflictsShowItemPicker;
 	
 	bool configDebugBeginReturnValueOnce;
 	bool configDebugBeginReturnValueLoop;
@@ -3223,7 +3232,7 @@ extern(C++) struct ImGuiIO{
 	bool keySuper;
 	
 	ImGuiKeyChord keyMods;
-	ImGuiKeyData[ImGuiKey.keysDataSize] keysData;
+	ImGuiKeyData[ImGuiKey.namedKeyCount] keysData;
 	bool wantCaptureMouseUnlessPopupClose;
 	ImVec2 mousePosPrev;
 	ImVec2[5] mouseClickedPos;
@@ -3233,6 +3242,7 @@ extern(C++) struct ImGuiIO{
 	ushort[5] mouseClickedCount;
 	ushort[5] mouseClickedLastCount;
 	bool[5] mouseReleased;
+	double[5] mouseReleasedTime;
 	bool[5] mouseDownOwned;
 	bool[5] mouseDownOwnedUnlessPopupClose;
 	bool mouseWheelRequestAxisSwap;
@@ -3243,14 +3253,8 @@ extern(C++) struct ImGuiIO{
 	float penPressure = 0f;
 	bool appFocusLost;
 	bool appAcceptingEvents;
-	byte backendUsingLegacyKeyArrays;
-	bool backendUsingLegacyNavInputArray;
 	ImWChar16 inputQueueSurrogate;
 	ImVector!(ImWChar) inputQueueCharacters;
-	
-	int[ImGuiKey.count] keyMap;
-	bool[ImGuiKey.count] keysDown;
-	float[ImGuiNavInput.count] navInputs;
 	private alias GetClipboardTextFnFn = extern(C++) const(char)* function(void* userData) nothrow @nogc;
 	GetClipboardTextFnFn getClipboardTextFn;
 	private alias SetClipboardTextFnFn = extern(C++) void function(void* userData, const(char)* text) nothrow @nogc;
@@ -3319,6 +3323,7 @@ extern(C++) struct ImGuiIO{
 	alias ConfigDragClickToInputText = configDragClickToInputText;
 	alias ConfigWindowsResizeFromEdges = configWindowsResizeFromEdges;
 	alias ConfigWindowsMoveFromTitleBarOnly = configWindowsMoveFromTitleBarOnly;
+	alias ConfigWindowsCopyContentsWithCtrlC = configWindowsCopyContentsWithCtrlC;
 	alias ConfigScrollbarScrollByPage = configScrollbarScrollByPage;
 	alias ConfigMemoryCompactTimer = configMemoryCompactTimer;
 	
@@ -3336,6 +3341,7 @@ extern(C++) struct ImGuiIO{
 	alias ConfigDebugIsDebuggerPresent = configDebugIsDebuggerPresent;
 	
 	alias ConfigDebugHighlightIdConflicts = configDebugHighlightIDConflicts;
+	alias ConfigDebugHighlightIdConflictsShowItemPicker = configDebugHighlightIDConflictsShowItemPicker;
 	
 	alias ConfigDebugBeginReturnValueOnce = configDebugBeginReturnValueOnce;
 	alias ConfigDebugBeginReturnValueLoop = configDebugBeginReturnValueLoop;
@@ -3387,6 +3393,7 @@ extern(C++) struct ImGuiIO{
 	alias MouseClickedCount = mouseClickedCount;
 	alias MouseClickedLastCount = mouseClickedLastCount;
 	alias MouseReleased = mouseReleased;
+	alias MouseReleasedTime = mouseReleasedTime;
 	alias MouseDownOwned = mouseDownOwned;
 	alias MouseDownOwnedUnlessPopupClose = mouseDownOwnedUnlessPopupClose;
 	alias MouseWheelRequestAxisSwap = mouseWheelRequestAxisSwap;
@@ -3397,14 +3404,8 @@ extern(C++) struct ImGuiIO{
 	alias PenPressure = penPressure;
 	alias AppFocusLost = appFocusLost;
 	alias AppAcceptingEvents = appAcceptingEvents;
-	alias BackendUsingLegacyKeyArrays = backendUsingLegacyKeyArrays;
-	alias BackendUsingLegacyNavInputArray = backendUsingLegacyNavInputArray;
 	alias InputQueueSurrogate = inputQueueSurrogate;
 	alias InputQueueCharacters = inputQueueCharacters;
-	
-	alias KeyMap = keyMap;
-	alias KeysDown = keysDown;
-	alias NavInputs = navInputs;
 	alias GetClipboardTextFn = getClipboardTextFn;
 	alias SetClipboardTextFn = setClipboardTextFn;
 	
@@ -3542,6 +3543,7 @@ extern(C++) struct ImGuiTextBuffer{
 			{q{int}, q{size}, q{}, ext: `C++`, memAttr: q{const}},
 			{q{bool}, q{empty}, q{}, ext: `C++`, memAttr: q{const}},
 			{q{void}, q{clear}, q{}, ext: `C++`},
+			{q{void}, q{resize}, q{int size}, ext: `C++`},
 			{q{void}, q{reserve}, q{int capacity}, ext: `C++`},
 			{q{const(char)*}, q{c_str}, q{}, ext: `C++`, memAttr: q{const}, aliases: [q{cStr}]},
 			{q{void}, q{append}, q{const(char)* str, const(char)* strEnd=null}, ext: `C++`},
@@ -3902,7 +3904,7 @@ extern(C++) struct ImDrawList{
 			{q{void}, q{AddEllipse}, q{in ImVec2 centre, in ImVec2 radius, uint col, float rot=0f, int numSegments=0, float thickness=1f}, ext: `C++`, aliases: [q{addEllipse}]},
 			{q{void}, q{AddEllipseFilled}, q{in ImVec2 centre, in ImVec2 radius, uint col, float rot=0f, int numSegments=0}, ext: `C++`, aliases: [q{addEllipseFilled}]},
 			{q{void}, q{AddText}, q{in ImVec2 pos, uint col, const(char)* textBegin, const(char)* textEnd=null}, ext: `C++`, aliases: [q{addText}]},
-			{q{void}, q{AddText}, q{const(ImFont)* font, float fontSize, in ImVec2 pos, uint col, const(char)* textBegin, const(char)* textEnd=null, float wrapWidth=0f, const(ImVec4)* cpuFineClipRect=null}, ext: `C++`, aliases: [q{addText}]},
+			{q{void}, q{AddText}, q{ImFont* font, float fontSize, in ImVec2 pos, uint col, const(char)* textBegin, const(char)* textEnd=null, float wrapWidth=0f, const(ImVec4)* cpuFineClipRect=null}, ext: `C++`, aliases: [q{addText}]},
 			{q{void}, q{AddBezierCubic}, q{in ImVec2 p1, in ImVec2 p2, in ImVec2 p3, in ImVec2 p4, uint col, float thickness, int numSegments=0}, ext: `C++`, aliases: [q{addBezierCubic}]},
 			{q{void}, q{AddBezierQuadratic}, q{in ImVec2 p1, in ImVec2 p2, in ImVec2 p3, uint col, float thickness, int numSegments=0}, ext: `C++`, aliases: [q{addBezierQuadratic}]},
 			{q{void}, q{AddPolyline}, q{const(ImVec2)* points, int numPoints, uint col, ImDrawFlags_ flags, float thickness}, ext: `C++`, aliases: [q{addPolyline}]},
@@ -4010,17 +4012,18 @@ extern(C++) struct ImFontConfig{
 	void* fontData;
 	int fontDataSize;
 	bool fontDataOwnedByAtlas = true;
+	bool mergeMode;
+	bool pixelSnapH;
 	int fontNo;
-	float sizePixels = 0f;
 	int oversampleH = 2;
 	int oversampleV = 1;
-	bool pixelSnapH;
-	ImVec2 glyphExtraSpacing;
+	float sizePixels = 0f;
+	
 	ImVec2 glyphOffset;
 	const(ImWChar)* glyphRanges;
 	float glyphMinAdvanceX = 0f;
 	float glyphMaxAdvanceX = float.max;
-	bool mergeMode;
+	float glyphExtraAdvanceX = 0f;
 	uint fontBuilderFlags;
 	float rasteriserMultiply = 1f;
 	float rasteriserDensity = 1f;
@@ -4032,17 +4035,18 @@ extern(C++) struct ImFontConfig{
 	alias FontData = fontData;
 	alias FontDataSize = fontDataSize;
 	alias FontDataOwnedByAtlas = fontDataOwnedByAtlas;
+	alias MergeMode = mergeMode;
+	alias PixelSnapH = pixelSnapH;
 	alias FontNo = fontNo;
-	alias SizePixels = sizePixels;
 	alias OversampleH = oversampleH;
 	alias OversampleV = oversampleV;
-	alias PixelSnapH = pixelSnapH;
-	alias GlyphExtraSpacing = glyphExtraSpacing;
+	alias SizePixels = sizePixels;
+	
 	alias GlyphOffset = glyphOffset;
 	alias GlyphRanges = glyphRanges;
 	alias GlyphMinAdvanceX = glyphMinAdvanceX;
 	alias GlyphMaxAdvanceX = glyphMaxAdvanceX;
-	alias MergeMode = mergeMode;
+	alias GlyphExtraAdvanceX = glyphExtraAdvanceX;
 	alias FontBuilderFlags = fontBuilderFlags;
 	alias RasteriserMultiply = rasteriserMultiply;
 	alias RasterizerMultiply = rasteriserMultiply;
@@ -4114,9 +4118,13 @@ extern(C++) struct ImFontGlyphRangesBuilder{
 }
 
 extern(C++) struct ImFontAtlasCustomRect{
-	ushort width, height;
 	ushort x = 0xFFFF, y = 0xFFFF;
-	uint glyphID;
+	
+	ushort width, height;
+	mixin(bitfields!(
+		uint, q{glyphID}, 31,
+		uint, q{glyphColoured}, 1,
+	));
 	float glyphAdvanceX = 0f;
 	ImVec2 glyphOffset;
 	ImFont* font;
@@ -4128,11 +4136,15 @@ extern(C++) struct ImFontAtlasCustomRect{
 		return ret;
 	}()));
 	
-	alias Width = width;
-	alias Height = height;
 	alias X = x;
 	alias Y = y;
+	
+	alias Width = width;
+	alias Height = height;
 	alias GlyphID = glyphID;
+	alias GlyphColoured = glyphColoured;
+	alias GlyphColored = glyphColoured;
+	alias glyphColored = glyphColoured;
 	alias GlyphAdvanceX = glyphAdvanceX;
 	alias GlyphOffset = glyphOffset;
 	alias Font = font;
@@ -4143,9 +4155,9 @@ extern(C++) struct ImFontAtlas{
 	ImTextureID texID;
 	int texDesiredWidth;
 	int texGlyphPadding;
-	bool locked;
 	void* userData;
 	
+	bool locked;
 	bool texReady;
 	bool texPixelsUseColours;
 	ubyte* texPixelsAlpha8;
@@ -4156,7 +4168,7 @@ extern(C++) struct ImFontAtlas{
 	ImVec2 texUVWhitePixel;
 	ImVector!(ImFont*) fonts;
 	ImVector!(ImFontAtlasCustomRect) customRects;
-	ImVector!(ImFontConfig) configData;
+	ImVector!(ImFontConfig) sources;
 	ImVec4[IM_DRAWLIST_TEX_LINES_WIDTH_MAX+1] texUVLines;
 	
 	const(ImFontBuilderIO)* fontBuilderIO;
@@ -4180,8 +4192,8 @@ extern(C++) struct ImFontAtlas{
 			{q{ImFont*}, q{AddFontFromMemoryCompressedTTF}, q{const(void)* compressedFontData, int compressedFontDataSize, float sizePixels, const(ImFontConfig)* fontCfg=null, const(ImWChar)* glyphRanges=null}, ext: `C++`, aliases: [q{addFontFromMemoryCompressedTTF}]},
 			{q{ImFont*}, q{AddFontFromMemoryCompressedBase85TTF}, q{const(char)* compressedFontDataBase85, float sizePixels, const(ImFontConfig)* fontCfg=null, const(ImWChar)* glyphRanges=null}, ext: `C++`, aliases: [q{addFontFromMemoryCompressedBase85TTF}]},
 			{q{void}, q{ClearInputData}, q{}, ext: `C++`, aliases: [q{clearInputData}]},
-			{q{void}, q{ClearTexData}, q{}, ext: `C++`, aliases: [q{clearTexData}]},
 			{q{void}, q{ClearFonts}, q{}, ext: `C++`, aliases: [q{clearFonts}]},
+			{q{void}, q{ClearTexData}, q{}, ext: `C++`, aliases: [q{clearTexData}]},
 			{q{void}, q{Clear}, q{}, ext: `C++`, aliases: [q{clear}]},
 			{q{bool}, q{Build}, q{}, ext: `C++`, aliases: [q{build}]},
 			{q{void}, q{GetTexDataAsAlpha8}, q{ubyte** outPixels, int* outWidth, int* outHeight, int* outBytesPerPixel=null}, ext: `C++`, aliases: [q{getTexDataAsAlpha8}]},
@@ -4198,7 +4210,6 @@ extern(C++) struct ImFontAtlas{
 			{q{int}, q{AddCustomRectRegular}, q{int width, int height}, ext: `C++`, aliases: [q{addCustomRectRegular}]},
 			{q{int}, q{AddCustomRectFontGlyph}, q{ImFont* font, ImWChar id, int width, int height, float advanceX, in ImVec2 offset=ImVec2(0, 0)}, ext: `C++`, aliases: [q{addCustomRectFontGlyph}]},
 			{q{void}, q{CalcCustomRectUV}, q{const(ImFontAtlasCustomRect)* rect, ImVec2* outUVMin, ImVec2* outUVMax}, ext: `C++`, memAttr: q{const}, aliases: [q{calcCustomRectUV}]},
-			{q{bool}, q{GetMouseCursorTexData}, q{ImGuiMouseCursor_ cursor, ImVec2* outOffset, ImVec2* outSize, ImVec2*/+ARRAY?+/ outUVBorder, ImVec2*/+ARRAY?+/ outUVFill}, ext: `C++`, aliases: [q{getMouseCursorTexData}]},
 		];
 		return ret;
 	}()));
@@ -4207,9 +4218,9 @@ extern(C++) struct ImFontAtlas{
 	alias TexID = texID;
 	alias TexDesiredWidth = texDesiredWidth;
 	alias TexGlyphPadding = texGlyphPadding;
-	alias Locked = locked;
 	alias UserData = userData;
 	
+	alias Locked = locked;
 	alias TexReady = texReady;
 	alias TexPixelsUseColours = texPixelsUseColours;
 	alias TexPixelsUseColors = texPixelsUseColours;
@@ -4222,7 +4233,7 @@ extern(C++) struct ImFontAtlas{
 	alias TexUvWhitePixel = texUVWhitePixel;
 	alias Fonts = fonts;
 	alias CustomRects = customRects;
-	alias ConfigData = configData;
+	alias Sources = sources;
 	alias TexUvLines = texUVLines;
 	
 	alias FontBuilderIO = fontBuilderIO;
@@ -4241,44 +4252,43 @@ extern(C++) struct ImFont{
 	float fallbackAdvanceX = 0f;
 	float fontSize = 0f;
 	
-	ImVector!(ImWChar) indexLookup;
+	ImVector!(ushort) indexLookup;
 	ImVector!(ImFontGlyph) glyphs;
-	const(ImFontGlyph)* fallbackGlyph;
+	ImFontGlyph* fallbackGlyph;
 	
 	ImFontAtlas* containerAtlas;
-	const(ImFontConfig)* configData;
-	short configDataCount;
-	ImWChar fallbackChar = '\u0000';
-	ImWChar ellipsisChar = '\u0000';
+	ImFontConfig* sources;
+	short sourcesCount;
 	short ellipsisCharCount;
+	ImWChar ellipsisChar = '\u0000';
+	ImWChar fallbackChar = '\u0000';
 	float ellipsisWidth = 0f;
 	float ellipsisCharStep = 0f;
-	bool dirtyLookupTables;
 	float scale = 0f;
 	float ascent = 0f, descent = 0f;
 	int metricsTotalSurface;
-	ubyte[(IM_UNICODE_CODEPOINT_MAX+1)/4096/8] used4KPagesMap;
+	bool dirtyLookupTables;
+	ubyte[(IM_UNICODE_CODEPOINT_MAX+1)/8192/8] used8KPagesMap;
 	
 	extern(D) nothrow @nogc{
-		float getCharAdvance(ImWChar c) const pure => (cast(int)c < indexAdvanceX.size) ? indexAdvanceX[cast(int)c] : fallbackAdvanceX;
+		float getCharAdvance(ImWChar c) pure => (cast(int)c < indexAdvanceX.size) ? indexAdvanceX[cast(int)c] : fallbackAdvanceX;
 	}
 	
 	extern(D) mixin(joinFnBinds((){
 		FnBind[] ret = [
-			{q{const(ImFontGlyph)*}, q{FindGlyph}, q{ImWChar c}, ext: `C++`, memAttr: q{const}, aliases: [q{findGlyph}]},
-			{q{const(ImFontGlyph)*}, q{FindGlyphNoFallback}, q{ImWChar c}, ext: `C++`, memAttr: q{const}, aliases: [q{findGlyphNoFallback}]},
+			{q{ImFontGlyph*}, q{FindGlyph}, q{ImWChar c}, ext: `C++`, aliases: [q{findGlyph}]},
+			{q{ImFontGlyph*}, q{FindGlyphNoFallback}, q{ImWChar c}, ext: `C++`, aliases: [q{findGlyphNoFallback}]},
 			{q{bool}, q{IsLoaded}, q{}, ext: `C++`, memAttr: q{const}, aliases: [q{isLoaded}]},
 			{q{const(char)*}, q{GetDebugName}, q{}, ext: `C++`, memAttr: q{const}, aliases: [q{getDebugName}]},
-			{q{ImVec2}, q{CalcTextSizeA}, q{float size, float maxWidth, float wrapWidth, const(char)* textBegin, const(char)* textEnd=null, const(char)** remaining=null}, ext: `C++`, memAttr: q{const}, aliases: [q{calcTextSizeA}]},
-			{q{const(char)*}, q{CalcWordWrapPositionA}, q{float scale, const(char)* text, const(char)* textEnd, float wrapWidth}, ext: `C++`, memAttr: q{const}, aliases: [q{calcWordWrapPositionA}]},
-			{q{void}, q{RenderChar}, q{ImDrawList* drawList, float size, in ImVec2 pos, uint col, ImWChar c}, ext: `C++`, memAttr: q{const}, aliases: [q{renderChar}]},
-			{q{void}, q{RenderText}, q{ImDrawList* drawList, float size, in ImVec2 pos, uint col, in ImVec4 clipRect, const(char)* textBegin, const(char)* textEnd, float wrapWidth=0f, bool cpuFineClip=false}, ext: `C++`, memAttr: q{const}, aliases: [q{renderText}]},
+			{q{ImVec2}, q{CalcTextSizeA}, q{float size, float maxWidth, float wrapWidth, const(char)* textBegin, const(char)* textEnd=null, const(char)** remaining=null}, ext: `C++`, aliases: [q{calcTextSizeA}]},
+			{q{const(char)*}, q{CalcWordWrapPositionA}, q{float scale, const(char)* text, const(char)* textEnd, float wrapWidth}, ext: `C++`, aliases: [q{calcWordWrapPositionA}]},
+			{q{void}, q{RenderChar}, q{ImDrawList* drawList, float size, in ImVec2 pos, uint col, ImWChar c}, ext: `C++`, aliases: [q{renderChar}]},
+			{q{void}, q{RenderText}, q{ImDrawList* drawList, float size, in ImVec2 pos, uint col, in ImVec4 clipRect, const(char)* textBegin, const(char)* textEnd, float wrapWidth=0f, bool cpuFineClip=false}, ext: `C++`, aliases: [q{renderText}]},
 			{q{void}, q{BuildLookupTable}, q{}, ext: `C++`, aliases: [q{buildLookupTable}]},
 			{q{void}, q{ClearOutputData}, q{}, ext: `C++`, aliases: [q{clearOutputData}]},
 			{q{void}, q{GrowIndex}, q{int newSize}, ext: `C++`, aliases: [q{growIndex}]},
 			{q{void}, q{AddGlyph}, q{const(ImFontConfig)* srcCfg, ImWChar c, float x0, float y0, float x1, float y1, float u0, float v0, float u1, float v1, float advanceX}, ext: `C++`, aliases: [q{addGlyph}]},
 			{q{void}, q{AddRemapChar}, q{ImWChar dst, ImWChar src, bool overwriteDst=true}, ext: `C++`, aliases: [q{addRemapChar}]},
-			{q{void}, q{SetGlyphVisible}, q{ImWChar c, bool visible}, ext: `C++`, aliases: [q{setGlyphVisible}]},
 			{q{bool}, q{IsGlyphRangeUnused}, q{uint cBegin, uint cLast}, ext: `C++`, aliases: [q{isGlyphRangeUnused}]},
 		];
 		return ret;
@@ -4293,19 +4303,19 @@ extern(C++) struct ImFont{
 	alias FallbackGlyph = fallbackGlyph;
 	
 	alias ContainerAtlas = containerAtlas;
-	alias ConfigData = configData;
-	alias ConfigDataCount = configDataCount;
-	alias FallbackChar = fallbackChar;
-	alias EllipsisChar = ellipsisChar;
+	alias Sources = sources;
+	alias SourcesCount = sourcesCount;
 	alias EllipsisCharCount = ellipsisCharCount;
+	alias EllipsisChar = ellipsisChar;
+	alias FallbackChar = fallbackChar;
 	alias EllipsisWidth = ellipsisWidth;
 	alias EllipsisCharStep = ellipsisCharStep;
-	alias DirtyLookupTables = dirtyLookupTables;
 	alias Scale = scale;
 	alias Ascent = ascent;
 	alias Descent = descent;
 	alias MetricsTotalSurface = metricsTotalSurface;
-	alias Used4kPagesMap = used4KPagesMap;
+	alias DirtyLookupTables = dirtyLookupTables;
+	alias Used8kPagesMap = used8KPagesMap;
 	
 	alias GetCharAdvance = getCharAdvance;
 }
@@ -4522,20 +4532,20 @@ extern(C++) struct ImSpan(T){
 
 extern(C++) struct ImDrawListSharedData{
 	ImVec2 texUVWhitePixel;
+	const(ImVec4)* texUVLines;
 	ImFont* font;
 	float fontSize = 0f;
 	float fontScale = 0f;
 	float curveTessellationTol = 0f;
 	float circleSegmentMaxError = 0f;
-	ImVec4 clipRectFullscreen;
+	float initialFringeScale = 0f;
 	ImDrawListFlags_ initialFlags;
-	
+	ImVec4 clipRectFullscreen;
 	ImVector!(ImVec2) tempBuffer;
 	
 	ImVec2[IM_DRAWLIST_ARCFAST_TABLE_SIZE] arcFastVtx;
 	float arcFastRadiusCutoff = 0f;
 	ubyte[64] circleSegmentCounts;
-	const(ImVec4)* texUVLines;
 	
 	extern(D) mixin(joinFnBinds((){
 		FnBind[] ret = [
@@ -4545,20 +4555,20 @@ extern(C++) struct ImDrawListSharedData{
 	}()));
 	
 	alias TexUvWhitePixel = texUVWhitePixel;
+	alias TexUvLines = texUVLines;
 	alias Font = font;
 	alias FontSize = fontSize;
 	alias FontScale = fontScale;
 	alias CurveTessellationTol = curveTessellationTol;
 	alias CircleSegmentMaxError = circleSegmentMaxError;
-	alias ClipRectFullscreen = clipRectFullscreen;
+	alias InitialFringeScale = initialFringeScale;
 	alias InitialFlags = initialFlags;
-	
+	alias ClipRectFullscreen = clipRectFullscreen;
 	alias TempBuffer = tempBuffer;
 	
 	alias ArcFastVtx = arcFastVtx;
 	alias ArcFastRadiusCutoff = arcFastRadiusCutoff;
 	alias CircleSegmentCounts = circleSegmentCounts;
-	alias TexUvLines = texUVLines;
 }
 
 extern(C++) struct ImDrawDataBuilder{
@@ -4569,10 +4579,12 @@ extern(C++) struct ImDrawDataBuilder{
 	alias LayerData1 = layerData1;
 }
 
-extern(C++) struct ImGuiDataVarInfo{
-	ImGuiDataType_ type;
-	uint count;
-	uint offset;
+extern(C++) struct ImGuiStyleVarInfo{
+	mixin(bitfields!(
+		uint, q{count}, 8,
+		ImGuiDataType_, q{dataType}, 8,
+		uint, q{offset}, 16,
+	));
 	
 	extern(D) mixin(joinFnBinds((){
 		FnBind[] ret = [
@@ -4581,9 +4593,31 @@ extern(C++) struct ImGuiDataVarInfo{
 		return ret;
 	}()));
 	
-	alias Type = type;
 	alias Count = count;
+	alias DataType = dataType;
 	alias Offset = offset;
+}
+
+extern(C++) struct ImGuiColorMod{
+	ImGuiCol_ col;
+	ImVec4 backupValue;
+	
+	alias Col = col;
+	alias BackupValue = backupValue;
+}
+alias ImGuiColourMod = ImGuiColorMod;
+
+extern(C++) struct ImGuiStyleMod{
+	ImGuiStyleVar_ varIdx;
+	extern(C++) union{
+		int[2] backupInt;
+		float[2] backupFloat;
+		
+		alias BackupInt = backupInt;
+		alias BackupFloat = backupFloat;
+	}
+	
+	alias VarIdx = varIdx;
 }
 
 extern(C++) struct ImGuiDataTypeStorage{
@@ -4750,28 +4784,6 @@ extern(C++) struct ImGuiTextIndex{
 	alias EndOffset = endOffset;
 }
 
-extern(C++) struct ImGuiColorMod{
-	ImGuiCol_ col;
-	ImVec4 backupValue;
-	
-	alias Col = col;
-	alias BackupValue = backupValue;
-}
-alias ImGuiColourMod = ImGuiColorMod;
-
-extern(C++) struct ImGuiStyleMod{
-	ImGuiStyleVar_ varIdx;
-	extern(C++) union{
-		int[2] backupInt;
-		float[2] backupFloat;
-		
-		alias BackupInt = backupInt;
-		alias BackupFloat = backupFloat;
-	}
-	
-	alias VarIdx = varIdx;
-}
-
 extern(C++) struct ImGuiComboPreviewData{
 	ImRect previewRect;
 	ImVec2 backupCursorPos;
@@ -4798,7 +4810,7 @@ extern(C++) struct ImGuiGroupData{
 	ImVec2 backupCurrLineSize;
 	float backupCurrLineTextBaseOffset = 0f;
 	ImGuiID backupActiveIDIsAlive;
-	bool backupActiveIDPreviousFrameIsAlive;
+	bool backupDeactivatedIDIsAlive;
 	bool backupHoveredIDIsAlive;
 	bool backupIsSameLine;
 	bool emitItem;
@@ -4812,7 +4824,7 @@ extern(C++) struct ImGuiGroupData{
 	alias BackupCurrLineSize = backupCurrLineSize;
 	alias BackupCurrLineTextBaseOffset = backupCurrLineTextBaseOffset;
 	alias BackupActiveIdIsAlive = backupActiveIDIsAlive;
-	alias BackupActiveIdPreviousFrameIsAlive = backupActiveIDPreviousFrameIsAlive;
+	alias BackupDeactivatedIdIsAlive = backupDeactivatedIDIsAlive;
 	alias BackupHoveredIdIsAlive = backupHoveredIDIsAlive;
 	alias BackupIsSameLine = backupIsSameLine;
 	alias EmitItem = emitItem;
@@ -4865,19 +4877,20 @@ extern(C++) struct ImGuiInputTextDeactivatedState{
 extern(C++) struct ImGuiInputTextState{
 	ImGuiContext* ctx;
 	void* stb;
+	ImGuiInputTextFlags_ flags;
 	ImGuiID id;
-	int curLenA;
+	int textLen;
+	const(char)* textSrc;
 	ImVector!(char) textA;
-	ImVector!(char) initialTextA;
+	ImVector!(char) textToRevertTo;
 	ImVector!(char) callbackTextBackup;
-	int bufCapacityA;
+	int bufCapacity;
 	ImVec2 scroll;
 	float cursorAnim = 0f;
 	bool cursorFollow;
 	bool selectedAllMouseLock;
 	bool edited;
-	ImGuiInputTextFlags_ flags;
-	bool reloadUserBuf;
+	bool wantReloadUserBuf;
 	int reloadSelectionStart;
 	int reloadSelectionEnd;
 	
@@ -4904,25 +4917,27 @@ extern(C++) struct ImGuiInputTextState{
 	
 	alias Ctx = ctx;
 	alias Stb = stb;
+	alias Flags = flags;
 	alias ID = id;
-	alias CurLenA = curLenA;
+	alias TextLen = textLen;
+	alias TextSrc = textSrc;
 	alias TextA = textA;
-	alias InitialTextA = initialTextA;
+	alias TextToRevertTo = textToRevertTo;
 	alias CallbackTextBackup = callbackTextBackup;
-	alias BufCapacityA = bufCapacityA;
+	alias BufCapacity = bufCapacity;
 	alias Scroll = scroll;
 	alias CursorAnim = cursorAnim;
 	alias CursorFollow = cursorFollow;
 	alias SelectedAllMouseLock = selectedAllMouseLock;
 	alias Edited = edited;
-	alias Flags = flags;
-	alias ReloadUserBuf = reloadUserBuf;
+	alias WantReloadUserBuf = wantReloadUserBuf;
 	alias ReloadSelectionStart = reloadSelectionStart;
 	alias ReloadSelectionEnd = reloadSelectionEnd;
 }
 
 extern(C++) struct ImGuiNextWindowData{
-	ImGuiNextWindowDataFlags_ flags;
+	ImGuiNextWindowDataFlags_ hasFlags;
+	
 	ImGuiCond_ posCond;
 	ImGuiCond_ sizeCond;
 	ImGuiCond_ collapsedCond;
@@ -4931,6 +4946,7 @@ extern(C++) struct ImGuiNextWindowData{
 	ImVec2 sizeVal;
 	ImVec2 contentSizeVal;
 	ImVec2 scrollVal;
+	ImGuiWindowFlags_ windowFlags;
 	ImGuiChildFlags_ childFlags;
 	bool collapsedVal;
 	ImRect sizeConstraintRect;
@@ -4947,7 +4963,8 @@ extern(C++) struct ImGuiNextWindowData{
 		return ret;
 	}()));
 	
-	alias Flags = flags;
+	alias HasFlags = hasFlags;
+	
 	alias PosCond = posCond;
 	alias SizeCond = sizeCond;
 	alias CollapsedCond = collapsedCond;
@@ -4956,6 +4973,7 @@ extern(C++) struct ImGuiNextWindowData{
 	alias SizeVal = sizeVal;
 	alias ContentSizeVal = contentSizeVal;
 	alias ScrollVal = scrollVal;
+	alias WindowFlags = windowFlags;
 	alias ChildFlags = childFlags;
 	alias CollapsedVal = collapsedVal;
 	alias SizeConstraintRect = sizeConstraintRect;
@@ -5068,11 +5086,13 @@ extern(C++) struct ImGuiWindowStackData{
 	ImGuiLastItemData parentLastItemDataBackup;
 	ImGuiErrorRecoveryState stackSizesInBegin;
 	bool disabledOverrideReEnable;
+	float disabledOverrideReEnableAlphaBackup = 0f;
 	
 	alias Window = window;
 	alias ParentLastItemDataBackup = parentLastItemDataBackup;
 	alias StackSizesInBegin = stackSizesInBegin;
 	alias DisabledOverrideReenable = disabledOverrideReEnable;
+	alias DisabledOverrideReenableAlphaBackup = disabledOverrideReEnableAlphaBackup;
 }
 
 extern(C++) struct ImGuiShrinkWidthItem{
@@ -5091,6 +5111,18 @@ extern(C++) struct ImGuiPtrOrIndex{
 	
 	alias Ptr = ptr;
 	alias Index = index;
+}
+
+extern(C++) struct ImGuiDeactivatedItemData{
+	ImGuiID id;
+	int elapseFrame;
+	bool hasBeenEditedBefore;
+	bool isAlive;
+	
+	alias ID = id;
+	alias ElapseFrame = elapseFrame;
+	alias HasBeenEditedBefore = hasBeenEditedBefore;
+	alias IsAlive = isAlive;
 }
 
 extern(C++) struct ImGuiPopupData{
@@ -5652,7 +5684,6 @@ extern(C++) struct ImGuiMetricsConfig{
 	bool showDrawCmdMesh = true;
 	bool showDrawCmdBoundingBoxes = true;
 	bool showTextEncodingViewer;
-	bool showAtlasTintedWithTextColour;
 	int showWindowsRectsType = -1;
 	int showTablesRectsType = -1;
 	int highlightMonitorIdx = -1;
@@ -5666,9 +5697,6 @@ extern(C++) struct ImGuiMetricsConfig{
 	alias ShowDrawCmdMesh = showDrawCmdMesh;
 	alias ShowDrawCmdBoundingBoxes = showDrawCmdBoundingBoxes;
 	alias ShowTextEncodingViewer = showTextEncodingViewer;
-	alias ShowAtlasTintedWithTextColour = showAtlasTintedWithTextColour;
-	alias ShowAtlasTintedWithTextColor = showAtlasTintedWithTextColour;
-	alias showAtlasTintedWithTextColor = showAtlasTintedWithTextColour;
 	alias ShowWindowsRectsType = showWindowsRectsType;
 	alias ShowTablesRectsType = showTablesRectsType;
 	alias HighlightMonitorIdx = highlightMonitorIdx;
@@ -5698,6 +5726,7 @@ extern(C++) struct ImGuiIDStackTool{
 	ImVector!(ImGuiStackLevelInfo) results;
 	bool copyToClipboardOnCtrlC;
 	float copyToClipboardLastTime = -float.max;
+	ImGuiTextBuffer resultPathBuf;
 	
 	alias LastActiveFrame = lastActiveFrame;
 	alias StackLevel = stackLevel;
@@ -5705,6 +5734,7 @@ extern(C++) struct ImGuiIDStackTool{
 	alias Results = results;
 	alias CopyToClipboardOnCtrlC = copyToClipboardOnCtrlC;
 	alias CopyToClipboardLastTime = copyToClipboardLastTime;
+	alias ResultPathBuf = resultPathBuf;
 }
 
 extern(C++) struct ImGuiContextHook{
@@ -5737,9 +5767,9 @@ extern(C++) struct ImGuiContext{
 	int frameCount;
 	int frameCountEnded = -1;
 	int frameCountRendered = -1;
+	ImGuiID withinEndChildID;
 	bool withinFrameScope;
 	bool withinFrameScopeWithImplicitWindow;
-	bool withinEndChild;
 	bool gcCompactAll;
 	bool testEngineHookItems;
 	void* testEngine;
@@ -5756,7 +5786,7 @@ extern(C++) struct ImGuiContext{
 	ImVector!(ImGuiWindowStackData) currentWindowStack;
 	ImGuiStorage windowsByID;
 	int windowsActiveCount;
-	ImVec2 windowsHoverPadding;
+	float windowsBorderHoverPadding = 0f;
 	ImGuiID debugBreakInWindow;
 	ImGuiWindow* currentWindow;
 	ImGuiWindow* hoveredWindow;
@@ -5798,9 +5828,8 @@ extern(C++) struct ImGuiContext{
 	ImGuiWindow* activeIDWindow;
 	ImGuiInputSource activeIDSource;
 	ImGuiID activeIDPreviousFrame;
-	bool activeIDPreviousFrameIsAlive;
-	bool activeIDPreviousFrameHasBeenEditedBefore;
-	ImGuiWindow* activeIDPreviousFrameWindow;
+	ImGuiDeactivatedItemData deactivatedItemData;
+	ImGuiDataTypeStorage activeIDValueOnActivation;
 	ImGuiID lastActiveID;
 	float lastActiveIDTimer = 0f;
 	
@@ -6001,7 +6030,8 @@ extern(C++) struct ImGuiContext{
 	const(char)*[ImGuiLocKey.count] localisationTable;
 	
 	bool logEnabled;
-	ImGuiLogType logType;
+	ImGuiLogFlags_ logFlags;
+	ImGuiWindow* logWindow;
 	ImFileHandle logFile;
 	ImGuiTextBuffer logBuffer;
 	const(char)* logNextPrefix;
@@ -6067,9 +6097,9 @@ extern(C++) struct ImGuiContext{
 	alias FrameCount = frameCount;
 	alias FrameCountEnded = frameCountEnded;
 	alias FrameCountRendered = frameCountRendered;
+	alias WithinEndChildID = withinEndChildID;
 	alias WithinFrameScope = withinFrameScope;
 	alias WithinFrameScopeWithImplicitWindow = withinFrameScopeWithImplicitWindow;
-	alias WithinEndChild = withinEndChild;
 	alias GcCompactAll = gcCompactAll;
 	alias TestEngineHookItems = testEngineHookItems;
 	alias TestEngine = testEngine;
@@ -6086,7 +6116,7 @@ extern(C++) struct ImGuiContext{
 	alias CurrentWindowStack = currentWindowStack;
 	alias WindowsById = windowsByID;
 	alias WindowsActiveCount = windowsActiveCount;
-	alias WindowsHoverPadding = windowsHoverPadding;
+	alias WindowsBorderHoverPadding = windowsBorderHoverPadding;
 	alias DebugBreakInWindow = debugBreakInWindow;
 	alias CurrentWindow = currentWindow;
 	alias HoveredWindow = hoveredWindow;
@@ -6126,9 +6156,8 @@ extern(C++) struct ImGuiContext{
 	alias ActiveIdWindow = activeIDWindow;
 	alias ActiveIdSource = activeIDSource;
 	alias ActiveIdPreviousFrame = activeIDPreviousFrame;
-	alias ActiveIdPreviousFrameIsAlive = activeIDPreviousFrameIsAlive;
-	alias ActiveIdPreviousFrameHasBeenEditedBefore = activeIDPreviousFrameHasBeenEditedBefore;
-	alias ActiveIdPreviousFrameWindow = activeIDPreviousFrameWindow;
+	alias DeactivatedItemData = deactivatedItemData;
+	alias ActiveIdValueOnActivation = activeIDValueOnActivation;
 	alias LastActiveId = lastActiveID;
 	alias LastActiveIdTimer = lastActiveIDTimer;
 	
@@ -6351,7 +6380,8 @@ extern(C++) struct ImGuiContext{
 	alias localizationTable = localisationTable;
 	
 	alias LogEnabled = logEnabled;
-	alias LogType = logType;
+	alias LogFlags = logFlags;
+	alias LogWindow = logWindow;
 	alias LogFile = logFile;
 	alias LogBuffer = logBuffer;
 	alias LogNextPrefix = logNextPrefix;
@@ -6441,6 +6471,8 @@ extern(C++) struct ImGuiWindowTempData{
 	ImGuiLayoutType_ layoutType;
 	ImGuiLayoutType_ parentLayoutType;
 	uint modalDimBgColour;
+	ImGuiItemStatusFlags_ windowItemStatusFlags;
+	ImGuiItemStatusFlags_ childItemStatusFlags;
 	
 	float itemWidth = 0f;
 	float textWrapPos = 0f;
@@ -6484,6 +6516,8 @@ extern(C++) struct ImGuiWindowTempData{
 	alias ModalDimBgColour = modalDimBgColour;
 	alias ModalDimBgColor = modalDimBgColour;
 	alias modalDimBgColor = modalDimBgColour;
+	alias WindowItemStatusFlags = windowItemStatusFlags;
+	alias ChildItemStatusFlags = childItemStatusFlags;
 	
 	alias ItemWidth = itemWidth;
 	alias TextWrapPos = textWrapPos;
@@ -6522,6 +6556,8 @@ extern(C++) struct ImGuiWindow{
 	ImVec2 scrollTargetEdgeSnapDist;
 	ImVec2 scrollbarSizes;
 	bool scrollbarX, scrollbarY;
+	bool scrollbarXStabilizeEnabled;
+	ubyte scrollbarXStabilizeToggledHistory;
 	bool active;
 	bool wasActive;
 	bool writeAccessed;
@@ -6577,6 +6613,8 @@ extern(C++) struct ImGuiWindow{
 	ImGuiStorage stateStorage;
 	ImVector!(ImGuiOldColumns) columnsStorage;
 	float fontWindowScale = 0f;
+	float fontWindowScaleParents = 0f;
+	float fontRefSize = 0f;
 	int settingsOffset;
 	
 	ImDrawList* drawList;
@@ -6651,6 +6689,8 @@ extern(C++) struct ImGuiWindow{
 	alias ScrollbarSizes = scrollbarSizes;
 	alias ScrollbarX = scrollbarX;
 	alias ScrollbarY = scrollbarY;
+	alias ScrollbarXStabilizeEnabled = scrollbarXStabilizeEnabled;
+	alias ScrollbarXStabilizeToggledHistory = scrollbarXStabilizeToggledHistory;
 	alias Active = active;
 	alias WasActive = wasActive;
 	alias WriteAccessed = writeAccessed;
@@ -6703,6 +6743,8 @@ extern(C++) struct ImGuiWindow{
 	alias StateStorage = stateStorage;
 	alias ColumnsStorage = columnsStorage;
 	alias FontWindowScale = fontWindowScale;
+	alias FontWindowScaleParents = fontWindowScaleParents;
+	alias FontRefSize = fontRefSize;
 	alias SettingsOffset = settingsOffset;
 	
 	alias DrawList = drawList;
@@ -7055,6 +7097,7 @@ extern(C++) struct ImGuiTable{
 	ImGuiTableDrawChannelIdx dummyDrawChannel;
 	ImGuiTableDrawChannelIdx bg2DrawChannelCurrent;
 	ImGuiTableDrawChannelIdx bg2DrawChannelUnfrozen;
+	byte navLayer;
 	bool isLayoutLocked;
 	bool isInsideRow;
 	bool isInitializing;
@@ -7176,6 +7219,7 @@ extern(C++) struct ImGuiTable{
 	alias DummyDrawChannel = dummyDrawChannel;
 	alias Bg2DrawChannelCurrent = bg2DrawChannelCurrent;
 	alias Bg2DrawChannelUnfrozen = bg2DrawChannelUnfrozen;
+	alias NavLayer = navLayer;
 	alias IsLayoutLocked = isLayoutLocked;
 	alias IsInsideRow = isInsideRow;
 	alias IsInitializing = isInitializing;
@@ -7242,10 +7286,10 @@ extern(C++) struct ImGuiTableColumnSettings{
 	ImGuiTableColumnIdx sortOrder = -1;
 	mixin(bitfields!(
 		ubyte, q{sortDirection}, 2,
-		ubyte, q{isEnabled}, 1,
+		byte, q{isEnabled}, 2,
 		ubyte, q{isStretch}, 1,
 		
-		uint, q{}, 4,
+		uint, q{}, 3,
 	));
 	
 	alias WidthOrWeight = widthOrWeight;

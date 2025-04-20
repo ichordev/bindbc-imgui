@@ -18,7 +18,7 @@ version(ImGui_Impl_Allegro5){
 	bool ImGui_ImplAllegro5_Init(ALLEGRO_DISPLAY* display);
 	void ImGui_ImplAllegro5_Shutdown();
 	void ImGui_ImplAllegro5_NewFrame();
-	void ImGui_ImplAllegro5_RenderDrawData(ImDrawData* draw_data);
+	void ImGui_ImplAllegro5_RenderDrawData(ImDrawData* drawData);
 	bool ImGui_ImplAllegro5_ProcessEvent(ALLEGRO_EVENT* event);
 	
 	bool ImGui_ImplAllegro5_CreateDeviceObjects();
@@ -28,22 +28,26 @@ version(ImGui_Impl_Allegro5){
 version(ImGui_Impl_GLFW){
 	import bindbc.glfw: GLFWwindow, GLFWmonitor;
 	
-	bool ImGui_ImplGlfw_InitForOpenGL(GLFWwindow* window, bool install_callbacks);
-	bool ImGui_ImplGlfw_InitForVulkan(GLFWwindow* window, bool install_callbacks);
-	bool ImGui_ImplGlfw_InitForOther(GLFWwindow* window, bool install_callbacks);
+	bool ImGui_ImplGlfw_InitForOpenGL(GLFWwindow* window, bool installCallbacks);
+	bool ImGui_ImplGlfw_InitForVulkan(GLFWwindow* window, bool installCallbacks);
+	bool ImGui_ImplGlfw_InitForOther(GLFWwindow* window, bool installCallbacks);
 	void ImGui_ImplGlfw_Shutdown();
 	void ImGui_ImplGlfw_NewFrame();
+	
+	version(Emscripten){
+		void ImGui_ImplGlfw_InstallEmscriptenCallbacks(GLFWwindow* window, const(char)* canvasSelector);
+	}
 	
 	void ImGui_ImplGlfw_InstallCallbacks(GLFWwindow* window);
 	void ImGui_ImplGlfw_RestoreCallbacks(GLFWwindow* window);
 	
-	void ImGui_ImplGlfw_SetCallbacksChainForAllWindows(bool chain_for_all_windows);
+	void ImGui_ImplGlfw_SetCallbacksChainForAllWindows(bool chainForAllWindows);
 	
 	void ImGui_ImplGlfw_WindowFocusCallback(GLFWwindow* window, int focused);
 	void ImGui_ImplGlfw_CursorEnterCallback(GLFWwindow* window, int entered);
 	void ImGui_ImplGlfw_CursorPosCallback(GLFWwindow* window, double x, double y);
 	void ImGui_ImplGlfw_MouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
-	void ImGui_ImplGlfw_ScrollCallback(GLFWwindow* window, double xoffset, double yoffset);
+	void ImGui_ImplGlfw_ScrollCallback(GLFWwindow* window, double xOffset, double yOffset);
 	void ImGui_ImplGlfw_KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 	void ImGui_ImplGlfw_CharCallback(GLFWwindow* window, uint c);
 	void ImGui_ImplGlfw_MonitorCallback(GLFWmonitor* monitor, int event);
@@ -95,10 +99,10 @@ version(ImGui_Impl_OpenGL2){
 }
 
 version(ImGui_Impl_OpenGL3){
-	bool ImGui_ImplOpenGL3_Init(const(char)* glsl_version=null);
+	bool ImGui_ImplOpenGL3_Init(const(char)* glslVersion=null);
 	void ImGui_ImplOpenGL3_Shutdown();
 	void ImGui_ImplOpenGL3_NewFrame();
-	void ImGui_ImplOpenGL3_RenderDrawData(ImDrawData* draw_data);
+	void ImGui_ImplOpenGL3_RenderDrawData(ImDrawData* drawData);
 	
 	bool ImGui_ImplOpenGL3_CreateFontsTexture();
 	void ImGui_ImplOpenGL3_DestroyFontsTexture();
@@ -107,9 +111,15 @@ version(ImGui_Impl_OpenGL3){
 }
 
 version(ImGui_Impl_SDL2){
-	import bindbc.sdl: SDL_Window, SDL_Renderer, SDL_Event;
+	import bindbc.sdl: SDL_Window, SDL_Renderer, SDL_Event, SDL_GameController;
 	
-	bool ImGui_ImplSDL2_InitForOpenGL(SDL_Window* window, void* sdl_gl_context);
+	enum ImGui_ImplSDL2_GamepadMode{
+		autoFirst,
+		autoAll,
+		manual,
+	}
+	
+	bool ImGui_ImplSDL2_InitForOpenGL(SDL_Window* window, void* sdlGLContext);
 	bool ImGui_ImplSDL2_InitForVulkan(SDL_Window* window);
 	bool ImGui_ImplSDL2_InitForD3D(SDL_Window* window);
 	bool ImGui_ImplSDL2_InitForMetal(SDL_Window* window);
@@ -118,17 +128,33 @@ version(ImGui_Impl_SDL2){
 	void ImGui_ImplSDL2_NewFrame();
 	bool ImGui_ImplSDL2_ProcessEvent(const(SDL_Event)* event);
 	
-	version(ImGui_DisableObsoleteFunctions){
-	}else{
-		pragma(inline,true) void ImGui_ImplSDL2_NewFrame(SDL_Window*){ ImGui_ImplSDL2_NewFrame(); }
+	void ImGui_ImplSDL2_SetGamepadMode(ImGui_ImplSDL2_GamepadMode mode, SDL_GameController** manualGamepadsArray=null, int manualGamepadsCount=-1);
+}
+
+version(ImGui_Impl_SDL3){
+	import bindbc.sdl: SDL_Window, SDL_Renderer, SDL_Gamepad, SDL_Event;
+	
+	enum ImGui_ImplSDL3_GamepadMode{
+		autoFirst,
+		autoAll,
+		manual,
 	}
+	
+	bool ImGui_ImplSDL3_InitForOpenGL(SDL_Window* window, void* sdlGLContext);
+	bool ImGui_ImplSDL3_InitForVulkan(SDL_Window* window);
+	bool ImGui_ImplSDL3_InitForD3D(SDL_Window* window);
+	bool ImGui_ImplSDL3_InitForMetal(SDL_Window* window);
+	bool ImGui_ImplSDL3_InitForSDLRenderer(SDL_Window* window, SDL_Renderer* renderer);
+	bool ImGui_ImplSDL3_InitForOther(SDL_Window* window);
+	void ImGui_ImplSDL3_Shutdown();
+	void ImGui_ImplSDL3_NewFrame();
+	bool ImGui_ImplSDL3_ProcessEvent(const(SDL_Event)* event);
+	
+	void ImGui_ImplSDL3_SetGamepadMode(ImGui_ImplSDL3_GamepadMode mode, SDL_Gamepad** manualGamepadsArray=null, int manualGamepadsCount=-1);
 }
 
 version(ImGui_Impl_SDLRenderer2){
-	version(ImGui_Impl_SDL2){
-	}else{
-		import bindbc.sdl: SDL_Renderer;
-	}
+	import bindbc.sdl: SDL_Renderer;
 	
 	bool ImGui_ImplSDLRenderer2_Init(SDL_Renderer* renderer);
 	void ImGui_ImplSDLRenderer2_Shutdown();
@@ -139,6 +165,24 @@ version(ImGui_Impl_SDLRenderer2){
 	void ImGui_ImplSDLRenderer2_DestroyFontsTexture();
 	bool ImGui_ImplSDLRenderer2_CreateDeviceObjects();
 	void ImGui_ImplSDLRenderer2_DestroyDeviceObjects();
+}
+
+version(ImGui_Impl_SDLRenderer3){
+	import bindbc.sdl: SDL_Renderer;
+	
+	struct ImGui_ImplSDLRenderer3_RenderState{
+		SDL_Renderer* Renderer;
+	}
+	
+	bool ImGui_ImplSDLRenderer3_Init(SDL_Renderer* renderer);
+	void ImGui_ImplSDLRenderer3_Shutdown();
+	void ImGui_ImplSDLRenderer3_NewFrame();
+	void ImGui_ImplSDLRenderer3_RenderDrawData(ImDrawData* drawData, SDL_Renderer* renderer);
+	
+	bool ImGui_ImplSDLRenderer3_CreateFontsTexture();
+	void ImGui_ImplSDLRenderer3_DestroyFontsTexture();
+	bool ImGui_ImplSDLRenderer3_CreateDeviceObjects();
+	void ImGui_ImplSDLRenderer3_DestroyDeviceObjects();
 }
 
 version(ImGui_Impl_Vulkan){

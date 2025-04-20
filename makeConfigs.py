@@ -67,18 +67,18 @@ implFrontends = {
 		#"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_osx.obj"],
 		"versions": ["ImGui_Impl_macOS"],
 	},
-	"SDL2": {
-		#"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o"],
-		#"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj"],
-		"dependencies": {"bindbc-sdl": "~>1.5"},
-		"versions": ["ImGui_Impl_SDL2"],
-	},
-	#"SDL3": {
-	#	"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdl3.o"],
-	#	"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdl3.obj"],
-	#	"dependencies": {"bindbc-sdl": "~>2.0"},
-	#	"versions": ["ImGui_Impl_SDL3"],
+	#"SDL2": {
+	#	#"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.o"],
+	#	#"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdl2.obj"],
+	#	"dependencies": {"bindbc-sdl": "~>1.5"},
+	#	"versions": ["ImGui_Impl_SDL2"],
 	#},
+	"SDL3": {
+		#"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdl3.o"],
+		#"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdl3.obj"],
+		"dependencies": {"bindbc-sdl": "~>2.0"},
+		"versions": ["ImGui_Impl_SDL3"],
+	},
 	# "Win32": {
 	# 	"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_win32.o"],
 	# 	"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_win32.obj"],
@@ -124,18 +124,18 @@ implRenderers = {
 		"dependencies": {"bindbc-opengl": "~>1.1"},
 		"versions": ["ImGui_Impl_OpenGL3", "GL_30"],
 	},
-	"SDLRenderer2": {
-		#"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.o"],
-		#"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.obj"],
-		"dependencies": {"bindbc-sdl": "~>1.5"},
-		"versions": ["ImGui_Impl_SDLRenderer2"],
-	},
-	#"SDLRenderer3": {
-	#	"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.o"],
-	#	"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.obj"],
-	#	"dependencies": {"bindbc-sdl": "~>2.0"},
+	#"SDLRenderer2": {
+	#	#"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.o"],
+	#	#"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.obj"],
+	#	"dependencies": {"bindbc-sdl": "~>1.5"},
 	#	"versions": ["ImGui_Impl_SDLRenderer2"],
 	#},
+	"SDLRenderer3": {
+		#"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.o"],
+		#"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.obj"],
+		"dependencies": {"bindbc-sdl": "~>2.0"},
+		"versions": ["ImGui_Impl_SDLRenderer3"],
+	},
 	"Vulkan": {
 		#"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.o"],
 		#"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_vulkan.obj"],
