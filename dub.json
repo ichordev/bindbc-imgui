@@ -72,6 +72,18 @@
 			]
 		},
 		{
+			"name": "dynamic-GLFW-SDLGPU3",
+			"dependencies": {
+				"bindbc-loader": "~>1.1",
+				"bindbc-glfw": "~>1.1",
+				"bindbc-sdl": "~>2.0"
+			},
+			"versions": [
+				"ImGui_Impl_GLFW",
+				"ImGui_Impl_SDLGPU3"
+			]
+		},
+		{
 			"name": "dynamic-GLFW-SDLRenderer3",
 			"dependencies": {
 				"bindbc-loader": "~>1.1",
@@ -132,6 +144,17 @@
 				"ImGui_Impl_macOS",
 				"ImGui_Impl_OpenGL3",
 				"GL_30"
+			]
+		},
+		{
+			"name": "dynamic-macOS-SDLGPU3",
+			"dependencies": {
+				"bindbc-loader": "~>1.1",
+				"bindbc-sdl": "~>2.0"
+			},
+			"versions": [
+				"ImGui_Impl_macOS",
+				"ImGui_Impl_SDLGPU3"
 			]
 		},
 		{
@@ -199,6 +222,17 @@
 				"ImGui_Impl_SDL3",
 				"ImGui_Impl_OpenGL3",
 				"GL_30"
+			]
+		},
+		{
+			"name": "dynamic-SDL3-SDLGPU3",
+			"dependencies": {
+				"bindbc-loader": "~>1.1",
+				"bindbc-sdl": "~>2.0"
+			},
+			"versions": [
+				"ImGui_Impl_SDL3",
+				"ImGui_Impl_SDLGPU3"
 			]
 		},
 		{
@@ -299,6 +333,23 @@
 			]
 		},
 		{
+			"name": "dynamicBC-GLFW-SDLGPU3",
+			"dependencies": {
+				"bindbc-loader": "~>1.1",
+				"bindbc-glfw": "~>1.1",
+				"bindbc-sdl": "~>2.0"
+			},
+			"subConfigurations": {
+				"bindbc-loader": "yesBC",
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"ImGui_Impl_GLFW",
+				"ImGui_Impl_SDLGPU3"
+			]
+		},
+		{
 			"name": "dynamicBC-GLFW-SDLRenderer3",
 			"dependencies": {
 				"bindbc-loader": "~>1.1",
@@ -389,6 +440,22 @@
 				"ImGui_Impl_macOS",
 				"ImGui_Impl_OpenGL3",
 				"GL_30"
+			]
+		},
+		{
+			"name": "dynamicBC-macOS-SDLGPU3",
+			"dependencies": {
+				"bindbc-loader": "~>1.1",
+				"bindbc-sdl": "~>2.0"
+			},
+			"subConfigurations": {
+				"bindbc-loader": "yesBC",
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"ImGui_Impl_macOS",
+				"ImGui_Impl_SDLGPU3"
 			]
 		},
 		{
@@ -489,6 +556,22 @@
 			]
 		},
 		{
+			"name": "dynamicBC-SDL3-SDLGPU3",
+			"dependencies": {
+				"bindbc-loader": "~>1.1",
+				"bindbc-sdl": "~>2.0"
+			},
+			"subConfigurations": {
+				"bindbc-loader": "yesBC",
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"ImGui_Impl_SDL3",
+				"ImGui_Impl_SDLGPU3"
+			]
+		},
+		{
 			"name": "dynamicBC-SDL3-SDLRenderer3",
 			"dependencies": {
 				"bindbc-loader": "~>1.1",
@@ -571,6 +654,18 @@
 			}
 		},
 		{
+			"name": "static-GLFW-SDLGPU3",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_GLFW",
+				"ImGui_Impl_SDLGPU3"
+			],
+			"dependencies": {
+				"bindbc-glfw": "~>1.1",
+				"bindbc-sdl": "~>2.0"
+			}
+		},
+		{
 			"name": "static-GLFW-SDLRenderer3",
 			"versions": [
 				"BindImGui_Static",
@@ -628,6 +723,15 @@
 				"GL_30"
 			],
 			"dependencies": {"bindbc-opengl": "~>1.1"}
+		},
+		{
+			"name": "static-macOS-SDLGPU3",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_macOS",
+				"ImGui_Impl_SDLGPU3"
+			],
+			"dependencies": {"bindbc-sdl": "~>2.0"}
 		},
 		{
 			"name": "static-macOS-SDLRenderer3",
@@ -691,6 +795,15 @@
 				"bindbc-sdl": "~>2.0",
 				"bindbc-opengl": "~>1.1"
 			}
+		},
+		{
+			"name": "static-SDL3-SDLGPU3",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_SDL3",
+				"ImGui_Impl_SDLGPU3"
+			],
+			"dependencies": {"bindbc-sdl": "~>2.0"}
 		},
 		{
 			"name": "static-SDL3-SDLRenderer3",
@@ -773,6 +886,20 @@
 			}
 		},
 		{
+			"name": "staticBC-GLFW-SDLGPU3",
+			"subConfigurations": {"bindbc-common": "yesBC"},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_GLFW",
+				"ImGui_Impl_SDLGPU3"
+			],
+			"dependencies": {
+				"bindbc-glfw": "~>1.1",
+				"bindbc-sdl": "~>2.0"
+			}
+		},
+		{
 			"name": "staticBC-GLFW-SDLRenderer3",
 			"subConfigurations": {"bindbc-common": "yesBC"},
 			"buildOptions": ["betterC"],
@@ -842,6 +969,17 @@
 				"GL_30"
 			],
 			"dependencies": {"bindbc-opengl": "~>1.1"}
+		},
+		{
+			"name": "staticBC-macOS-SDLGPU3",
+			"subConfigurations": {"bindbc-common": "yesBC"},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_macOS",
+				"ImGui_Impl_SDLGPU3"
+			],
+			"dependencies": {"bindbc-sdl": "~>2.0"}
 		},
 		{
 			"name": "staticBC-macOS-SDLRenderer3",
@@ -917,6 +1055,17 @@
 				"bindbc-sdl": "~>2.0",
 				"bindbc-opengl": "~>1.1"
 			}
+		},
+		{
+			"name": "staticBC-SDL3-SDLGPU3",
+			"subConfigurations": {"bindbc-common": "yesBC"},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Impl_SDL3",
+				"ImGui_Impl_SDLGPU3"
+			],
+			"dependencies": {"bindbc-sdl": "~>2.0"}
 		},
 		{
 			"name": "staticBC-SDL3-SDLRenderer3",
@@ -1000,6 +1149,19 @@
 			]
 		},
 		{
+			"name": "dynamic-docking-GLFW-SDLGPU3",
+			"dependencies": {
+				"bindbc-loader": "~>1.1",
+				"bindbc-glfw": "~>1.1",
+				"bindbc-sdl": "~>2.0"
+			},
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_GLFW",
+				"ImGui_Impl_SDLGPU3"
+			]
+		},
+		{
 			"name": "dynamic-docking-GLFW-SDLRenderer3",
 			"dependencies": {
 				"bindbc-loader": "~>1.1",
@@ -1068,6 +1230,18 @@
 				"ImGui_Impl_macOS",
 				"ImGui_Impl_OpenGL3",
 				"GL_30"
+			]
+		},
+		{
+			"name": "dynamic-docking-macOS-SDLGPU3",
+			"dependencies": {
+				"bindbc-loader": "~>1.1",
+				"bindbc-sdl": "~>2.0"
+			},
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_macOS",
+				"ImGui_Impl_SDLGPU3"
 			]
 		},
 		{
@@ -1143,6 +1317,18 @@
 				"ImGui_Impl_SDL3",
 				"ImGui_Impl_OpenGL3",
 				"GL_30"
+			]
+		},
+		{
+			"name": "dynamic-docking-SDL3-SDLGPU3",
+			"dependencies": {
+				"bindbc-loader": "~>1.1",
+				"bindbc-sdl": "~>2.0"
+			},
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_SDL3",
+				"ImGui_Impl_SDLGPU3"
 			]
 		},
 		{
@@ -1252,6 +1438,24 @@
 			]
 		},
 		{
+			"name": "dynamicBC-docking-GLFW-SDLGPU3",
+			"dependencies": {
+				"bindbc-loader": "~>1.1",
+				"bindbc-glfw": "~>1.1",
+				"bindbc-sdl": "~>2.0"
+			},
+			"subConfigurations": {
+				"bindbc-loader": "yesBC",
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_GLFW",
+				"ImGui_Impl_SDLGPU3"
+			]
+		},
+		{
 			"name": "dynamicBC-docking-GLFW-SDLRenderer3",
 			"dependencies": {
 				"bindbc-loader": "~>1.1",
@@ -1350,6 +1554,23 @@
 				"ImGui_Impl_macOS",
 				"ImGui_Impl_OpenGL3",
 				"GL_30"
+			]
+		},
+		{
+			"name": "dynamicBC-docking-macOS-SDLGPU3",
+			"dependencies": {
+				"bindbc-loader": "~>1.1",
+				"bindbc-sdl": "~>2.0"
+			},
+			"subConfigurations": {
+				"bindbc-loader": "yesBC",
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_macOS",
+				"ImGui_Impl_SDLGPU3"
 			]
 		},
 		{
@@ -1458,6 +1679,23 @@
 			]
 		},
 		{
+			"name": "dynamicBC-docking-SDL3-SDLGPU3",
+			"dependencies": {
+				"bindbc-loader": "~>1.1",
+				"bindbc-sdl": "~>2.0"
+			},
+			"subConfigurations": {
+				"bindbc-loader": "yesBC",
+				"bindbc-common": "yesBC"
+			},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"ImGui_Docking",
+				"ImGui_Impl_SDL3",
+				"ImGui_Impl_SDLGPU3"
+			]
+		},
+		{
 			"name": "dynamicBC-docking-SDL3-SDLRenderer3",
 			"dependencies": {
 				"bindbc-loader": "~>1.1",
@@ -1549,6 +1787,19 @@
 			}
 		},
 		{
+			"name": "static-docking-GLFW-SDLGPU3",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
+				"ImGui_Impl_GLFW",
+				"ImGui_Impl_SDLGPU3"
+			],
+			"dependencies": {
+				"bindbc-glfw": "~>1.1",
+				"bindbc-sdl": "~>2.0"
+			}
+		},
+		{
 			"name": "static-docking-GLFW-SDLRenderer3",
 			"versions": [
 				"BindImGui_Static",
@@ -1612,6 +1863,16 @@
 				"GL_30"
 			],
 			"dependencies": {"bindbc-opengl": "~>1.1"}
+		},
+		{
+			"name": "static-docking-macOS-SDLGPU3",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
+				"ImGui_Impl_macOS",
+				"ImGui_Impl_SDLGPU3"
+			],
+			"dependencies": {"bindbc-sdl": "~>2.0"}
 		},
 		{
 			"name": "static-docking-macOS-SDLRenderer3",
@@ -1681,6 +1942,16 @@
 				"bindbc-sdl": "~>2.0",
 				"bindbc-opengl": "~>1.1"
 			}
+		},
+		{
+			"name": "static-docking-SDL3-SDLGPU3",
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
+				"ImGui_Impl_SDL3",
+				"ImGui_Impl_SDLGPU3"
+			],
+			"dependencies": {"bindbc-sdl": "~>2.0"}
 		},
 		{
 			"name": "static-docking-SDL3-SDLRenderer3",
@@ -1772,6 +2043,21 @@
 			}
 		},
 		{
+			"name": "staticBC-docking-GLFW-SDLGPU3",
+			"subConfigurations": {"bindbc-common": "yesBC"},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
+				"ImGui_Impl_GLFW",
+				"ImGui_Impl_SDLGPU3"
+			],
+			"dependencies": {
+				"bindbc-glfw": "~>1.1",
+				"bindbc-sdl": "~>2.0"
+			}
+		},
+		{
 			"name": "staticBC-docking-GLFW-SDLRenderer3",
 			"subConfigurations": {"bindbc-common": "yesBC"},
 			"buildOptions": ["betterC"],
@@ -1847,6 +2133,18 @@
 				"GL_30"
 			],
 			"dependencies": {"bindbc-opengl": "~>1.1"}
+		},
+		{
+			"name": "staticBC-docking-macOS-SDLGPU3",
+			"subConfigurations": {"bindbc-common": "yesBC"},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
+				"ImGui_Impl_macOS",
+				"ImGui_Impl_SDLGPU3"
+			],
+			"dependencies": {"bindbc-sdl": "~>2.0"}
 		},
 		{
 			"name": "staticBC-docking-macOS-SDLRenderer3",
@@ -1928,6 +2226,18 @@
 				"bindbc-sdl": "~>2.0",
 				"bindbc-opengl": "~>1.1"
 			}
+		},
+		{
+			"name": "staticBC-docking-SDL3-SDLGPU3",
+			"subConfigurations": {"bindbc-common": "yesBC"},
+			"buildOptions": ["betterC"],
+			"versions": [
+				"BindImGui_Static",
+				"ImGui_Docking",
+				"ImGui_Impl_SDL3",
+				"ImGui_Impl_SDLGPU3"
+			],
+			"dependencies": {"bindbc-sdl": "~>2.0"}
 		},
 		{
 			"name": "staticBC-docking-SDL3-SDLRenderer3",

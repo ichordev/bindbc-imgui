@@ -130,9 +130,11 @@ implRenderers = {
 	#	"dependencies": {"bindbc-sdl": "~>1.5"},
 	#	"versions": ["ImGui_Impl_SDLRenderer2"],
 	#},
+	"SDLGPU3": {
+		"dependencies": {"bindbc-sdl": "~>2.0"},
+		"versions": ["ImGui_Impl_SDLGPU3"],
+	},
 	"SDLRenderer3": {
-		#"sourceFiles-posix": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.o"],
-		#"sourceFiles-windows": ["$BIND_IMGUI_OBJDIR/imgui_impl_sdlrenderer2.obj"],
 		"dependencies": {"bindbc-sdl": "~>2.0"},
 		"versions": ["ImGui_Impl_SDLRenderer3"],
 	},

@@ -1,5 +1,5 @@
 /+
-+            Copyright 2023 – 2024 Aya Partridge
++            Copyright 2023 – 2026 Aya Partridge
 + Distributed under the Boost Software License, Version 1.0.
 +     (See accompanying file LICENSE_1_0.txt or copy at
 +           http://www.boost.org/LICENSE_1_0.txt)
@@ -145,6 +145,7 @@ version(ImGui_Impl_SDL3){
 	bool ImGui_ImplSDL3_InitForD3D(SDL_Window* window);
 	bool ImGui_ImplSDL3_InitForMetal(SDL_Window* window);
 	bool ImGui_ImplSDL3_InitForSDLRenderer(SDL_Window* window, SDL_Renderer* renderer);
+	bool ImGui_ImplSDL3_InitForSDLGPU(SDL_Window* window);
 	bool ImGui_ImplSDL3_InitForOther(SDL_Window* window);
 	void ImGui_ImplSDL3_Shutdown();
 	void ImGui_ImplSDL3_NewFrame();
@@ -183,6 +184,27 @@ version(ImGui_Impl_SDLRenderer3){
 	void ImGui_ImplSDLRenderer3_DestroyFontsTexture();
 	bool ImGui_ImplSDLRenderer3_CreateDeviceObjects();
 	void ImGui_ImplSDLRenderer3_DestroyDeviceObjects();
+}
+
+version(ImGui_Impl_SDLGPU3){
+	import bindbc.sdl: SDL_GPUCommandBuffer, SDL_GPUDevice, SDL_GPUGraphicsPipeline, SDL_GPURenderPass, SDL_GPUSampleCount, SDL_GPUTextureFormat;
+	
+	struct ImGui_ImplSDLGPU3_InitInfo{
+		SDL_GPUDevice* device;
+		SDL_GPUTextureFormat colourTargetFormat;
+		SDL_GPUSampleCount msaaSamples;
+	}
+	
+	bool ImGui_ImplSDLGPU3_Init(ImGui_ImplSDLGPU3_InitInfo* info);
+	void ImGui_ImplSDLGPU3_Shutdown();
+	void ImGui_ImplSDLGPU3_NewFrame();
+	void Imgui_ImplSDLGPU3_PrepareDrawData(ImDrawData* drawData, SDL_GPUCommandBuffer* commandBuffer);
+	void ImGui_ImplSDLGPU3_RenderDrawData(ImDrawData* drawData, SDL_GPUCommandBuffer* commandBuffer, SDL_GPURenderPass* renderPass, SDL_GPUGraphicsPipeline* pipeline=null);
+
+	void ImGui_ImplSDLGPU3_CreateDeviceObjects();
+	void ImGui_ImplSDLGPU3_DestroyDeviceObjects();
+	void ImGui_ImplSDLGPU3_CreateFontsTexture();
+	void ImGui_ImplSDLGPU3_DestroyFontsTexture();
 }
 
 version(ImGui_Impl_Vulkan){
